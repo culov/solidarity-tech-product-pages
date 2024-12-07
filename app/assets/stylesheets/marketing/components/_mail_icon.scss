@@ -1,0 +1,19 @@
+.mail-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 66px;
+  height: 66px;
+  box-sizing: border-box;
+
+  color: var(--c-violet-light);
+
+  border-radius: 50%;
+  background: #F4EBFF;
+  border: 10px solid #F9F5FF;
+}
+
+.mail-icon__icon {
+  width: 28px;
+  height: 28px;
+}

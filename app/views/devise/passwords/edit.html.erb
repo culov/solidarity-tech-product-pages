@@ -1,0 +1,38 @@
+<title>Reset Password - Solidarity Tech</title>
+
+
+<div class="col-lg-8 col-md-10 col-sm-8 col-xs-10 col-xs-offset-1 col-sm-offset-1 col-md-offset-2 col-lg-offset-2">
+
+<h2>Change your password</h2>
+
+<%= form_for(resource, as: resource_name, url: "/resource/password", html: { method: :put }) do |f| %>
+
+
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+
+  <%= f.hidden_field :reset_password_token %>
+
+
+  <div class="field form-group">
+    <%= f.label :password, "New password" %><br />
+    <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+    <% end %>
+    <%= f.password_field :password, autofocus: true, autocomplete: "off", class: "form-control" %>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :password_confirmation, "Confirm new password" %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off",  class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <!-- <%= f.submit "Change my password" %> -->
+    <input type="submit" name="commit" value="Change my password" class="btn btn-primary" data-show-loading-on-click style='margin-top:20px;' data-disable-with="Change my password">
+  </div>
+<% end %>
+
+
+</div>
+

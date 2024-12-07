@@ -1,0 +1,12 @@
+
+@media screen and (min-width: 768px) {
+  .trigger-block--crm .trigger-block__image-wrap:nth-child(odd) {
+    margin-top: 30px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .trigger-block--crm .trigger-block__image-wrap:nth-child(odd) {
+    margin-top: 45px;
+  }
+}

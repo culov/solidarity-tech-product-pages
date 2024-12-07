@@ -1,0 +1,47 @@
+.form-footer {
+  margin-top: 44px;
+  margin-bottom: 32px;
+}
+
+.form-footer__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-footer__mail-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: var(--ff-primary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: var(--c-grey-600);
+  text-decoration: none;
+}
+
+.form-footer__mail-link-icon {
+  width: 16px;
+  height: 16px;
+
+  color: var(--c-grey-500);
+}
+
+.form-footer__copyright{
+  margin: 0;
+
+  font-family: var(--ff-primary);
+
+  a{
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 400;
+    color: var(--c-violet);
+    text-decoration: none;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+}

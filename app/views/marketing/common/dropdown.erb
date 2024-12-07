@@ -1,0 +1,34 @@
+<label class="input">
+
+  <% if defined?(labelText) %>
+      <span class="input__label">
+        <%= labelText %><%= defined?(required) ? '*' : '' %>
+      </span>
+  <% end %>
+
+  <div class="dropdown">
+    <button
+      type="button"
+      name="<%= defined?(name) ? name : '' %>"
+      class="input__field input__field--placeholder dropdown__button"
+    >
+      <%= defined?(placeholder) ? placeholder : 'Please select' %>
+    </button>
+    <%= render template: 'marketing/common/icon', :locals => {
+      iconName: 'ui_caret_down',
+      iconClass: 'dropdown__carer'
+    } %>
+    <ul class="dropdown__list">
+      <li><button class="dropdown__option">Option 1</button></li>
+      <li><button class="dropdown__option">Option 2</button></li>
+      <li><button class="dropdown__option">Option 3</button></li>
+    </ul>
+  </div>
+
+  <% if defined?(comment) %>
+        <span class="input__comment">
+          <%= comment %>
+        </span>
+  <% end %>
+
+</label>

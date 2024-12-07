@@ -1,0 +1,39 @@
+
+<%  @billing_plan = Billing::Plan.find(2)
+    @contacts = 1000
+    @organization_plan = Billing::OrganizationPlan.new(max_contacts: @contacts)
+    @total_members_count = 0
+%>
+
+<%- content_for(:head)  do -%>
+<meta name="description" content="Explore Solidarity Tech's transparent nonprofit pricing plans. Get everything you need like texting, calling, email, websites & more in one integrated CRM.">
+<%- end -%>
+
+
+<div data-controller="pricing" data-pricing-max-contacts-value="<%= @organization_plan.max_contacts %>" data-pricing-pricing-value="<%= Billing::Plan.all_contacts_pricing.to_json %>">
+
+  <input type="hidden" name="dummy" value="" />
+  <%= render template: 'marketing/common/header' %>
+
+  <%= render template: 'marketing/components/pricing_hero', :locals => {
+    :title => Mock::PRICING[:hero][:title],
+    :description => Mock::PRICING[:hero][:description],
+    :colors => Mock::PRICING[:hero][:colors],
+    :label => Mock::PRICING[:hero][:label],
+    :input => Mock::PRICING[:hero][:input],
+    :cards => Mock::PRICING[:hero][:cards],
+  } %>
+
+  <%= render template: 'marketing/components/compare_table', :locals => {
+    :table => Mock::PRICING[:table],
+  } %>
+
+  <%= render template: 'marketing/components/faq', :locals => {
+    :faq => Mock::PRICING[:faq],
+  } %>
+
+
+  <%= render template: 'marketing/components/cta' %>
+
+
+</div>

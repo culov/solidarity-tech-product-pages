@@ -1,0 +1,27 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Streamline peer-to-peer texting campaigns and text blasts with Solidarity Tech's integrated nonprofit text messaging platform. Reach supporters via SMS, manage opt-ins/opt-outs, 10DLC compliance.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::SMS[:hero][:title],
+  :description => Mock::SMS[:hero][:description],
+  :label => Mock::SMS[:hero][:label],
+  :image => Mock::SMS[:hero][:image],
+  :colors => Mock::SMS[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::SMS[:trigger_block_v][:title],
+  :extra_title => Mock::SMS[:trigger_block_v][:extra_title],
+  :image => Mock::SMS[:trigger_block_v][:image],
+  :colors => Mock::SMS[:trigger_block_v][:colors],
+  :triggers => Mock::SMS[:trigger_block_v][:triggers],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::SMS[:features][:start],
+  :items => Mock::SMS[:features][:items],
+} %>
+
+<%= render template: 'marketing/components/cta' %>

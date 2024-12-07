@@ -1,0 +1,25 @@
+<section class="wrap beveled crm-special">
+    <div class="content crm-special__content">
+        <h2 class="crm-special__title">
+           <span class="crm-special__title--1"> <%= title_part_1 %></span>
+           <span class="crm-special__title--2"> <%= title_part_2 %></span>
+           <span class="crm-special__title--3"> <%= title_part_3 %></span>
+        </h2>
+        <div class="crm-special__image-wrap">
+            <%= render template: 'marketing/common/image', :locals => {
+              :image => image[:src],
+              :className => 'crm-special__image',
+            } %>
+            <%= render template: 'marketing/common/image', :locals => {
+              :image => image_mobile[:src],
+              :className => 'crm-special__image--mobile',
+            } %>
+        </div>
+
+        <div class="crm-special__triggers">
+            <% triggers.each do |trigger|%>
+                <%= render template: 'marketing/common/trigger', :locals => trigger %>
+            <% end %>
+        </div>
+    </div>
+</section>

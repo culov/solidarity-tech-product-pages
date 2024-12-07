@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Solidarity Tech - All-in-one CRM for Organizers</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_include_tag 'marketing' %>
+    <%= stylesheet_link_tag "marketing/application", "data-turbo-track": "reload" %>
+    <link rel="icon" href="https://s3.amazonaws.com/solidarity.tech/images/icons/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="<%= request.base_url + request.path %>" />
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EHR49GT5Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6EHR49GT5Q');
+    </script>
+
+  <script>
+    window.intercomSettings = {
+      api_base: "https://api-iam.intercom.io",
+      app_id: "er96705e",
+      hide_default_launcher: false,
+      background_color: "#f9f5ff",
+      action_color: "#5533bf",
+    };
+  </script>
+
+  <script>
+
+  (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/er96705e';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+  </script>
+
+
+  <script>
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      posthog.init('phc_63aqAU8mieXpPmzAHiKz9eM7N0UMkmpj47dBh1fy77r',{api_host:'https://us.i.posthog.com', 
+          })
+  </script>
+
+
+
+  <%= yield(:head) -%>
+
+</head>
+
+  <body>
+    <main data-controller="fixed-button">
+      <%= yield %>
+      <%= render template: 'marketing/common/footer' %>
+    </main>
+
+    <%= render template: 'marketing/common/sprite' %>
+    <%= javascript_include_tag "marketing/application" %>
+
+<% if request.path.scan(/privacy|terms|pricing/).count == 0 %>
+    <div class="footer--fixed-button-container">
+      <div>
+        <a id="footer--fixed-button" class="footer--fixed-button footer--hide" href="/pricing">
+          <svg height="18" viewBox="0 0 176 154" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.6298 94.5394L43.9711 29.8429C43.9711 29.8429 68.4192 34.907 88.8678 27.2939C114.093 17.9024 146.377 -8.64901 169.404 2.8278C175.66 5.94589 176 14.7703 176 14.7703L164.082 47.9301C164.082 47.9301 159.131 40.8152 152.163 39.3503C139.692 36.7283 123.698 44.104 113.978 50.8287C104.258 57.5534 86.6693 61.1476 86.6693 61.1476L83.8922 67.7564C83.8922 67.7564 99.3978 64.2781 112.011 56.6258C124.623 48.9736 138.899 41.2057 151.469 44.7996C158.657 46.8549 161.999 55.2345 161.999 55.2345L133.302 134.424C133.302 134.424 131.107 128.986 123.119 126.425C97.3149 118.155 64.568 150.969 34.4826 153.788C13.7699 155.729 0 143.699 0 143.699L16.3156 100.8C16.3156 100.8 29.5686 103.147 38.0697 102.541C51.7469 101.566 57.9724 93.0337 74.1723 86.6568C88.405 81.0543 97.3149 82.4812 97.3149 82.4812L99.3978 76.2203C99.3978 76.2203 91.645 74.9911 75.4451 80.6278C59.2452 86.2644 49.4937 95.2698 38.764 97.0917C27.9374 98.9301 18.6298 94.5394 18.6298 94.5394Z" fill="white"></path>
+            </svg>
+        Pricing + Sign Up</a>
+      </div>
+    </div>
+<% end %>
+
+
+
+  </body>
+</html>

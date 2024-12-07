@@ -1,0 +1,307 @@
+
+
+
+<%- content_for(:head)  do -%>
+  <%= stylesheet_link_tag   'intlTelInput' %>
+  <%= javascript_include_tag   'intlTelInput' %>
+<style>
+  .iti-flag {background-image: url("<%= asset_path( 'flags.png' )%>");}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .iti-flag {background-image: url("<%= asset_path( 'flags@2x.png' )%>");}
+}
+.intl-tel-input.allow-dropdown{
+  width: 100%;
+}
+.subtitle{
+  font-size: 18px;
+  line-height: 25px;
+  margin: 35px 0;
+}
+.well{
+    padding-top: 0;
+    padding-left: 0;
+}
+.driver_section{
+  display:none;
+}
+.form-horizontal .well .form-group{
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+/* The container */
+.radio_container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radio_container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radio_container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio_container input:checked ~ .checkmark {
+  background-color: #25aece;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio_container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio_container .checkmark:after {
+    top: 7px;
+    left: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.member_type {
+    margin-left: 15px;
+    font-size: 17px;
+    position: relative;
+    bottom: 5px;
+}
+.red.error{color: red;}
+.btn.btn-primary.submit{outline: none;}
+span, p, input, label, a, select, option, div{ font-family: "News Cycle", "Arial Narrow Bold", sans-serif; }
+@media (max-width: 767px){.page-header{margin: 25px 0 21px;}}
+</style>
+<script src="<%=asset_path('libphonenumber-js.min.js')%>"></script>
+
+<script>
+
+var countryCode = null;
+$(function(){
+
+        $("#phone").intlTelInput({
+            initialCountry: "us",
+            // geoIpLookup: function(callback) {
+            //   $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+            //     countryCode = (resp && resp.country) ? resp.country : "";
+            //     callback(countryCode);
+            //   });
+            // },
+            utilsScript: "<%= asset_path( 'phone_utils.js' )%>",
+            // preferredCountries: [ "us", "gb", "br", "fr", "ng", "au" ],
+            autoPlaceholder: true,
+            formatOnDisplay: true,
+            onlyCountries: ["US", "CA"]
+          });
+
+         $("#phone").keyup(function(e){
+
+          var selectedCountryCode = $(".selected-flag .iti-flag").attr("class").replace('iti-flag ', '');
+          if(selectedCountryCode.length > 0){
+            countryCode = selectedCountryCode.toUpperCase();
+          }
+          $(this).val(new libphonenumber.AsYouType(countryCode).input($(this).val()))
+        });
+
+
+
+    $('#new_user').on('submit', function(e){
+       e.preventDefault();
+      
+      var dialCode = $("#phone").intlTelInput("getSelectedCountryData").dialCode;
+      var localNum = $("#phone").val().replace(/\D/g,'');
+      var finalPhoneNumber = dialCode+localNum;
+
+
+      var validNumber=false;
+      validNumber = (libphonenumber.isValidNumber(finalPhoneNumber,$("#phone").intlTelInput("getSelectedCountryData").iso2.toUpperCase())) || libphonenumber.isValidNumber(finalPhoneNumber,"PR")
+
+      if(validNumber){
+        // alert("valid number")
+        $(".red.error").addClass("display_none");
+       $(".btn.btn-primary.submit").button('loading');
+
+
+       var zip = $("#zip").val();
+
+       if (zip && zip.length == 5){
+
+        var member_type = $(".member_type_radio:checked");
+
+        if(member_type && member_type.length > 0){
+
+           var par={"phone_number":finalPhoneNumber, "zip_code": $("#zip").val(), "member_type": $(".member_type_radio:checked").val() }
+
+           <% if params[:r] %>
+            par["r"] = "<%=params[:r]%>";
+           <% end %>
+           
+           if(!$('.join_in_submit').hasClass("disabled")){
+             $('.join_in_submit').addClass("disabled");
+
+
+             $.post("/join", par, function(resp){
+              if(resp.success){
+                window.location.replace(resp.redirect_url);
+              }
+              else{
+                alert(resp.message)
+                $(".red.error").html(resp.message).removeClass("display_none");
+                $(".btn.btn-primary.submit").button('reset');
+                $('.join_in_submit').removeClass("disabled");
+              }
+              
+            });
+
+
+
+         }
+      }
+      else{
+        $(".red.error").removeClass("display_none").html("Please select if you are a driver or community supporter");
+      }
+
+        
+     }
+     else{
+      $(".red.error").removeClass("display_none").html("Please enter the first 5 digits of your zip code");
+     }
+
+
+      }
+      else{
+        $(".red.error").removeClass("display_none").html("Please enter a valid phone capable of receiving text messages");
+      }
+      
+    });
+
+
+
+});
+
+
+
+</script>
+<%- end -%>
+
+
+
+<div class="container">
+  
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+  <div class="row">
+    <h2 class="pull-left">Sign up</h2>
+    <a class="pull-right"  style="margin-top: 30px;" href="/login">Login</a>
+  </div>
+  <div class="row">
+    <div style="margin-bottom: 20px; margin-top: 10px;">
+      Sign up to connect with the movement for rideshare drivers' rights in your city (All US drivers & allies are welcome)
+    </div>
+  </div>
+
+  <form class="form-horizontal" class="new_user" id="new_user" accept-charset="UTF-8" data-toggle="validator" >
+    <fieldset>
+  
+
+
+      <div class="form-group">
+        <label for="phone" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Phone Number</label>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+          <input type="tel" id="phone" class="form-control" name="phone" onkeypress="return event.charCode >= 48 && event.charCode <= 57" autocomplete="off" required>
+        </div>
+
+
+      </div>
+
+       <div class="form-group">
+        <label for="user_zip" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">Zip Code</label>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+
+          <input type="number" class="form-control" autocomplete="off" name="user[zip_code]" id="zip" placeholder="Zip Code" data-maxlength="5"  required>
+          <!-- <div class="help-block">Minimum of 6 characters</div> -->
+        </div>
+      </div>
+
+
+       <div class="form-group">
+        <label for="user_zip" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">I am a...</label>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+
+               <div class="checkbox">
+
+               
+
+                    <div style="margin-top: 5px;">
+                      <label class="radio_container">
+                        <span class="member_type">Rideshare driver</span>
+                        <input type="radio" class="member_type_radio" name="user[account_type]" value="driver" name="radio" required>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="radio_container">
+                        <span class="member_type">Non-driver community supporter</span>
+                        <input type="radio" class="member_type_radio" name="user[account_type]" value="ally" name="radio" required>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+
+                </div>
+
+        </div>
+      </div>
+
+
+
+
+
+      <div class="form-group">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+
+          <button type="submit" class="btn btn-primary join_in_submit">Submit</button>
+        </div>
+
+        <span class="col-lg-8 col-md-10 col-sm-10 col-xs-12 red error display_none" style="margin-top:10px"></span>
+
+      </div>
+    </fieldset>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  </form>
+  
+  </div>
+</div>
+

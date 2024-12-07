@@ -1,0 +1,30 @@
+
+
+		<div style="padding-bottom: 60px;">
+				<button class="btn btn-default col-lg-2 col-md-2 col-lg-2 col-sm-2 col-xs-3" data-calendar-nav="prev"><< Prev</button>
+				<div class="btn col-lg-8 col-md-8 col-lg-8 col-sm-8 col-xs-6" style="font-size: 18px; font-weight: 700; background: white; text-align: center;"><span class="calendar-month"><%= cal.locale['m' + start.getMonth()] %> <%= start.getFullYear() %></span><div class="rp_spinner"><div class="fa fa-circle-o-notch r fa-spin"></div></div></div>
+				<button class="btn btn-default col-lg-2 col-md-2 col-lg-2 col-sm-2 col-xs-3" data-calendar-nav="next">Next >></button>
+		</div>
+
+
+
+
+<div class="cal-row-fluid cal-row-head">
+	<% _.each(days_name, function(name){ %>
+		<div class="cal-cell1"><%= name %></div>
+	<% }) %>
+</div>
+<div class="cal-month-box">
+	<% for(i = 0; i < 6; i++) { %>
+		<% if(cal.stop_cycling == true) break; %>
+		<div class="cal-row-fluid cal-before-eventlist">
+			<div class="cal-cell1 cal-cell" data-cal-row="-day1"><%= cal._day(i, day++) %></div>
+			<div class="cal-cell1 cal-cell" data-cal-row="-day2"><%= cal._day(i, day++) %></div>
+			<div class="cal-cell1 cal-cell" data-cal-row="-day3"><%= cal._day(i, day++) %></div>
+			<div class="cal-cell1 cal-cell" data-cal-row="-day4"><%= cal._day(i, day++) %></div>
+			<div class="cal-cell1 cal-cell" data-cal-row="-day5"><%= cal._day(i, day++) %></div>
+			<div class="cal-cell1 cal-cell" data-cal-row="-day6"><%= cal._day(i, day++) %></div>
+			<div class="cal-cell1 cal-cell" data-cal-row="-day7"><%= cal._day(i, day++) %></div>
+		</div>
+	<% } %>
+</div>

@@ -1,0 +1,137 @@
+es:
+      email: Correo electrónico
+      full_name: Nombre completo
+      name: Nombre
+      phone_number: Número de teléfono
+      first_name: Nombre de pila
+      last_name: Apellido
+      password: Contraseña
+      language: Idioma preferido
+      email_invalid: Esa dirección de correo electrónico no es válida
+      six_minimum: Mínimo de 6 caracteres
+      zip_code: Código postal
+      zip_code_error: Ingrese un código postal válido de %{ region } de 5 dígitos
+      email_error: Esa dirección de correo electrónico no es válida.
+      full_name_error: Por favor ingresa tu nombre completo
+      language_error: Por favor seleccione un idioma preferido
+      email_placeholder: su.email@gmail.com
+      did_you_mean: Querías decir?
+      petition:
+            signature_goal: "<strong>%{goal_start} han firmado hasta ahora</strong>, ayúdanos a llegar a %{goal_end}"
+      all:
+            signature: Firma
+            clear: Despeja
+      account:
+            join:
+                  title: Somos Uber/Lyft conductores de Los Angeles que se unen por derechos y mejor paga
+                  subtitle: Nuestra asociación es independiente, democrática y dirigida por los conductores. Dinos para qué estás listo luchar.
+                  join_us: Únete para construir poder del conductor y ganar
+                  submit: Enviar
+                  join_in: Únete
+            complete:
+                  title: Ultimas preguntas
+                  subtitle: Complete estas últimas preguntas para convertirse en miembro de la asociación
+                  driver_questions: Preguntas del conductor
+                  driver_frequency: ¿Con qué frecuencia conduces Uber/Lyft?
+                  ally_questions: Preguntas de los partidarios de la comunidad
+                  ally_what_to_change: ¿Qué quieres cambiar sobre la industria de viajes compartidos?
+                  ally_1: Equidad y representación para los conductores.
+                  ally_2: Normas de emisión para vehículos.
+                  ally_3: Tapas de vehículos de rideshare para reducir la contaminación.
+                  ally_4: Datos abiertos para reducción de tráfico.
+                  full_time: "tiempo completo (30+ horas por semana)"
+                  part_time: "medio tiempo (10-29 horas por semana)"
+                  occasional: "de vez en cuando (0-9 horas por semana)"
+                  what_companies: ¿Para qué compañías trabajas?
+                  email: Correo electrónico
+                  full_name: Nombre completo
+                  name: Nombre
+                  phone_number: Número de teléfono
+                  first_name: Nombre de pila
+                  last_name: Apellido
+                  password: Contraseña
+                  language: Idioma preferido
+                  i_am_a: Yo soy un...
+                  email_invalid: Esa dirección de correo electrónico no es válida
+                  six_minimum: Mínimo de 6 caracteres
+                  zip_code: Código postal
+                  zip_code_error: Ingrese un código postal válido de %{ region } de 5 dígitos
+                  email_error: Esa dirección de correo electrónico no es válida.
+                  full_name_error: Por favor ingresa tu nombre completo
+                  language_error: Por favor seleccione un idioma preferido
+                  email_placeholder: su.email@gmail.com
+                  did_you_mean: Querías decir?
+            demands:
+                  dont_support: No Apoyo
+                  almost_support: Casi Apoyo
+                  support: Apoyo
+                  fully_support: Apoyo Totalmente
+                  strongly_support: Apoyo Firmemente
+                  header_title: Somos chóferes de Uber/Lyft en {{city}} uniéndonos por un trato justo y mejor pago
+                  header_subtitle: Nuestra asociación es democrática y guiada por los chóferes. Dinos para qué estás listo para luchar.
+                  call_to_action_title: Únete a nosotros para construir poder y ganar
+                  mobile_phone_number: Número de teléfono móvil
+                  zip_code: Código postal
+                  voting_title: Tú decides qué problemas priorizamos.
+                  voting_subtitle: Dinos para qué estás listo para luchar.
+                  voting_suggestion: "Opcional: sugerir una nueva demanda"
+                  sort_top_demands: Ordene los cambios más importantes para usted
+                  touch_to_drag: Toca y arrastra para ordenar tus principales
+                  demands: demandas
+                  continue: Continuar
+            schedule_call:         
+                  set_up_a_call: Programe una llamada rápida para comenzar
+                  select_time: Seleccione la hora para que uno de nuestros organizadores te llame
+                  select_a_day: Escoje el día
+                  call_language: Idioma para la llamada
+            action:
+                  email_your_legislator: Mande email a su legislador!
+                  send_email: Mande email
+                  send_me_texts: Envíame mensajes de texto sobre esta campaña.
+                  i_am_a: Yo soy...
+                  full_name: Nombre completo
+      uber_opt_out:
+            title: No Dejes Que Uber Te Quite Tus Derechos
+            content_html:  <p>Los últimos <a href="https://www.documentcloud.org/documents/6560126-Rasier-Technology-Services-Agreement-November-25.html" target="_blank">Términos de Servicio</a> de Uber incluyen un acuerdo de arbitraje que te quita su derecho a presentar una queja en un corte de justicia. Los conductores tienen 30 días después de aceptar el acuerdo para optar por no participar en el arbitraje, antes de que se les quiten sus derechos.</p><p>Uber dificulta la lectura de los términos del servicio y la exclusión voluntaria. Rideshare Drivers United creó esta herramienta para cortar la jerga legal y ayudarlo a recuperar sus derechos.</p><p id="quickly_fill_out_form">Complete rápidamente este sencillo formulario y envíe el correo electrónico generado <strong>con la dirección de correo electrónico que tiene registrada en Uber</strong>, para conservar sus derechos legales; de lo contrario, Uber argumentará que los ha renunciado.</p>
+            registered: Soy un conductor registrado con Uber.
+            form_note_html: <p>Para que Uber pueda optar por no participar en el arbitraje, debe usar el número de teléfono, el correo electrónico, el nombre y la ciudad de residencia que Uber tiene registrada para usted.</p>
+            receive_texts: Deseo recibir actualizaciones de texto ocasionales y relevantes de Rideshare Drivers United. Se pueden aplicar tarifas por mensajes y datos. Envía STOP para cancelar.
+            cc_me: Copiarme en el correo electrónico a Uber.
+            prepare_email: Prepara el Email
+            phone_number: Número de teléfono
+            zip_code: Código postal
+            email: Email
+            full_name: Nombre completo
+            city_of_residence: Ciudad de residencia
+            you_must_use: Debe usar uno de los dos métodos para enviar este correo electrónico desde la dirección de correo electrónico que utilizaste para registrarse en Uber
+            method_1: Método 1
+            method_2: Método 2
+            method_1_instructions: Copie y pegue el correo electrónico a continuación y envíelo a optout@uber.com, desde la cuenta de correo electrónico que Uber tiene registrada para usted.
+            you_must_send_from: Debe enviar esto desde 
+            method_2_instructions: Fácil, pero solo use este método si su cliente de correo electrónico predeterminado está conectado con
+            open_and_send: Abrir en Cliente de Email y Enviar
+            ask_your_friends: Pide a tus amigos que también tomen accion!
+      mailer:
+            invitation:
+                  hi: Hola
+                  you_scheduled_a_call: Ha programado una llamada con un organizador de Rideshare Drivers United. Le enviaremos un recordatorio por mensaje de texto antes de la llamada y lo llamaremos a la hora que seleccionó.
+                  short_call: Reunión telefónica de 15 minutos
+                  event_type: Tipo de evento
+                  visit_here_to: Visita aqui para
+                  reschedule_or_cancel: reprogramar o cancelar la llamada
+                  event_date_time: Fecha / hora del evento
+                  reminder: Recordatorio
+                  tomorrow_at: Mañana a las
+                  organizer_will_call: un organizador de Rideshare Drivers United lo llamará para una breve charla de introducción
+      will_paginate:
+        page_entries_info:
+            single_page:
+                zero:  "No %{model} found"
+                one:   "Displaying 1 %{model}"
+                other: "Displaying all %{count} %{model}"
+            single_page_html:
+                zero:  "No %{model} found"
+                one:   "Displaying <b>1</b> %{model}"
+                other: "Displaying <b>all&nbsp;%{count}</b> %{model}"
+            multi_page: "Displaying %{model} %{from} - %{to} of %{count} in total"
+            multi_page_html: "Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b> in total"

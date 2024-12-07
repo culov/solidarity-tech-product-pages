@@ -1,0 +1,28 @@
+.git
+.dockerignore
+.byebug_history
+log/*
+tmp/*
+
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# Ignore encrypted secrets key file.
+config/secrets.yml.key
+
+.DS_Store
+
+# Ignore application configuration
+/config/application.yml
+
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+airbrake-logs.txt

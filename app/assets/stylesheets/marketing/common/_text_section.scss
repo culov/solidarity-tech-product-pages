@@ -1,0 +1,40 @@
+.text-section {
+  padding: 0 16px 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-section__content {
+  max-width: 720px;
+  width: 100%;
+
+  font-family: var(--ff-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--c-grey-600);
+}
+
+.text-section__content p {
+  margin: 16px 0;
+}
+
+.text-section__content h3 {
+  margin: 32px 0 16px;
+
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--c-text-black)
+}
+
+.text-section__content ol,
+.text-section__content ul {
+  margin: 16px 0;
+}
+
+@media screen and (min-width: 768px) {
+  .text-section__content {
+    font-size: 1.125rem;
+  }
+}

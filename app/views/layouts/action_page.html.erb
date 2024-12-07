@@ -1,0 +1,588 @@
+<% 
+
+  @website = @action.website if @website.nil?
+
+  @primary_navbar = @website.primary_nav_menu_bar
+  @footer = @website.footer_menu_bar
+  @is_homepage = @website.home_page_id == @action.id
+
+  @lang = I18n.locale
+
+  @show_announcement_banner = @website && @website.announcement_banner && @website.announcement_banner["enabled"] && ( (@website.announcement_banner["visibility"] =="home_page" && @is_homepage) || (@website.announcement_banner["visibility"] == "all_pages") )
+
+
+  @liquid_variables = {} if @liquid_variables.nil?
+
+  @social_media = @website.social_media
+
+%>
+
+<!DOCTYPE html>
+<html id="action_page">
+  <head>
+
+
+
+    <% if @website.settings["google_analytics"] && !@website.settings["google_analytics"].blank? && !@embedded_admin_preview %>
+
+
+      <!-- Global Site Tag (gtag.js) - Google Analytics -->
+      <script async data-cookiecategory="analytics" defer src="https://www.googletagmanager.com/gtag/js?id=<%=@website.settings["google_analytics"].strip%>"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments)};
+        gtag('js', new Date());
+        gtag('config', '<%= @website.settings["google_analytics"].strip %>');
+      </script>
+
+      <% end %>
+
+
+    <link href="https://irdu.s3.amazonaws.com/css/font-awesome/css/all.css" rel="stylesheet" type="text/css" />
+
+    
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta property="og:url" content="<%=request.original_url%>" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <%= csrf_meta_tags if ['ActionPage::Custom', 'ActionPage::BlogPost', 'ActionPage::LandingPage'].include?(@action.type) %>
+
+
+    <% 
+      if @liquid_variables.blank?
+        @liquid_variables = {title: @action.title, name: @action.name, organization: {name: @organization.name}}
+      end
+      @title = Form.render_liquid( Form.translate(@action.translations_for_property("html_title"), @lang), @liquid_variables)
+    %>
+
+    <% if !@title.blank? %>
+      <title><%=@title%></title>
+    <% end %>
+
+
+     <!-- Sharing info -->
+    <% if @action.type == "ActionPage::GroupMontage" && !@action.custom_page_values["group_montage_url"].nil? %>
+      <meta property="og:image" content="<%=@action.custom_page_values["group_montage_url"].to_s%>" />
+    <% else %>
+      <meta property="og:image" content="<%=@action.fb_image_url.to_s%>" />
+    <% end %>
+    <meta property="og:description" content="<%=@action.og_description.to_s.html_safe%>" />
+    <meta property="og:title" content="<%= @title %>" />
+    <meta property="og:type" content="article"/>
+    <meta name="description" content="<%=@action.og_description.to_s.html_safe%>" />
+
+    <% if @social_media && @social_media["twitter_url"] %>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:site" content="@<%=@social_media["twitter_url"].gsub(/https:\/\/w*\.*twitter.com\//, '')%>" />
+    <% end %>
+    <!-- End Sharing info -->
+
+
+  
+    <%= stylesheet_link_tag 'journal' %>
+    <%= stylesheet_link_tag 'action_page' %>
+
+    <% if @is_homepage %>
+      <link rel="canonical" href="<%=@website.url%>" />
+    <% else %>
+      <link rel="canonical" href="<%=@action.full_url%>" />
+    <% end %>
+
+
+
+    <% if !@website.settings["favicon_url"].blank? %>
+    <link rel="icon" href="<%=@website.settings["favicon_url"]%>" type="image/x-icon">
+    <% end %>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@airbrake/browser"></script>
+    
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+
+    <% if @action.type=='ActionPage::Donate' %>
+    <script src="https://js.stripe.com/v3/"></script>
+    <% end %>
+
+    <script type="text/javascript">
+
+    var airbrake = new Airbrake.Notifier({
+      projectId: 197710,
+      projectKey: '9c80a89ab96c03f64d4401068893e382'
+    });
+
+    </script>
+
+    <%= javascript_include_tag 'action_page' %>
+    
+    <% if @primary_navbar && !@primary_navbar.text_color.blank? %>
+      <style type="text/css">
+        #action_page .navbar-toggle#nav-toggle span, #action_page .navbar-toggle#nav-toggle span:before, #action_page .navbar-toggle#nav-toggle span:after{
+          background: <%=@primary_navbar.text_color.to_s%>;
+        }
+        #action_page .navbar-default .navbar-nav > li > a, #action_page .navbar-default .navbar-brand, 
+        #action_page .navbar-default .navbar-nav > li > a:hover, #action_page .navbar-default .navbar-nav > li > a:focus,
+        #action_page .navbar-default .navbar-brand:hover{
+          color: <%=@primary_navbar.text_color.to_s%>;
+        }
+
+        #action_page .navbar.navbar-default.navbar-fixed-top{
+          background: <%= @primary_navbar.background_color %>;
+        }
+        #action_page #navbar-main, #action_page .navbar--overflowed-menu .navbar-nav{
+          background: <%= @primary_navbar.background_color %>;
+        }
+      </style>
+    <% end %>
+
+
+
+    <%= yield(:head) -%>
+
+
+    <% 
+        
+      if @action.custom_page_values["head_html"] && !@action.custom_page_values["head_html"].blank? 
+      @liquid_head = nil
+
+      begin
+          @liquid_parsed_template = Liquid::Template.parse(@action.custom_page_values["head_html"], :error_mode => :strict)
+          @liquid_head = @liquid_parsed_template.render(@liquid_variables.deep_stringify_keys)
+      rescue Liquid::SyntaxError => e 
+          @liquid_head = nil
+      end 
+    %>
+
+    <%= @liquid_head.html_safe if @liquid_head %>
+
+    <% end %>
+
+
+
+
+
+    <% 
+      if @website.settings["head_html"] && !@website.settings["head_html"].blank? 
+    %>
+        <%= @website.settings["head_html"].html_safe %>
+    <% end %>
+
+
+  </head>
+
+  <body data-env="<%= Rails.env %>" class="<%='sidebar-template' if @action.template=='sidebar'%> <%= @action.action_page_body_class %> <%='has_announcement_banner' if @show_announcement_banner %>" <%= 'data-preview-form="true"'.html_safe if @embedded_admin_preview %> data-action-page-id="<%=@action.id.to_s%>" data-page-type="<%=@action.type.to_s.gsub("ActionPage::","")%>">
+
+
+<% if @show_announcement_banner
+      @banner = @website.announcement_banner
+%>
+
+<div class="announcement_banner" style="background:<%=@banner["background_color"]%>; color:<%=@banner["text_color"]%>;">
+  <div class="container" style="display: flex; align-items: center; justify-content: center;">
+    <span id="announcement_banner_text" style="color:<%=@banner["text_color"]%>;">
+      <%= Form.translate(@banner["message"], @lang).to_s %>
+    </span>
+    <a class="btn" <%="target='_blank'".html_safe if @banner["open_in_new_tab"] %> href="<%=@banner["button_link"]%>"><%= Form.translate(@banner["button_label"], @lang).to_s %></a>
+  </div>
+</div>
+
+<% end %>
+
+
+
+
+<% if @primary_navbar && @primary_navbar.enabled && !@action.always_hide_primary_nav %>
+
+<% 
+  #cache "nav-#{@primary_navbar.id}-#{@primary_navbar.updated_at}-#{@lang}" do 
+%>
+
+   <div class="navbar navbar-default navbar-fixed-top navbar--overflowed-menu" >
+        <div class="container">
+          <div class="navbar-header">
+            
+              <% if @primary_navbar %>
+                <a href="<%=@primary_navbar.brand_custom_url%>" class="navbar-brand">
+                <% if @primary_navbar.brand_status == "chapter_fallback_to_org" %>
+
+                    <% if current_user %>
+                    
+                      <img style="display:inline;" src="<%=!current_user.chapter.small_logo_url.blank? ? current_user.chapter.small_logo_url : current_user.chapter.organization.icon_url %>" height="29"/>
+                      <span><%= current_user.chapter.navbar_name %></span>
+
+                    <% elsif @action.scope.logo  %>
+                    
+                      <img style="display:inline;" src="<%= @action.scope.logo %>" height="29"/>
+                      <span><%= @action.scope.name %></span>
+
+                    <% else %>
+                      <% if !@organization.icon.blank? %>
+                        <img style="display:inline;" src="<%= @organization.icon_url %>" height="29"/>
+                      <% end %>
+                      <span><%=@organization.name%></span>
+                    <% end %>
+
+                <% elsif @primary_navbar.brand_status == "chapter_fallback_to_website" %>
+
+
+                    <% if current_user %>
+                      <img style="display:inline;" src="<%=!current_user.chapter.small_logo_url.blank? ? current_user.chapter.small_logo_url : current_user.chapter.organization.icon_url %>" height="29"/>
+                      <span><%=current_user.chapter.navbar_name%></span>
+                    <% else %>
+                      <% if !@primary_navbar.brand_image_upload.blank? %>
+                        <img style="display:inline;" src="<%= @primary_navbar.brand_image_upload.image.url %>" height="29"/>
+                      <% end %>
+                      <span><%=@primary_navbar.brand_text_custom.to_s%></span>
+                    <% end %>
+
+                <% elsif @primary_navbar.brand_status == "website" %>
+
+                      <% if !@primary_navbar.brand_image_upload.blank? %>
+                        <img style="display:inline;" src="<%= @primary_navbar.brand_image_upload.image.url %>" height="29"/>
+                      <% end %>
+                      <span><%=@primary_navbar.brand_text_custom.to_s%></span>
+
+                <% end %>
+
+              </a>
+              <% 
+                #end
+
+              %>
+
+            
+            <%= yield(:progress_bar) -%>
+
+
+          <% if @primary_navbar && !@primary_navbar.components.empty? %>
+                <a type="button" id="nav-toggle" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar-main" aria-expanded="false" aria-controls="navbar">
+                  <span></span>
+                  
+                </a>
+
+          <% end %>
+
+
+
+          </div>
+
+          <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav navbar-right">
+
+
+
+            <% 
+                if @primary_navbar
+
+                  @action_pages = @primary_navbar.action_pages
+                  
+                  @primary_navbar.components.each do |component|
+            %>
+
+              <li>
+                  
+                  
+                  <% if component["submenu"] %>
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#" href="/<%=component["url"].to_s%>"><%= Form.translate(component["label"], @lang) %> <span class="caret"></span></a>
+                      <ul class="submenu dropdown-menu" style="margin-left: 20px;">
+                      <% component["submenu"].each do |subcomponent| %>
+
+                        <li>
+                          <a title="<%=Form.translate(subcomponent["label"], @lang).to_s if component["label"]%>" class="<%=subcomponent["class"].to_s%>" href="<%=MenuBar.url_for_component(subcomponent, @action_pages)%>"><%= Form.translate(subcomponent["label"], @lang) %></a>
+                        </li>
+                        
+                        <%  end  %>
+                      </ul>
+                <% else %>
+                    <a class="<%=component["class"].to_s%>" title="<%=Form.translate(component["label"], @lang).to_s if component["label"]%>" href="<%=MenuBar.url_for_component(component, @action_pages)%>"><%= Form.translate(component["label"], @lang) %></a>
+                <%  end  %>
+              </li>
+              
+            <% 
+                  end
+                end
+            %>
+
+              </ul>
+          </div>
+
+
+          
+        </div>
+      </div>
+    <% end %>
+<% end %>
+
+
+
+
+
+    <% if @action.type == "ActionPage::Custom" || (["ActionPage::BlogPost", "ActionPage::LandingPage"].include?(@action.type) && @action.custom_page_values["full_width"].to_boolean) %>
+
+      <%= yield %>
+
+    <% else %>
+
+        <div class="container">
+
+
+
+        
+        <% if flash[:success] %>
+
+          <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><%= flash[:success].html_safe %></p>
+            <% @past_ap = !session[:past_action_page_id].nil? ? ActionPage.find_by_id(session[:past_action_page_id]) : nil %>
+            <% if @past_ap && @past_ap.follow_up && @past_ap.follow_up["flash_message"] && @past_ap.follow_up["flash_message"]["share_icons_enabled"].to_boolean %>
+
+            
+              <% if @past_ap %>
+                <div class="flash--share mt-20">
+                  <!-- <h4 class="text-center">Share with friends</h4> -->
+                  <%= render partial: "flash_message_share_icons", locals: {action_page: @past_ap}%>
+                </div>
+              <% end %>
+
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if flash[:warning] %>
+          <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><%= flash[:warning].html_safe %></p>
+          </div>
+        <% end %>
+        <% if flash[:error] %>
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><%= flash[:error].html_safe %></p>
+          </div>
+        <% end %>
+
+
+
+          <div class="page-header <%= 'show' if notice || alert %>" id="banner">
+            <div class="row">
+              <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+
+
+                <% if notice %>
+                  <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <!-- <h4></h4> -->
+                    <p><%= notice.html_safe %></p>
+                  </div>
+                <% end %>
+
+
+                <% if alert %>
+                  <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Error!</h4>
+                    <p><%= alert.html_safe %></p>
+                  </div>
+                <% end %>
+
+          </div>
+          </div>
+
+        </div>
+
+        <%= yield %>
+
+
+
+      <% if ["ActionPage::BlogPost", "ActionPage::LandingPage"].include?(@action.type) && @action.custom_page_values["show_in_post_index"].to_boolean %>
+
+        
+        
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20">
+            <a href="<%= @action.url_domain %>/posts">See all content posts</a> for <%= @website.name %>
+          </div>
+          <div class="clear"></div>
+       
+
+      <% end %>
+
+  
+      </div>
+
+  <% end %>
+
+  <div class="clear"></div>
+
+
+
+  
+  
+  <% if @footer && @footer.enabled && !@action.always_hide_footer && !@embedded_admin_preview %>
+
+<% 
+  #cache "nav-#{@footer.id}-#{@footer.updated_at}-#{@lang}" do 
+
+%>
+
+    <footer>
+      <div class="clear">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+          
+          <% if !@footer.components.blank? %>
+          <div class="footer_menu_title_container">
+            <span>Menu</span>
+          </div>
+          <% end %>
+
+          <div class="footer_menu_container" >
+           
+              <% 
+                  if @footer
+              %>
+
+              <ul class="footer-nav">
+
+              <%
+                    @action_pages = @footer.action_pages
+                    @footer.components.each do |component|
+              %>
+
+                <li>
+                    
+                    
+                    <% if component["submenu"] %>
+                        <a  href="#" href="/<%=component["url"].to_s%>"><%= Form.translate(component["label"], @lang) %></a>
+                        <ul>
+                        <% component["submenu"].each do |subcomponent| %>
+
+                          <li>
+                            <a title="<%=Form.translate(subcomponent["title"], @lang).to_s if component["title"]%>" class="<%=subcomponent["class"].to_s%>" href="<%=MenuBar.url_for_component(subcomponent, @action_pages)%>"><%= Form.translate(subcomponent["label"], (current_user ? current_user.preferred_language : @organization.default_language)) %></a>
+                          </li>
+                          
+                          <%  end  %>
+                        </ul>
+                  <% else %>
+                      <a class="<%=component["class"].to_s%>" title="<%=Form.translate(component["title"], @lang).to_s if component["title"]%>" href="<%=MenuBar.url_for_component(component, @action_pages)%>"><%= Form.translate(component["label"], (current_user ? current_user.preferred_language : @organization.default_language)) %></a>
+                  <%  end  %>
+                </li>
+                 
+
+              <% end %>
+
+            </ul>
+
+            <%  end  %>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+          <% if @footer.footer_html %>
+            <div class="mt-20">
+              <%= @footer.footer_html.html_safe %>
+            </div>
+          <% end %>
+        </div>
+
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+          <% if @footer.social_media_links %>
+
+
+                  <% 
+                    if !@social_media.blank? %>
+
+
+                        <ul class="social-media-footer text-center mt-20">
+                          <li class="mr-10">
+                            Follow us on
+                          </li>
+
+                          <% 
+                            
+                            @social_media.keys.select{|k|["twitter_url", "facebook_url", "instagram_url"].include?(k)}.each do |key| %>
+                            <li>
+                                <a href="<%=@social_media[key]%>" target="_blank">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-<%=key.gsub("_url", "")%> fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                          <% end %>
+
+                        </ul>
+                <% end %>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    <div class="clear"></div>
+
+    </footer>
+  <% end %>
+<% 
+
+  #end
+
+ %>
+
+
+
+
+
+
+
+<script type="text/javascript">
+  <% @form = @action.form %>
+  
+  $(function(){
+      solidarity.forms.initForm('<%=@action.url_slug.to_s%>');
+      solidarity.sharing.initSharing("<%=@action.full_url(current_user)%>", <%=@action.sharing.to_json.html_safe%>);
+
+    <% if @form && !@form.liquid_variables.blank? %>
+      solidarity.forms.setLiquidVariables("<%=@form.liquid_variables.html_safe%>");
+    <% end %>
+
+    <% if @form && @form.autosave %>
+      solidarity.forms.setAutosave(true);
+      var formName = "<%=@action.url_slug.to_s%>";
+      if(localStorage[formName]!=undefined){
+        solidarity.forms.initPrefill(localStorage.getObjectHash(formName));
+      }
+      solidarity.forms.hasPrefilledForm = true;
+    <% end %>
+
+    <% if @form && @form.disable_animations %>
+        solidarity.forms.setDisableAnimations(true);
+    <% end %>
+
+    <% if local_assigns[:errors] %> solidarity.forms.handleErrors(<%=local_assigns[:errors].to_json.html_safe%>);  <% end %>  
+    
+    <% if @website.settings["cookie_consent_banner"] && @website.settings["cookie_consent_banner"]["enabled"].to_bool %>
+      solidarity.utils.showCookieConsentBanner();
+    <% end %>
+
+    
+  });
+</script>
+
+
+
+  <%= yield(:foot) -%>
+
+
+  <%= render partial: "actions/sharing_overlay",  locals: {action_page: @action} %>
+
+  <% if @embedded_admin_preview %>
+    <base target="_blank">
+  <% end %>
+
+
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<header class="text-header">
+  <div class="text-header__content">
+    <% if defined?(date) %>
+      <h3 class="text-header__date">
+        <%= date %>
+      </h3>
+    <% end %>
+    <% if defined?(title) %>
+      <h1 class="text-header__title">
+        <%= title %>
+      </h1>
+    <% end %>
+    <% if defined?(description) %>
+      <p class="text-header__description">
+        <%= description %>
+      </p>
+    <% end %>
+  </div>
+</header>

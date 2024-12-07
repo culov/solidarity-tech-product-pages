@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stripe_customer_id: MyString
+  stripe_card_id: MyString
+  last4: MyString
+  brand: MyString
+  dues_membership_id: 1
+  user_id: 1
+  zip_code: MyString
+  client_ip: MyString
+
+two:
+  stripe_customer_id: MyString
+  stripe_card_id: MyString
+  last4: MyString
+  brand: MyString
+  dues_membership_id: 1
+  user_id: 1
+  zip_code: MyString
+  client_ip: MyString

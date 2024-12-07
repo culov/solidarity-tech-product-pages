@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  domain_type: MyString
+  website_id: 1
+  host: MyString
+  verified: false
+
+two:
+  domain_type: MyString
+  website_id: 1
+  host: MyString
+  verified: false

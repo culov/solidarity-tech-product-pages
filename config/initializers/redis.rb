@@ -1,0 +1,1 @@
+$redis = Redis.new(host: (Rails.env == "development" ? 'localhost' : ENV["REDIS_HOST"]), port: 6379, db: 0)

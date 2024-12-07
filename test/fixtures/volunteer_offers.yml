@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  work_type: 
+  other_comment: MyText
+  best_time_to_call: MyString
+
+two:
+  user_id: 1
+  work_type: 
+  other_comment: MyText
+  best_time_to_call: MyString

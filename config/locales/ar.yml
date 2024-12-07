@@ -1,0 +1,23 @@
+ar:
+      email: بريد الالكتروني
+      full_name: الاسم الكامل
+      name: اسم
+      phone_number: رقم الهاتف
+      first_name: الاسم الأول
+      last_name: الكنية
+      password: كلمه السر
+      language: اللغة المفضلة
+      email_invalid: عنوان البريد الإلكتروني هذا غير صالح
+      six_minimum: 6 أحرف على الأقل
+      zip_code: رمز بريدي
+      zip_code_error: الرجاء إدخال رمز بريدي صالح
+      email_error: عنوان البريد الإلكتروني هذا غير صالح
+      full_name_error: من فضلك ادخل اسمك الكامل
+      language_error: الرجاء تحديد اللغة المفضلة
+      email_placeholder: your.address@gmail.com
+      did_you_mean: هل تعني؟
+      petition:
+            signature_goal: "%{goal_end} وقعوا حتى الآن ، ساعدونا في الوصول إلى %{goal_start}"
+      all:
+            signature: التوقيع
+            clear: نظف

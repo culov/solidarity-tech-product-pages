@@ -1,0 +1,22 @@
+<% 
+	@url = UrlShortener.generate("/me/membership", "membership", @user, nil, nil, 100)
+
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  	<div>
+    	<p>Hi <%= @user.real_first_name %></p>
+    </div>
+    <div>
+	    <p>
+	      <%=@user.chapter.name %> encountered an issue when charging your account for the monthly membership payment. If you believe this was due to insufficient funds in the account, the payment processor will re-attempt payment soon. If there was another issue or your card needs to be updated, please follow the link and update your account settings. 
+	    </p>
+	    <a class="btn" href="<%= @url.full_url %>">Update Account Settings</a>
+	</div>
+  </body>
+</html>

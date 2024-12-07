@@ -1,0 +1,137 @@
+:root {
+  --c-trigger-block-bg: var(--c-white);
+  --c-trigger-block-shadow-left: var(--c-white);
+  --c-trigger-block-shadow-right: var(--c-white);
+}
+
+.trigger-block {
+  background-color: var(--c-trigger-block-bg);
+}
+
+/*===== Title =====*/
+
+.trigger-block__title {
+  margin: 35px 10px 45px;
+
+  font-family: var(--ff-primary);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.16;
+  color: var(--c-black);
+  text-align: center;
+}
+
+.trigger-block__extra-title {
+  color: var(--c-violet);
+}
+
+/*===== Images =====*/
+
+.trigger-block__images-wrap {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  max-width: 100%;
+}
+
+.trigger-block__image-wrap {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  flex-shrink: 2;
+  flex-grow: 2;
+}
+
+.trigger-block__image {
+  width: 100%;
+  height: auto;
+}
+
+.trigger-block__shadow-left,
+.trigger-block__shadow-right {
+  position: absolute;
+  left: 50%;
+  z-index: -9;
+
+  width: calc(0.85 * var(--full-width));
+  height: calc(0.85 * var(--full-width));
+
+  border-radius: 50%;
+  filter: blur(48px);
+  transform: translateX(-50%);
+}
+
+.trigger-block__shadow-left {
+  top: 0;
+  background: var(--c-trigger-block-shadow-left);
+}
+
+.trigger-block__shadow-right {
+  bottom: 0;
+  background: var(--c-trigger-block-shadow-right);
+}
+
+/*===== Triggers =====*/
+
+.trigger-block__triggers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  margin: 35px 10px 90px;
+}
+
+@media screen and (min-width: 768px) {
+  .trigger-block__title {
+    max-width: 900px;
+    margin: 55px auto 50px 0;
+
+    font-size: 3.125rem;
+    text-align: left;
+  }
+
+  .trigger-block__images-wrap {
+    flex-direction: row;
+  }
+
+  .trigger-block__image-wrap {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .trigger-block__shadow-left,
+  .trigger-block__shadow-right {
+    bottom: initial;
+    left: initial;
+    top: 40px;
+
+    width: calc(0.55 * var(--full-width));
+    height: calc(0.25 * var(--full-width));
+
+    filter: blur(68px);
+    transform: none;
+  }
+  .trigger-block__shadow-left {
+    left: 20px;
+  }
+  .trigger-block__shadow-right {
+    right: 20px;
+  }
+
+  .trigger-block__triggers {
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 45px;
+  }
+}
+
+
+@media screen and (min-width: 992px) {
+  .trigger-block__triggers {
+    gap: 70px;
+  }
+}

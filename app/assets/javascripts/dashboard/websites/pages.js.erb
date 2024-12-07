@@ -1,0 +1,620 @@
+class Pages {
+	constructor() {
+		this.scope = $('*[data-st-controller="' + this.constructor.name + '"]');
+		this.addEventListeners();
+
+	}
+	addEventListeners(){
+		var self = this;
+		$(document).on("change keyup", ".multilingual-textarea[maxlength]", function(e){
+			$(this).siblings(".character_count_container").find(".counter").html($(this).val().length);
+		});
+
+		this.addCallLegislatorEventListeners();
+
+
+
+	    $(document).on("click", "#individual_responses .pagination a", function(e){
+			e.preventDefault();
+			var self = this;
+			var href = $(this).attr("href");
+			let urlParams = new URLSearchParams(href);
+
+			var url = new URL(window.location.origin+$(this).attr("href"));
+			var params = new URLSearchParams(url.search);
+			let page = params.get('page');
+
+			$(this).closest(".tab-pane").append(App.utils.spinnerHtml());
+
+			var baseUrl = $('*[data-st-controller="Pages"]').attr("data-admin-url");
+			var fullUrl = baseUrl + "/results/responses?page="+page;
+	      	$.get(fullUrl, function(resp){
+	        	$(self).closest(".tab-pane").html(resp);
+	      	});
+	    });
+
+	    
+
+	     var self = this;
+
+
+
+
+
+
+	    $(document).on("change", "#post_submission .redirect_to.select2-single", function(e){
+	    	$("#post_submission #redirect_to_content .content_container").addClass("hidden");
+	    	$("#post_submission #redirect_to_content #redirect_to_"+ $(this).val()) .removeClass("hidden")
+	    });
+
+
+	
+
+	    $(document).on("click", "#post_submission .add-redirect-rule", function(e){
+	    	e.preventDefault();
+			var template = $('#template_redirect_rule[type="text/template"]');
+	    	var newElm = $(template[0].innerHTML);
+	    	$("#post_submission #redirect-rules-container").append(newElm);
+
+	    	$("#post_submission #redirect-rules-container .select2-single.action-page-rule").select2( {
+				theme: "bootstrap",
+				allowClear: false,
+				placeholder: "Select a Page",
+				containerCssClass: ':all:',
+				width: "100%"
+			});
+
+	    });
+
+	    $(document).on("click", "#post_submission .sortable-item .edit-button-rules", function(e){
+	    	e.preventDefault();
+	    	$(this).closest("li").find("> .editor-wrapper").toggleClass("hidden");
+	    	if($(this).html().includes("Done")){$(this).html("Edit")}
+	    	else{$(this).html("Done")}
+		});
+
+
+	    $(document).on("click", "#post_submission .save-conditional", function(e){
+	    	e.preventDefault();
+	    	var rules = self.serializeRedirectionRules();
+	    	var url = $('*[data-st-controller="Pages"]').attr("data-admin-url")+"/redirect/update";
+	    	var saveButton = this;
+	    	$(this).button("loading");
+
+	    	var flashMessage = {}
+	    	flashMessage["enabled"] = $(this).closest(".content_container").find("input[name='flash_message[enabled]']:checked").length > 0;
+	    	flashMessage["title"] = $(this).closest(".content_container").find("input[name='flash_message[title]']").val();
+	    	flashMessage["subtitle"] = $(this).closest(".content_container").find("input[name='flash_message[subtitle]']").val();
+	    	flashMessage["share_icons_enabled"] = $(this).closest(".content_container").find("input[name='flash_message[share_icons_enabled]']:checked").length > 0
+
+    		$.ajax({
+			  type : "POST",
+			  url :  url,
+			  dataType: 'json',
+			  contentType: 'application/json',
+			  complete: function(resp){
+				$(saveButton).button("reset");
+				},
+			  data : JSON.stringify({type:"conditional", rules:rules, flash_message: flashMessage})
+			});
+
+	    });
+
+
+	   	$(document).on("click", "#redirect-rules-container .sortable-item .trash-button:not(.disabled)", function(e){
+            if(confirm("Are you sure you want to delete this item?")){
+                $(this).closest("li").fadeOutAndRemove("fast");
+            }
+        });
+
+
+	    $(document).on("change", "select.who-receives-message", function(e){
+			if($(this).val()=="all"){
+				$("#"+$(this).data("filter-container-id")).addClass("hidden");
+			}
+			else{
+				$("#"+$(this).data("filter-container-id")).removeClass("hidden");
+			}
+		});
+
+
+
+	    $(document).on("click", "#post_submission .show_delay_options_toggle", function(e){
+	    	e.preventDefault();
+
+	    	var delayContainer = $("#post_submission .email_delay_container");
+	    	if(delayContainer.hasClass("hidden")){
+	    		$(this).html("Hide delivery options");
+	    	}
+	    	else{
+	    		$(this).html("Show delivery options");
+	    	}
+	    	delayContainer.toggleClass("hidden");
+
+	    });
+
+
+
+
+
+
+
+	   	$(document).on("click", ".send_text_test_submit", function(e){
+	    	e.preventDefault();
+	    	var container = $(this).closest(".send_text_draft");
+	    	var phone_number = container.find(".test_phone_number").val();
+
+	    	var language = container.find("input[name='language']").val();
+
+	    	var dialCode = container.find(".test_phone_number").intlTelInput("getSelectedCountryData").dialCode;
+	      	var localNum = container.find(".test_phone_number").val().replace(/\D/g,'');
+	      	var finalPhoneNumber = dialCode+localNum;
+
+	      	var validNumber=false;
+	      	validNumber = (window.libphonenumber.isValidNumber(finalPhoneNumber, container.find(".test_phone_number").intlTelInput("getSelectedCountryData").iso2.toUpperCase()))
+
+
+	      	if(validNumber){
+
+		    	var self = this;
+		    	$(this).button("loading");
+		    	$(".phone-number--invalid").html("");
+		    	$.post("/resources/text/test/send", {phone_number: finalPhoneNumber, resource_id: container.data("resource-id"), resource_type: container.data("resource-type"), stage: container.data("stage"), language: language}, function(resp){
+		    		$(self).button("reset");
+		    		container.modal("hide");
+		    		container.find(".test_phone_number").val("")
+		    		 $.toast({
+	                      heading: 'Sent Text',
+	                      text: "Send test text to " + phone_number,
+	                      position: 'bottom-center',
+	                      stack: false
+	                  });
+		    	});
+
+			}
+			else{
+				//Inavalid number
+				$(".phone-number--invalid").html("Please enter a valid phone number")
+			}
+
+	    });
+
+
+
+	   	//Share Your Story Moderation
+	    $("#results #moderate_results .judgement.btn").click(function(e){
+            $(this).button("loading");
+            var self = this;
+            var baseUrl = $('*[data-st-controller="Pages"]').attr("data-admin-url");
+			var fullUrl = baseUrl + "/moderate";
+            $.post(fullUrl, {user_action_id: $(this).closest("tr").attr("data-user-action-id"), approve: $(this).hasClass("btn-success") },function(resp){
+                $(self).closest("tr").fadeOut();
+            })
+        })
+
+	}
+	initWavPlayer(container_selector){
+		var container = $(container_selector);
+		if(container.length > 0){
+	       	var wavesurfer = WaveSurfer.create({
+	              container: container_selector,
+	              waveColor: '#337ab7',
+	              progressColor: '#2f323e',
+	              height: 80
+	        });
+	        var rUrl = $(container_selector).attr("data-recording-url");
+	        wavesurfer.load(rUrl);
+	        $(container_selector).data("wav", wavesurfer); 
+	    }
+	}
+	initCallActionDropzone(dropzone_selector, call_action_id){
+		
+		var container = $(dropzone_selector);
+		if(container.length > 0){
+	          var previewNode = $("#file_row_template").clone();
+	          previewNode.attr("id", "").removeClass("hidden");
+	          var previewTemplate = previewNode.html();
+	          var myDropzone = new Dropzone(container.get(0), {
+	            url: "/call/actions/details/recording/upload", 
+	            init: function() {
+	                      this.on("sending", function(file, xhr, formData){
+	                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                              formData.append("authenticity_token", csrf_token);
+                              formData.append("action_id", call_action_id);
+                              formData.append("recording_type", "introduction");
+	                              
+	                      });
+	                  },
+	            parallelUploads: 1,
+	            maxFiles: 1,
+	            previewTemplate: previewTemplate,
+	            autoQueue: true, 
+	            previewsContainer: "#introduction_previews", // Define the container to display the previews
+	            clickable: "#click_to_upload_introduction_recording" // Define the element that should be used as click trigger to select files.
+	          });
+	          if(myDropzone!=null && myDropzone!=undefined){
+		          myDropzone.on("success", function(file, resp) {
+		            // location.reload(true)
+		     
+		          });
+		          // Update the total progress bar
+		          myDropzone.on("totaluploadprogress", function(progress) {
+		            document.querySelector(".progress-bar-success").style.width = progress + "%";
+		          });
+		    }
+		}
+	}
+	addCallLegislatorEventListeners(){
+
+
+
+		this.initWavPlayer("#call_legislator_details_container .introduction_recording_url")
+		var callActionId = $("#call_legislator_details_container[data-call-action-id]").data("call-action-id");
+		this.initCallActionDropzone(".introduction_recording_dropzone", callActionId)
+
+
+
+
+
+	    $(document).on("click", "#call_legislator_details_container .delete_wav", function(e){
+	      e.preventDefault();
+	      //delete wav for this and reload
+	      var wavName = $(this).attr("data-name");
+	      var wavType = $(this).attr("data-type");
+
+	      if(confirm("Are you sure you want to delete the recorded " + wavName)){
+	          $.post("/call/actions/details/recording/delete",{recording_type: wavType, action_id:callActionId}, function(resp){
+	            location.reload(true)
+	          });
+	      }
+
+	    });
+
+
+
+
+
+
+
+
+	    $(document).on("click", "#create_a_new_number_modal #lookup_phone_number_by_area_code",function(){
+	        $("#available_numbers_table").html("");
+	        var self = this;
+	        $(this).button("loading")
+	        $.post("/phone-numbers/lookup", {area_code: $("#area_code_input").val()}, function(resp){
+	          $(resp).each(function(i, num){
+	              $("#available_numbers_table").append("<tr><td class='my_number'>"+num+"</td><td><button class='btn btn-primary select_new_number'>Select</button></td></tr>" )
+	          });
+
+	          $(self).button("reset")
+	          
+	        });
+	    });
+
+	    $(document).on("click", "#create_a_new_number_modal .select_new_number", function() {
+	      $(this).button("loading")
+	      var row = $(this).closest("tr");
+	      var number = row.find(".my_number").html();
+
+	      $.post("/phone-numbers/create", {phone_number: number}, function(resp){
+	        location.reload(true);
+	      });
+
+	    });
+
+	}
+
+
+
+	initializeDefaultDraftContent(){
+
+		var self = this;
+
+		// App.utils.initTextTiny("#text_confirmation_content textarea", "250px");
+
+
+
+ 		$(document).on("change", "#post_submission .confirmation_toggle", function(e){
+
+ 			var nextValue = $(this).prop("checked");
+ 			var type = $(this).hasClass("email") ? "email" : "text";
+ 			if(type=="email"){
+ 				if(nextValue){
+ 					//Open email
+ 					$("#post_submission #email_confirmation_content").removeClass("hidden");
+ 					$(this).closest(".post_submission_section").find(".section_toggle").addClass("down");
+ 				}
+ 				else{
+ 					//Close email
+ 					$("#post_submission #email_confirmation_content").addClass("hidden");
+ 					$(this).closest(".post_submission_section").find(".section_toggle").removeClass("down");
+ 				}
+ 			}
+ 			else{
+ 				if(nextValue){
+ 					$("#post_submission #text_confirmation_content").removeClass("hidden");
+ 					$(this).closest(".post_submission_section").find(".section_toggle").addClass("down");
+ 				}
+ 				else{
+ 					$("#post_submission #text_confirmation_content").addClass("hidden");
+ 					$(this).closest(".post_submission_section").find(".section_toggle").removeClass("down");
+ 				}
+ 			}
+ 			
+ 			
+
+ 			var url = $('*[data-st-controller="Pages"]').attr("data-admin-url")+"/confirmation/update";
+ 
+ 			$.post(url, {type: type, enabled: nextValue}, function(resp){
+ 				$.toast({text: (App.utils.titlecase(type) + " confirmations have been " + (nextValue ? "enabled" : "disabled")),  position: 'bottom-center', stack: false});
+ 			});
+
+ 		});
+
+ 		$(document).off("click", "#post_submission .section_toggle", this.sectionToggleClick);
+ 		$(document).on("click", "#post_submission .section_toggle", this.sectionToggleClick);
+
+
+
+ 		$(".preview_window iframe, iframe.preview-form-iframe").on("load", function(e){
+ 			// alert("remove spinner")
+	    	$(this).siblings(".spinner").addClass("hidden");
+	    	$(this).removeClass("hidden");
+	    });
+	    $(document).on("ajax:success", ".default_follow_up_form.redirect_form", function(e){
+	    	self.refreshIframe("#post_submission .default_follow_up_form .preview_window iframe");
+	    });
+
+	    $(document).on("ajax:success", "#email_confirmation_content .confirmation_email", function(e){
+	    	self.refreshIframe("#post_submission #email_confirmation_content .preview_window iframe");
+	    });
+	    $(document).on("click", "#redirect_to_content .draft_content a.language, #confirmation_email .draft_content a.language", function(e){
+			var language = $(this).data("language");
+			var iframe = $(this).closest(".draft_content").find(".preview_window iframe")[0];
+			self.updateIframeLanguage(iframe, language);
+		});
+
+
+	   	$(document).on("click", ".attachment_toolbar .remove", function(e){
+	   		var textarea = $(this).closest(".attachment_toolbar").siblings("textarea");
+	   		var val = $(this).closest(".tag").find("input").val();
+	   		var editor = tinyMCE.editors[$(textarea).attr("id")];
+	   		App.utils.removeFileFromToolbar(val, textarea);
+	   		
+	   		$(this).closest(".tag").remove();
+	   		if(val=="vcard"){
+	   			App.utils.togglevCardAndUpdateTextareaAttachments(textarea);
+	   			App.utils.setVcardContextItemChecked(editor, false);
+	   			editor.refreshTextPreview();
+	   			
+	   		}
+	   		else{
+	   			$.post("/file/upload/delete",{resource_type:"ActionPage", resource_id: $("[data-action-page-id]").attr("data-action-page-id"), url: val, "type":editor.editor_type},function(){
+	   				if(editor.editor_type == "text"){editor.refreshTextPreview();}
+	   			})
+	   		}
+	   	});
+
+
+	   	$(document).on("click", "#text_confirmation_content .save_text_confirmation_button", function(e){
+	   		e.preventDefault();
+	   		var self = this;
+	   		var params = {content:{}, attachments:{}};//$(this).closest("#confirmation_text").serializeNestedHash();
+	   		var textContainer = $(this).closest("#text_confirmation_content")
+	   		var textareas = textContainer.find(".editor_window textarea");
+
+	   		$.each(textareas, function(i,elm){
+	   			var tabHidden = !$(elm).closest(".tab-pane").hasClass("active");
+
+	   			var plainText = null;
+	   			// TinyMCE .getContent issue when field is hidden. Must show
+	   			if(tabHidden){
+	   				$(elm).closest(".tab-pane").addClass("active");
+	   				plainText = tinyMCE.editors[$(elm).attr("id")].getContent({ format: 'text' });
+	   				$(elm).closest(".tab-pane").removeClass("active");
+	   			}
+	   			else{
+	   				plainText = tinyMCE.editors[$(elm).attr("id")].getContent({ format: 'text' });
+	   			}
+	   			// console.log(plainText)
+	   			params["content"][$(elm).closest("div[data-language]").data("language")] = plainText;
+	   		});
+
+	   		var attachments = $(this).closest("#text_confirmation_content").find(".editor_window .attachment_toolbar input");
+	   		console.log("attachments:::", attachments)
+	   		$.each(attachments, function(i,elm){
+	   			var theseAttachments = params["attachments"][$(elm).closest("div[data-language]").data("language")];
+	   			if(theseAttachments==null || theseAttachments==undefined){theseAttachments=[];}
+	   			theseAttachments.push($(elm).val())
+	   			params["attachments"][$(elm).closest("div[data-language]").data("language")] = theseAttachments;
+	   			
+	   		});
+
+	   		params["delay_number"] = textContainer.find(".delay_number").val(); 
+	   		params["delay_interval"] = textContainer.find(".delay_interval").val(); 
+	   		params["send_within_texting_hours"] = textContainer.find(".send_within_texting_hours").prop("checked");
+	   		params["who_receives_message"] = textContainer.find("select[name='who_receives_message']").val();
+
+	   		try{
+	   			var validJson = JSON.parse(textContainer.find("input[name='who_receives_message_filter']").val());
+	   			params["who_receives_message_filter"] = textContainer.find("input[name='who_receives_message_filter']").val();
+	   		}
+	   		catch(e){
+	   			params["who_receives_message_filter"] = "{}";
+	   		}
+
+	   		$(self).button("loading");
+
+			var fullUrl = $('*[data-st-controller="Pages"]').attr("data-admin-url")+"/confirmation/text/update";
+	   		$.post(fullUrl, params,function(resp){
+	   			$(self).button("reset");
+	   		});
+	   		// return false;
+
+	   	});
+
+
+
+  
+ 		
+
+	}
+
+	sectionToggleClick(e){
+		// console.log("section toggle")
+		var nextStatusHidden = $(this).hasClass("down")
+		$(this).toggleClass("down");
+		if($(this).closest(".redirect_to_section").length > 0){
+			$("#post_submission #redirect_to_content").toggleClass("hidden");
+		}
+		else if($(this).closest(".text_confirmation_section").length > 0){
+			$("#post_submission #text_confirmation_content").toggleClass("hidden");
+			 	var textareas = $("#post_submission #text_confirmation_content .tab-pane.active textarea");
+				$.each(textareas, function(i,elm){
+					setTimeout(tinyMCE.editors[$(elm).attr("id")].refreshTextPreview, 50);
+				});
+
+		}
+		else if($(this).closest(".email_confirmation_section").length > 0){
+			$("#post_submission #email_confirmation_content").toggleClass("hidden");
+		}
+	}
+
+	refreshIframe(selector){
+		var iframe = $(selector);
+		//Add Spinner, hide iFrame
+		iframe.siblings(".spinner").removeClass("hidden");
+		iframe.addClass("hidden");
+		var iframeElm = iframe[0];
+		iframeElm.src += '';
+	}
+	updateIframeLanguage(iframe, language){
+		///Add Spinner, hide iFrame
+		$(iframe).siblings(".spinner").removeClass("hidden");
+		$(iframe).addClass("hidden");
+		var newUrl = App.utils.updateURLParameter(iframe.src, "language", language)
+		$(iframe).attr("src", newUrl)
+	}
+
+	refreshFormIframePreview(){
+		var previewForm = document.getElementById('preview-form');
+		$(previewForm).siblings(".spinner").removeClass("hidden");
+	    $(previewForm).addClass("hidden")
+		document.getElementById('preview-form').src += '';
+	}
+
+
+	constructPage() {
+		var self = this;
+
+
+
+		$.fn.select2.amd.require(['select2/selection/search'], function (Search) {
+	   		var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+	    
+		    Search.prototype.searchRemoveChoice = function () {
+		        oldRemoveChoice.apply(this, arguments);
+		        this.$search.val('');
+		    };
+		    // alert("hi")
+			self.scope.find( ".select2-multiple.preferred_language" ).select2( {
+				theme: "bootstrap",
+				allowClear: false,
+				dontAllowItemsWithIdsToClear:["en"],
+				placeholder: "Filter by preferred language",
+				containerCssClass: ':all:',
+				width: "100%"
+
+			} );
+
+		});
+
+
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const publishPage = urlParams.get('publish_page')
+		if(publishPage=='true'){
+			$('a[href="#post_submission"]').click();
+		}
+
+
+
+		// console.log("construct page pages")
+        var tar = $(".default_follow_up_content_container textarea").get(0)
+
+        if($(tar).closest(".draft_content").find(".editor_window").length > 0){
+        	Split([ $(tar).closest(".draft_content").find(".editor_window")[0], $(tar).closest(".draft_content").find(".preview_window")[0]], {
+                gutterSize: 15
+        	});
+        }
+
+        $(tar).closest(".draft_content").find(".preview-toggle-button").on("click", function(e) {
+            $(this).siblings(".preview-toggle-button").removeClass("active");
+            $(this).addClass("active");
+            if ($(this).hasClass("mobile-preview")) {
+                $(this).closest(".draft_content").find(".preview_window iframe").addClass("mobile-preview");
+            } else {
+                $(this).closest(".draft_content").find(".preview_window iframe").removeClass("mobile-preview");
+            }
+        });
+
+
+
+		$("#post_submission #redirect-rules-container .select2-single.action-page-rule").select2( {
+				theme: "bootstrap",
+				allowClear: false,
+				placeholder: "Select a Page",
+				containerCssClass: ':all:',
+				width: "100%"
+		});
+
+		$("#show_user_filter_rule .select2-single, #show_user_filter_rule .select2-multiple").select2( {
+				theme: "bootstrap",
+				allowClear: false,
+				containerCssClass: ':all:',
+				width: "100%"
+		});
+
+		$('*[data-st-controller="Pages"] .select2-multiple.legislatures').select2( {
+				theme: "bootstrap",
+				allowClear: false,
+				containerCssClass: ':all:',
+				width: "100%"
+		});
+
+
+
+
+		$(".multilingual-textarea[maxlength]").trigger("change");
+
+		sortable('.sortable-options-main', { forcePlaceholderSize: true, handle: '.grippy'});
+		sortable('.sortable-form',{ forcePlaceholderSize: true,  acceptFrom: '.sortable-form-subform, .sortable-form', handle: '.grippy'});
+		sortable('.sortable-form-subform', {forcePlaceholderSize: true,  acceptFrom: '.sortable-form, .sortable-form-subform', handle: '.grippy'});
+		sortable('.sortable-form-multipage-subform', { forcePlaceholderSize: true, handle: '.grippy'});
+
+
+		//commented this out to eliminate issue where conditional value field is resetting
+		// $(".editor-wrapper .show_when_field_name[data-validate='true']").trigger("change");
+
+
+		this.initializeDefaultDraftContent();
+
+
+
+	}
+
+
+	serializeRedirectionRules(){
+		return $.map($("ul#redirect-rules-container > li"), function(elm,i){
+			return 	{	
+						"action_page_id": $(elm).find(".action-page-rule").val(), 
+						"target_parameters": $(elm).find("a[data-user-filter-parameters]").data("user-filter-parameters") 
+					}
+		})
+	}
+
+
+}
+
+
+

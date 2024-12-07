@@ -1,0 +1,30 @@
+<section class="wrap beveled trigger-block-v" style="
+  --c-trigger-block-v-bg: <%= colors[:background] %>;
+  --c-trigger-block-v-shadow: <%= colors[:shadow] %>;
+  --c-text: <%= colors[:text] %>;
+  --c-trigger-text: <%= colors[:text] %>;
+">
+    <div class="content trigger-block-v__content">
+        <h2 class="trigger-block-v__title">
+            <%= title %>
+            <% if extra_title %>
+                <span class="trigger-block-v__extra-title"> <%= extra_title %></span>
+            <% end %>
+        </h2>
+        <div class="trigger-block-v__sides">
+            <div class="trigger-block-v__image-wrap">
+                <%= render template: 'marketing/common/image', :locals => {
+                  :image => image[:src],
+                  :className => 'trigger-block-v__image',
+                } %>
+                <div class="trigger-block-v__shadow"></div>
+            </div>
+
+            <div class="trigger-block-v__triggers">
+                <% triggers.each do |trigger| %>
+                    <%= render template: 'marketing/common/trigger', :locals => trigger %>
+                <%  end %>
+            </div>
+        </div>
+    </div>
+</section>

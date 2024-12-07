@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  message_resource_id: 1
+  message_resource_type: MyString
+  user_id: 1
+  url: MyString
+
+two:
+  message_resource_id: 1
+  message_resource_type: MyString
+  user_id: 1
+  url: MyString

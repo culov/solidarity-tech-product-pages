@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  question: MyString
+  choice_a: MyString
+  choice_b: MyString
+  choice_c: MyString
+  choice_d: MyString
+  choice_e: MyString
+  follow_up_response: MyText
+  chatbot_id: 1
+  delivery_method: MyString
+  user_id: 1
+
+two:
+  title: MyString
+  question: MyString
+  choice_a: MyString
+  choice_b: MyString
+  choice_c: MyString
+  choice_d: MyString
+  choice_e: MyString
+  follow_up_response: MyText
+  chatbot_id: 1
+  delivery_method: MyString
+  user_id: 1

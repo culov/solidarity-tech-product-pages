@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  root_organization_id: 1
+  branded_calling_trust_product_sid: 1
+  branded_calling_end_user_sid: MyString
+  display_name: MyString
+  long_display_name: MyString
+  status: MyString
+  user_id: 1
+  brand_registration_id: 1
+
+two:
+  root_organization_id: 1
+  branded_calling_trust_product_sid: 1
+  branded_calling_end_user_sid: MyString
+  display_name: MyString
+  long_display_name: MyString
+  status: MyString
+  user_id: 1
+  brand_registration_id: 1

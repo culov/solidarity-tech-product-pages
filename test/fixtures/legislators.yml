@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  legislative_district_id: 1
+  district_phone: MyString
+  capitol_phone: MyString
+
+two:
+  name: MyString
+  legislative_district_id: 1
+  district_phone: MyString
+  capitol_phone: MyString

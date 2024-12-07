@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hash_id: MyString
+  user_filter_id: 1
+  target_parameters: 
+  subject: MyText
+  content: MyText
+  from_name: MyString
+  ahoy_message_id: 1
+
+two:
+  hash_id: MyString
+  user_filter_id: 1
+  target_parameters: 
+  subject: MyText
+  content: MyText
+  from_name: MyString
+  ahoy_message_id: 1

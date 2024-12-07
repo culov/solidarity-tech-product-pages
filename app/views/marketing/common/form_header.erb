@@ -1,0 +1,9 @@
+<header class="wrap header  <%= defined?(is_light) ? 'header--light' : '' %>">
+    <div class="content header__content">
+        <%= render template: 'marketing/components/logotype', locals: {no_header_links: (defined?(no_header_links) ? no_header_links : false)} %>
+        <% if !defined?(no_header_links) || no_header_links == false %>
+            <%= render template: 'marketing/common/menu_button' %>
+            <%= render template: 'marketing/common/sub_menu' %>
+        <% end %>
+    </div>
+</header>

@@ -1,0 +1,53 @@
+.mail-confirm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+  min-height: calc(100vh - 180px);
+  padding: 90px 0;
+  box-sizing: border-box
+}
+
+.mail-confirm .mail-icon {
+  margin-bottom: 12px;
+}
+
+.mail-confirm .text-button {
+  margin-top: 24px;
+}
+
+.mail-confirm__title {
+  margin: 0;
+
+  font-family: var(--ff-secondary);
+  font-weight: 600;
+  font-size: 1.875rem;
+  line-height: 1.2;
+  color: var(--c-text-black);
+  text-align: center;
+}
+
+.mail-confirm__text {
+  margin: 0;
+
+  font-family: var(--ff-secondary);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--c-grey-600);
+  text-align: center;
+}
+
+.mail-confirm__text--no-wrap {
+  white-space: nowrap;
+}
+
+.mail-confirm__text a {
+  color: var(--c-grey-600);
+  text-decoration: none;
+}
+.mail-confirm__text a:hover {
+  text-decoration: underline;
+}

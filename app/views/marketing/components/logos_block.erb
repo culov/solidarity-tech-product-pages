@@ -1,0 +1,15 @@
+<section class="wrap beveled logos-block">
+  <div class="content logos-block__content">
+    <h2 class="logos-block__title"><%= title %></h2>
+    <div class="logos-block__list">
+      <% logos.each do |logo| %>
+        <div class="logos-block__logo-wrap">
+          <%= render template: 'marketing/common/image', :locals => {
+            :image => logo,
+            :className => 'logos-block__logo',
+          } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shift_started_at: 2018-06-30 19:20:13
+  shift_ended_at: 2018-06-30 19:20:13
+  user_id: 1
+  chapter_id: 1
+
+two:
+  shift_started_at: 2018-06-30 19:20:13
+  shift_ended_at: 2018-06-30 19:20:13
+  user_id: 1
+  chapter_id: 1

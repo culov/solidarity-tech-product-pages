@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  legislature_ids: 1
+  image_url: MyString
+  content: MyText
+  chapter_id: 1
+  url: MyString
+
+two:
+  title: MyString
+  legislature_ids: 1
+  image_url: MyString
+  content: MyText
+  chapter_id: 1
+  url: MyString

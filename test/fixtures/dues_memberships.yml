@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stripe_customer_id: MyString
+  user_id: 1
+  expires_at: 2018-07-11 14:00:46
+  next_billing_time: 2018-07-11 14:00:46
+  active: false
+
+two:
+  stripe_customer_id: MyString
+  user_id: 1
+  expires_at: 2018-07-11 14:00:46
+  next_billing_time: 2018-07-11 14:00:46
+  active: false

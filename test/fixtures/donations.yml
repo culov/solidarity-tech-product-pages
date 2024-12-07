@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stripe_subscription_id: MyString
+  stripe_customer_id: MyString
+  user_id: 1
+  recurring: false
+  active: false
+  chapter_id: 1
+  amount: 1.5
+  currency: MyString
+
+two:
+  stripe_subscription_id: MyString
+  stripe_customer_id: MyString
+  user_id: 1
+  recurring: false
+  active: false
+  chapter_id: 1
+  amount: 1.5
+  currency: MyString

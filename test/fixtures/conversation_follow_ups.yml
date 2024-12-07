@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  agent_id: 1
+  conversation_id: 1
+  user_id: 1
+  cleared: false
+
+two:
+  agent_id: 1
+  conversation_id: 1
+  user_id: 1
+  cleared: false

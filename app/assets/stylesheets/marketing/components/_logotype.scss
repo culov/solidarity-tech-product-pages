@@ -1,0 +1,34 @@
+.logotype {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 4px;
+
+  text-decoration: none;
+}
+
+.logotype__icon {
+  width: 32px;
+  height: 28px;
+
+  fill: var(--c-main);
+}
+
+.logotype__text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--c-main);
+  font-family: var(--ff-primary);
+  line-height: 1.222;
+}
+
+@media screen and (min-width: 768px) {
+  .logotype__icon {
+    width: 42px;
+    height: 36px;
+  }
+
+  .logotype__text {
+    font-size: 1.5rem;
+  }
+}

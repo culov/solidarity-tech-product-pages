@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account_data: 
+  code: MyString
+  scope_id: 1
+  scope_type: MyString
+  access_token: MyText
+  access_token_expires_at: 2021-05-10 15:01:32
+  refresh_token: MyText
+
+two:
+  account_data: 
+  code: MyString
+  scope_id: 1
+  scope_type: MyString
+  access_token: MyText
+  access_token_expires_at: 2021-05-10 15:01:32
+  refresh_token: MyText

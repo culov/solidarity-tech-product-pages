@@ -1,0 +1,15 @@
+<div class="
+  info-block
+  <%= defined?(success) ? 'info-block--success' : '' %>
+  <%= defined?(error) ? 'info-block--error' : ''%>
+">
+  <div class="info-block__icon-wrap">
+    <%= render template: 'marketing/common/icon', :locals => {
+      iconName: 'ui_info_circle',
+      iconClass: 'info-block__icon'
+    }  %>
+  </div>
+  <p class="info-block__text">
+    <%= text.html_safe %>
+  </p>
+</div>

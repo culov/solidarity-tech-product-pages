@@ -1,0 +1,123 @@
+zh:
+      email: 电子邮件
+      full_name: 全名
+      name: 姓名
+      phone_number: 电话
+      first_name: 名
+      last_name: 姓
+      password: 密码
+      language: 首选语言
+      email_invalid: 该电子邮件地址无效
+      six_minimum: 最少 6 个字符
+      zip_code: 邮政编码
+      zip_code_error: 请输入有效的 5 位数邮政编码
+      email_error: 该电子邮件地址无效
+      full_name_error: 请输入您的全名
+      language_error: 请选择首选语言
+      email_placeholder: your.address@gmail.com
+      did_you_mean: 你的意思是?
+      petition:
+            signature_goal: "<strong>%{goal_start} have signed so far</strong>, help us get to %{goal_end}"
+      all:
+            signature: Signature
+            clear: Clear
+      account:
+            join:
+                  title: We're LA rideshare drivers uniting for fair treatment & higher pay
+                  subtitle: Our drivers association is independent, democratic & driver-led. Tell us what you're ready to fight for.
+                  join_us: Join us to build driver power and win
+                  submit: Submit
+                  join_in: Join In
+                  join_us: Join Us
+            complete:
+                  title: Almost finished!
+                  subtitle: Finish this last step to become a member of {{navbar_name}}
+                  ally_subtitle: ""
+                  driver_questions: "Driver Questions"
+                  driver_frequency: How often do you drive rideshare?
+                  ally_questions: Community Supporter Questions
+                  ally_what_to_change: What do you want to change about the rideshare industry?
+                  ally_1: Fairness and representation for drivers
+                  ally_2: Emission standards for vehicles
+                  ally_3: Rideshare vehicle cap to cut pollution
+                  ally_4: Open rideshare data for traffic reduction
+                  full_time: "full-time (30+ hours per week)"
+                  part_time: "part-time (10-29 hours per week)"
+                  occasional: "occasionally (0-9 hours per week)"
+                  what_companies: What companies do you work for?
+                  email: Email
+                  name: Name
+                  phone_number: 电话
+                  first_name: First Name
+                  last_name: Last Name
+                  password: Password
+                  language: Preferred Language
+                  i_am_a: I am a...
+                  email_invalid: That email address is invalid
+                  six_minimum: Minimum of 6 characters
+                  zip_code: Zip code
+                  did_you_mean: Did you mean?
+            demands:
+                  dont_support: Don't Support
+                  almost_support: Almost Suport
+                  support: Support
+                  fully_support: Fully Support
+                  strongly_support: Strongly Support
+                  header_title: We're {{city}} rideshare drivers uniting for fair treatment & higher pay
+                  header_subtitle: Our association is democratic & driver-led. Tell us what you're ready to fight for.
+                  call_to_action_title: Join us to build driver power and win
+                  mobile_phone_number: Mobile Phone Number
+                  zip_code: Zip Code
+                  voting_title: You decide what issues we prioritize.
+                  voting_subtitle: Tell us what you're ready to fight for.
+                  voting_suggestion: "Optional: Suggest a new demand"
+                  sort_top_demands: Sort the changes most important to you
+                  touch_to_drag: Touch and drag to sort your top
+                  demands: demands
+                  continue: Continue
+            schedule_call:
+                  set_up_a_call: Set up a quick call to get started
+                  select_time: Select a time for one of our organizers to call you
+                  select_a_day: Select a Day
+                  call_language: Call Language
+            action:
+                  email_your_legislator: Email Your Legislator!
+                  send_email: Send Email
+                  send_me_texts: Send me text messages about this campaign
+                  i_am_a: I am a...
+                  full_name: Full Name
+      uber_opt_out:
+            title: 不要让优步公司夺走本属于你的权利
+            content_html:  <p>优步公司最新发布的服务。协。议包含了一项条款，该项条款剥夺了你今后向法院提出申诉的权利 ，司机在接受了含该条款的服务协议30天后，你的权利就会被剥</p><p>也就是说今后如果你和Uber产生相关法律纠纷，你就不可以再起诉它。该服务条款使得阅读，理解困难。为维护司机合法权益，RDU（网约司机维权团结会）利用这个权利回复条款，使你重新获得权利。为维护你合法权利不被剥夺，请填写下列表格，否则优步公司会认为您同意放弃上述权利。</p>
+            registered: 我是优步注册司机
+            form_note_html: <p>为保护你的合法权利不被剥夺请填入你在优步绑定的姓名，电话，电邮和地区邮编</p>
+            receive_texts: 我希望或不希望今后收到RDU的有关信息，通知和新闻发布等短信
+            cc_me: CC me on opt-out email to Uber.
+            prepare_email: Prepare Opt-Out Email
+            zip_code: 邮编号
+            email: 电子邮箱
+            did_you_mean: Did you mean?
+            full_name: 姓名
+            city_of_residence: 所在城市
+            you_must_use: You must use one of the two methods to send this email from the email address you used to register with Uber
+            method_1: Method 1
+            method_2: Method 2
+            method_1_instructions: Copy and paste the email below and send it to optout@uber.com, from the email account Uber has on record for you.
+            you_must_send_from: You must send this from
+            method_2_instructions: Easy, but only use this method if your default email client is connected with 
+            open_and_send: Open in Email Client & Send
+            ask_your_friends: Ask your friends to take action too!
+
+      mailer:
+            invitation:
+                  hi: Hi
+                  you_scheduled_a_call: You've scheduled a call with an organizer from Rideshare Drivers United. We'll text you a reminder before the call, and call you at the time you selected.
+                  short_call: 15 Minute Meeting
+                  event_type: Event Type
+                  visit_here_to: Visit here to
+                  reschedule_or_cancel: Re-schedule the call
+                  event_date_time: Event Date/Time
+                  reminder: Reminder
+                  tomorrow_at: Tomorrow at
+                  organizer_will_call: an organizer from Rideshare Drivers United will call you for a brief introduction chat
+

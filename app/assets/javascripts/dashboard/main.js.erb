@@ -1,0 +1,2321 @@
+App = App || {};
+App.controllers = App.controllers || {};
+
+App.utils = App.utils || {
+	initializeCurrentPage: function() {
+		var controllerName = $("*[data-st-controller]").attr("data-st-controller");
+		if (App.controllers[controllerName] != undefined) {
+			App.controllers[controllerName].constructPage();
+		}
+	},
+	validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
+	},
+	validAreaCodes(){
+		return <%= VALID_US_AREA_CODES %>
+	},
+	decodeEntities(encodedString) {
+	    var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+	    var translate = {
+	        "nbsp":" ",
+	        "amp" : "&",
+	        "quot": "\"",
+	        "lt"  : "<",
+	        "gt"  : ">"
+	    };
+	    return encodedString.replace(translate_re, function(match, entity) {
+	        return translate[entity];
+	    }).replace(/&#(\d+);/gi, function(match, numStr) {
+	        var num = parseInt(numStr, 10);
+	        return String.fromCharCode(num);
+	    });
+	},
+	longestCommonString(arr1) {
+		var arr = arr1.concat().sort(),
+			a1 = arr[0],
+			a2 = arr[arr.length - 1],
+			L = a1.length,
+			i = 0;
+		while (i < L && a1.charAt(i) === a2.charAt(i)) i++;
+		return a1.substring(0, i);
+	},
+	spinnerHtml(){
+		return '<div class="rp_spinner"><div class="fa fa-circle-o-notch r fa-spin"></div></div>';
+	},
+	htmlToText(html){
+
+			if(App.utils.isEmptyOrSpaces(html)){return "";}
+				return $('<textarea />').html( 
+        				html
+        					.replaceAll(/<p\s*><br\s*(data-mce-bogus="1")*\/*><\/p\s*>/ig, "\n\n")
+        					.replaceAll(/<br\s*(data-mce-bogus="1")*\/*>/ig, "\n")
+        					.replaceAll("<p>&nbsp;</p>\n", "\n")
+        					.replaceAll("<p>&nbsp;</p>", "\n")
+        					.replaceAll(/<\/p\s*>\n/ig, "\n")
+        					.replaceAll(/\uFFFF/ig, "")
+        					.replaceAll(/<\/p\s*>$/ig, "")
+        					.replaceAll(/\u00A0/ig, "")
+        					.replaceAll(/\u2019/ig, "'")
+        					.replaceAll(/<\/p\s*>/ig, "\n")
+        					.replaceAll(/<\s*p\s*>/ig, "")
+        			).text();
+	},
+	saveChartDataAsCsv () {
+	    var a = document.createElement("a");
+	    document.body.appendChild(a);
+	    a.style = "display: none";
+
+	    return function (data, fileName) {
+	    	 // console.log("data:", data)
+	        // var json = JSON.stringify(data),
+	        data.unshift(["Date", "Value"]);
+	            blob = new Blob([data.join("\n")], {type: "data:text/csv;charset=utf-8,"}),
+	            url = window.URL.createObjectURL(blob);
+	        a.href = url;
+	        a.download = fileName;
+	        a.click();
+	        window.URL.revokeObjectURL(url);
+	    };
+	},
+	saveChartDataAsPng (chartId, fileName) {
+
+	    var originalCanvas = Chartkick.charts[chartId].chart.canvas; // Get the original canvas
+	    var originalContext = originalCanvas.getContext('2d');
+	    
+	    // Create a new canvas element
+	    var newCanvas = document.createElement('canvas');
+	    newCanvas.width = originalCanvas.width;
+	    newCanvas.height = originalCanvas.height;
+	    var newContext = newCanvas.getContext('2d');
+	    
+	    // Draw a white background on the new canvas
+	    newContext.fillStyle = '#FFFFFF'; // White background
+	    newContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
+	    
+	    // Draw the original chart onto the new canvas
+	    newContext.drawImage(originalCanvas, 0, 0);
+	    
+	    // Export the new canvas as PNG
+	    var imageDataURL = newCanvas.toDataURL('image/png');
+	    
+	    var a = document.createElement("a");
+	    document.body.appendChild(a);
+	    a.style = "display: none";
+	    a.href = imageDataURL;
+	    a.download = fileName;
+	    a.click();
+	    
+	    // Clean up
+	    document.body.removeChild(a);
+	    
+	},
+	smartEncode(message) {
+		const replacements = {
+		  '«': '"', '»': '"', '“': '"', '”': '"', 'ʺ': '"', 'ˮ': '"', '‟': '"',
+		  '❝': '"', '❞': '"', '〝': '"', '〞': '"', '＂': '"', '‘': "'", '’': "'",
+		  'ʻ': "'", 'ˈ': "'", 'ʼ': "'", 'ʽ': "'", 'ʹ': "'", '‛': "'", '＇': "'",
+		  '´': "'", 'ˊ': "'", '`': "'", 'ˋ': "'", '❛': "'", '❜': "'", '̓': "'",
+		  '̔': "'", '︐': ",", '︑': ",", '÷': "/", '¼': "1/4", '½': "1/2",
+		  '¾': "3/4", '⧸': "/", '̷': "/", '̸': "/", '⁄': "/", '∕': "/", '／': "/",
+		  '⧹': "\\", '⧵': "\\", '⃥': "\\", '﹨': "\\", '＼': "\\", '̲': "_",
+		  '＿': "_", '⃒': "|", '⃓': "|", '∣': "|", '｜': "|", '⎸': "|",
+		  '⎹': "|", '⏐': "|", '⎜': "|", '⎟': "|", '⎼': "-", '⎽': "-",
+		  '―': "-", '﹣': "-", '－': "-", '‐': "-", '–': "-", '—': "-",
+		  '•': "-", '⁃': "-", '﹫': "@", '＠': "@", '﹩': "$", '＄': "$",
+		  'ǃ': "!", '︕': "!", '﹗': "!", '！': "!", '﹟': "#", '＃': "#",
+		  '﹪': "%", '％': "%", '﹠': "&", '＆': "&", '‚': ",", '̦': ",",
+		  '﹐': ",", '、': ",", '﹑': ",", '，': ",", '､': ",", '❨': "(",
+		  '❪': "(", '﹙': "(", '（': "(", '⟮': "(", '⦅': "(", '❩': ")",
+		  '❫': ")", '﹚': ")", '）': ")", '⟯': ")", '⦆': ")", '⁎': "*",
+		  '∗': "*", '⊛': "*", '✢': "*", '✣': "*", '✤': "*", '✥': "*",
+		  '✱': "*", '✲': "*", '✳': "*", '✺': "*", '✻': "*", '✼': "*",
+		  '✽': "*", '❃': "*", '❉': "*", '❊': "*", '❋': "*", '⧆': "*",
+		  '﹡': "*", '＊': "*", '˖': "+", '﹢': "+", '＋': "+", '。': ".",
+		  '﹒': ".", '．': ".", '｡': ".", '０': "0", '１': "1", '２': "2",
+		  '３': "3", '４': "4", '５': "5", '６': "6", '７': "7", '８': "8",
+		  '９': "9", 'ː': ":", '˸': ":", '⦂': ":", '꞉': ":", '︓': ":",
+		  '：': ":", '⁏': ";", '︔': ";", '﹔': ";", '；': ";", '﹤': "<",
+		  '＜': "<", '͇': "=", '꞊': "=", '﹦': "=", '＝': "=", '﹥': ">",
+		  '＞': ">", '︖': "?", '﹖': "?", '？': "?"
+		};
+
+
+
+	  for (const [key, value] of Object.entries(replacements)) {
+	    const regex = new RegExp(key, 'g');
+	    message = message.replace(regex, value);
+	  }
+
+	  return message;
+	},
+	formatUser (user) {
+	  if (user.loading) {
+	    return user.text;
+	  }
+	  var $container = $(
+	    "<div class='select2-result-user-row clearfix'>" +
+	      "<div class='select2-result-repository__title'><span class='full_name'>"+user.name+"</span> <span class='username'>("+user.username+")</span></div>" +
+	    "</div>"
+	  );
+
+	  return $container || user.text;
+	},
+	liquidEngine: new liquidjs.Liquid(),
+	formatScopeResult (scope) {
+
+		if(scope.element && scope.element.nodeName == "OPTGROUP"){
+			return scope.element.label
+		}
+		var scopeData = $(scope.element).data("scope");
+		if (scope.loading) {
+			return scope.text;
+		}
+
+		if(scopeData == null || scopeData.image_url == null){
+			return scope.text;
+		}	
+		var $container = $(
+		`<div class="select2-list-group-item">
+			<div class="d-flex flex-direction-row align-items-center justify-content-between">
+				<div class="d-flex flex-direction-row align-items-center">
+					<img class="list-group-item--avatar" src="${scopeData.image_url}">
+					<div>
+						<div class="list-group-item--title">
+							${scopeData.title}
+						</div>
+						<div class="list-group-item--subtitle">
+							${scopeData.subtitle}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>`
+		);
+
+		return $container || scope.text;
+	},
+	formatUserAssessmentResult (assessment) {
+		var assessmentData = $(assessment.element).data("assessment");
+		// console.log("assessmentData:", assessmentData)
+	  if (assessment.loading) {
+	    return assessment.text;
+	  }
+	  if(assessment.element && assessment.element.value=="no-assessment" && $(assessment.element).closest("select").val()=="" ){
+	  	return null;
+	  }
+	  
+	  var $container = $(
+
+	    `<div class="select2-list-group-item">
+			<div class="d-flex flex-direction-row align-items-center justify-content-between">
+				<div class="d-flex flex-direction-row align-items-center">
+					<div class="list-group-item--dot" style="background: ${assessmentData.color}"></div>
+					<div>
+						<div class="list-group-item--title">
+							${assessmentData.label}
+						</div>
+						<div class="list-group-item--subtitle">
+							${assessmentData.description}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>`
+	  );
+
+	  return $container || assessment.text;
+	},
+	formatUserAssessmentSelection (assessment) {
+		
+		if (!assessment.element) {
+			return assessment.text;
+		}
+		var assessmentData = $(assessment.element).data("assessment");
+
+		var $container = $(
+
+		`<div class="select2-list-group-item">
+			<div class="d-flex flex-direction-row align-items-center justify-content-between">
+				<div class="d-flex flex-direction-row align-items-center">
+					<div class="list-group-item--dot" style="background: ${assessmentData.color}"></div>
+					<div>
+						<div class="list-group-item--selected-title">
+							${assessmentData.label}
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>`
+		);
+
+		return $container || assessment.text;
+	},
+
+	formatUserFull (user) {
+	  if (user.loading) {
+	    return user.text;
+	  }
+	  var $container = $(
+
+	    `<div class="select2-list-group-item">
+			<div class="d-flex flex-direction-row align-items-center justify-content-between">
+				<div class="d-flex flex-direction-row align-items-center">
+					<img class="list-group-item--avatar" src="${user.avatar_url}" style="${user.css}">
+					<div>
+						<div class="list-group-item--title">
+							${user.name}
+						</div>
+						<div class="list-group-item--subtitle">
+							${user.phone_number_or_email ? user.phone_number_or_email : "No contact info"}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>`
+	  );
+
+	  return $container || user.text;
+	},
+	formatUserSelection (user) {
+	  return user.name || user.text;
+	},
+	numberRange (start, end) {
+	  return new Array(end - start + 1).fill().map((d, i) => i + start);
+	},
+	pSBC(p,c0,c1,l) {
+	    let r,g,b,P,f,t,h,i=parseInt,m=Math.round,a=typeof(c1)=="string";
+	    if(typeof(p)!="number"||p<-1||p>1||typeof(c0)!="string"||(c0[0]!='r'&&c0[0]!='#')||(c1&&!a))return null;
+	    if(!this.pSBCr)this.pSBCr=(d)=>{
+	        let n=d.length,x={};
+	        if(n>9){
+	            [r,g,b,a]=d=d.split(","),n=d.length;
+	            if(n<3||n>4)return null;
+	            x.r=i(r[3]=="a"?r.slice(5):r.slice(4)),x.g=i(g),x.b=i(b),x.a=a?parseFloat(a):-1
+	        }else{
+	            if(n==8||n==6||n<4)return null;
+	            if(n<6)d="#"+d[1]+d[1]+d[2]+d[2]+d[3]+d[3]+(n>4?d[4]+d[4]:"");
+	            d=i(d.slice(1),16);
+	            if(n==9||n==5)x.r=d>>24&255,x.g=d>>16&255,x.b=d>>8&255,x.a=m((d&255)/0.255)/1000;
+	            else x.r=d>>16,x.g=d>>8&255,x.b=d&255,x.a=-1
+	        }return x};
+	    h=c0.length>9,h=a?c1.length>9?true:c1=="c"?!h:false:h,f=this.pSBCr(c0),P=p<0,t=c1&&c1!="c"?this.pSBCr(c1):P?{r:0,g:0,b:0,a:-1}:{r:255,g:255,b:255,a:-1},p=P?p*-1:p,P=1-p;
+	    if(!f||!t)return null;
+	    if(l)r=m(P*f.r+p*t.r),g=m(P*f.g+p*t.g),b=m(P*f.b+p*t.b);
+	    else r=m((P*f.r**2+p*t.r**2)**0.5),g=m((P*f.g**2+p*t.g**2)**0.5),b=m((P*f.b**2+p*t.b**2)**0.5);
+	    a=f.a,t=t.a,f=a>=0||t>=0,a=f?a<0?t:t<0?a:a*P+t*p:0;
+	    if(h)return"rgb"+(f?"a(":"(")+r+","+g+","+b+(f?","+m(a*1000)/1000:"")+")";
+	    else return"#"+(4294967296+r*16777216+g*65536+b*256+(f?m(a*255):0)).toString(16).slice(1,f?undefined:-2)
+	},
+	updateURLParameter(url, param, paramVal){
+	    var newAdditionalURL = "";
+	    var tempArray = url.split("?");
+	    var baseURL = tempArray[0];
+	    var additionalURL = tempArray[1];
+	    var temp = "";
+	    if (additionalURL) {
+	        tempArray = additionalURL.split("&");
+	        for (var i=0; i<tempArray.length; i++){
+	            if(tempArray[i].split('=')[0] != param){
+	                newAdditionalURL += temp + tempArray[i];
+	                temp = "&";
+	            }
+	        }
+	    }
+
+	    var rows_txt = temp + "" + param + "=" + paramVal;
+	    return baseURL + "?" + newAdditionalURL + rows_txt;
+	},
+	random(length) {
+	   var result           = '';
+	   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	   var charactersLength = characters.length;
+	   for ( var i = 0; i < length; i++ ) {
+	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	   }
+	   return result;
+	},
+	smsSplitUtils: smsSplitUtil,
+	smsSplitEncoder: smsSplitEncoder,
+	smsSplitSegmenter: smsSplitSegmenter,
+	removeFileFromToolbarRequest: function(e){
+
+   		var textarea = $(this).closest(".attachment_toolbar").siblings("textarea");
+   		var val = $(this).closest(".tag").find("input").val();
+   		
+   		// console.log("what's val here??", val)
+
+   		var myEditor = tinyMCE.editors[$(textarea).attr("id")];
+   		App.utils.removeFileFromToolbar(val, $(textarea).siblings(".attachment_toolbar"));
+
+   		var paneContainer = $(this).closest(".tab-pane.active");
+   		var resourceId = $(textarea).data("attach-to-id");
+   		var resourceType = $(textarea).data("attach-to-type");
+		paneContainer.find('.tooltip[role="tooltip"]').remove();
+   		
+   		$(this).closest(".tag").remove();
+   		if(val=="vcard"){
+
+   			App.utils.togglevCardAndUpdateTextareaAttachments(textarea);
+   			App.utils.setVcardContextItemChecked(myEditor, false);
+   			myEditor.refreshTextPreview();
+   		}
+   		else{
+   			$.post("/file/upload/delete", {resource_type: resourceType, resource_id: resourceId, url: val, "type":myEditor.editor_type},function(){
+   				if(myEditor.editor_type == "text"){
+   					myEditor.refreshTextPreview();
+   				}
+   			})
+   		}
+   	},
+	phoneUtilsPath(){
+		return "<%= asset_path( 'phone_utils.js' )%>";
+	},
+	getCSRF(){
+		return $('meta[name="csrf-token"]').attr('content');
+	},
+	filenameFromUrl(fileUrl){
+		var fileName = decodeURI(fileUrl.substring(fileUrl.lastIndexOf('/')+1));
+		fileName = fileName.substring(0, fileName.indexOf('?'));
+		return fileName;
+	},
+	parameterize(string){
+		return string.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+	},
+	urlconverterCallback: function(url, node, on_save, name) {
+	    // don't allow %20 in action-page tags
+	    if(url.match(/action-page/)!=null){
+	    	url = url.replace(/%20/g,"");
+	    }
+	    // Return new URL
+	    return url;
+	},
+	titlecase(string){
+	    return string.replace(/[_-]/g," ").replace(/(?:^|\s)\w/g, function(match) {
+	        return match.toUpperCase();
+	    });
+	},
+	isNull(str){
+		return str == null || str == undefined;
+	},
+	isEmptyOrSpaces(str){
+		return str === null || str === undefined  || str===[] || str.toString().match(/^(\s|\n)*$/) !== null;
+	},
+	getUrlExtension( url ) {
+    	return url.split(/[#?]/)[0].split('.').pop().trim();
+	},
+	formatEmailSender(state){
+	    return $(
+	        '<div><div class="select-title">' + state.text + '</div><div class="select-subtitle">'
+	            + $(state.element).attr('data-email')
+	            + '</div></div>'
+	    );
+	},
+	formatResultsSubtitle(state){
+	    return $(
+	        '<div><div class="select-title">' + state.text + '</div><div class="subtitle">'
+	            + (!App.utils.isEmptyOrSpaces($(state.element).data('subtitle')) ? $(state.element).data('subtitle') : "")
+	            + '</div></div>'
+	    );
+	},
+	appendFileToToolbar(file_name, file_url, $toolbar){
+		var engine = this.liquidEngine;
+    	if(file_name=="vcard"){
+    		var lang = $toolbar.closest("div[data-language]").data("language")
+			var rendered = engine.parseAndRenderSync($("#template_vcard")[0].innerHTML, {language: lang, filename: file_name});
+    		$toolbar.append(rendered);
+    	}
+    	else if(file_name.includes("Page QR Code")){
+    		var lang = $toolbar.closest("div[data-language]").data("language")
+			var rendered = engine.parseAndRenderSync($("#template_image_upload")[0].innerHTML, {language: lang, filename: file_name, file_url: file_url});
+    		$toolbar.append(rendered);
+    	}
+    	else{
+    		var lang = $toolbar.closest("div[data-language]").data("language")
+    		var rendered;
+    		if (file_name.match(/.(jpg|jpeg|png|gif)$/i)){
+    			rendered = engine.parseAndRenderSync($("#template_image_upload")[0].innerHTML, {language: lang, filename: file_name, file_url: file_url});
+    		}
+    		else{
+    			rendered = engine.parseAndRenderSync($("#template_file_upload")[0].innerHTML, {language: lang, filename: file_name, file_url: file_url});
+    		}
+    		$toolbar.append(rendered);
+    		//append regular file
+    	}
+    	$toolbar.closest(".tab-pane").addClass("has-file-attachment");
+    },
+    removeFileFromToolbar(url, $toolbar){
+    	if(url=="vcard"){
+    		setTimeout(function(){$toolbar.find(".vcard").remove();}, 5);
+    	}
+    	else{
+    		//append regular file
+    		$toolbar.find("input[value='"+url+"']").remove();
+    	}
+    	if($toolbar.find("input, .vcard").length == 0){
+    		$toolbar.closest(".tab-pane").removeClass("has-file-attachment");
+    	}
+    },
+    setVcardContextItemChecked(editor, is_checked){
+		if(is_checked){
+			editor.attachment_toolbar_items[1].icon = "checkmark";
+		}
+		else{
+			editor.attachment_toolbar_items[1].icon = null;
+		}
+	},
+	togglevCardAndUpdateTextareaAttachments(textarea){
+
+	  	var language = $(textarea).closest("div[data-language]").data("language");
+		var attachments = $(textarea).data("attachments");
+	    if(attachments == null || attachments == undefined){attachments = {};}
+	    var myAttachments = attachments[language]!=null && attachments[language]!=undefined ? attachments[language] : [];
+  		if(myAttachments.includes("vcard")){
+  			myAttachments.pop("vcard");
+  			App.utils.removeFileFromToolbar("vcard", $(textarea).siblings(".attachment_toolbar"));
+  		}
+  		else{
+  			myAttachments.push("vcard");
+  			App.utils.appendFileToToolbar("vcard", "vcard", $(textarea).siblings(".attachment_toolbar"));
+  			tinyMCE.editors[$(textarea).attr("id")].refreshTextPreview();
+  		}
+  	},
+  	initializeParsley(){
+  		var self = this;
+		Parsley.on('form:validated', function(ParsleyForm) {
+			// console.log("form:validated", ParsleyForm.$element)
+	        ParsleyForm.$element.find('button').removeClass("disabled").prop('disabled', false);
+
+	    });
+
+
+		//Enables submit button on valid form
+		Parsley.on('form:success', function(ParsleyForm) {
+			// console.log("parsley success!", ParsleyForm.$element);
+			// ParsleyForm.$element.trigger("form:success")
+
+
+			// console.log("ParsleyForm:", ParsleyForm)
+
+	        ParsleyForm.$element.find('button').removeClass("disabled").prop('disabled', false);
+	        //disables button in onboard where data-turbo=false.
+	        if(ParsleyForm.$element.data("disable-on-form-success")){
+	        	setTimeout(function(){
+	        		ParsleyForm.$element.find('button').addClass("disabled").prop('disabled', true);
+	        	}, 200);
+	        }
+	    
+	    });
+
+		Parsley.on('form:submit', function(ParsleyForm) {
+			var form = ParsleyForm.$element[0];
+			var event = document.createEvent('Event');
+			event.initEvent('form:submit', true, true); //can bubble, and is cancellable
+			form.dispatchEvent(event);
+		});
+	    
+
+	    // When a validation error occurs, we disable the submit button
+	    Parsley.on('form:error', function(ParsleyForm) {
+	    	// console.log("parsley ERRROR!", ParsleyForm.$element)
+	    	var form = ParsleyForm.$element[0];
+			var event = document.createEvent('Event');
+			event.initEvent('form:error', true, true); //can bubble, and is cancellable
+			form.dispatchEvent(event);
+
+	        ParsleyForm.$element.find('button.btn-primary').addClass("disabled").prop('disabled', true)
+	    });
+
+	    $("form[data-parsley-validate]").find("input, select").on("change, blur, change.select2", function(e){
+	    	if(!App.utils.isEmptyOrSpaces($(this).attr("data-parsley-group"))){
+	    		$(this.form).parsley().validate({group: $(this).attr("data-parsley-group")});
+	    	}
+	    })
+
+	    if(!window.Parsley.hasValidator("validAreaCode")){
+	    
+		    window.Parsley.addValidator("requiredIf", {
+			   validateString : function(value, requirement) {
+			      if (jQuery(requirement).val()){
+			         return !!value;
+			      }
+			      return true;
+			   },
+			   priority: 33
+			});
+			window.Parsley.addValidator("greaterThanTime", {
+			   validateString : function(value, requirement) {
+			      if(new Date(value) > new Date($(requirement).val())){
+			      	return true
+			      }
+			      return false;
+			   },
+			   messages: {
+			   	en: "The end time must be greater than the start time"
+			   }
+			});
+			window.Parsley.addValidator("greaterThanTimeInMinutes", {
+			   validateString : function(value, requirement) {
+
+			   	function getTimeAsNumberOfMinutes(time){
+				    var timeParts = time.split(":");
+				    var timeInMinutes = parseInt((timeParts[0] * 60)) + parseInt(timeParts[1]);
+				    return timeInMinutes;
+				}
+				// console.log("running validator greaterThanTimeInMinutes", getTimeAsNumberOfMinutes(value), getTimeAsNumberOfMinutes($(requirement).val()))
+		      	if(getTimeAsNumberOfMinutes(value) > getTimeAsNumberOfMinutes($(requirement).val())){
+		      		return true
+		      	}
+		      	return false;
+
+			   },
+			   messages: {
+			   	en: "The end time must be greater than the start time"
+			   }
+			});
+			window.Parsley.addValidator("validPhoneNumber", {
+			   validateString : function(value, requirement, parsleyInstance) {
+				    var selectedCountryCode = $(parsleyInstance.$element).closest(".intl-tel-input").find(".selected-flag .iti-flag").attr("class").replace('iti-flag ', '').toUpperCase();
+				   	var countryDialCode = $(parsleyInstance.$element).intlTelInput("getSelectedCountryData").dialCode
+				   	
+
+				   	if(selectedCountryCode=="US" && value.startsWith("11")){
+				   		return false;
+				   	}
+				   	else if(selectedCountryCode=="US" || selectedCountryCode=="PR"){
+				   		return window.libphonenumber.isValidNumber(value, "US")
+				   	}
+				   	else{
+				   		return window.libphonenumber.isValidNumber(value, selectedCountryCode)
+				   	}
+				  
+				    return false;
+			   },
+			   messages: {
+			   	en: "Please enter a valid mobile phone number"
+			   }
+			});
+			window.Parsley.addValidator("validAreaCode", {
+			   validateString : function(value, requirement) {
+			      if(App.utils.validAreaCodes().includes(parseInt(value))){
+			      	return true;
+			      }
+			      return false;
+			   },
+			   messages: {
+			   	en: "Please enter a valid US area code"
+			   }
+			});
+
+
+			window.Parsley.addValidator("validLiquid", {
+			   validateString : function(value, requirement) {
+					try{
+						var rendered = self.liquidEngine.parseAndRenderSync(value, {"user": {"full-name": "Ivan"}});
+						// console.log("validated", rendered)
+						return true;
+					}
+					catch(err){
+						// console.log("INVALID!s")
+						return false;
+					}
+
+			   },
+			   messages: {
+			   	en: "Invalid Liquid Template: Ensure all opened brackets ( {{ ) have matching closing brackets ( }} ) and valid inner content."
+			   }
+			});
+
+
+			window.Parsley.addValidator("validEmailWrapper", {
+			   validateString : function(value, requirement) {
+			   	window.vall = value;
+			   		var regex = /\{\{\s*(?:content|unsubscribe_url)\s*\}\}[\s\S]*?\{\{\s*(?:content|unsubscribe_url)\s*\}\}/g
+			    	if(regex.test(value)){
+			    		return true;
+			    	}
+			    	else{
+			    		return false;
+			    	}
+
+			   },
+			   messages: {
+			   	en: "You must include {{ content }} and {{ unsubscribe_url }} tags in all email wrappers"
+			   }
+			});
+
+
+
+
+
+		}
+
+		
+  	},
+	initTextTiny(selector_or_element, height, other_permissions={}, bottomMargin=20){
+
+
+		var admin = other_permissions["admin"]==true;
+		var event = other_permissions["event"]==true;
+		var agent = other_permissions["agent"]==true;
+		var showTextTemplates = other_permissions["showTextTemplates"]==true;
+
+		var showSegmentCounter = other_permissions["showSegmentCounter"]==true;
+		var stimulusController = other_permissions["stimulusController"];
+
+		var selector = null;
+		var target = null;
+		if((typeof selector_or_element) == "string"){
+			selector = selector_or_element;
+		}
+		else{
+			target = selector_or_element;
+		}
+
+		var toolbarFeatures = 'emoticons | template_tags | add_attachment |';
+		if(showTextTemplates){
+			toolbarFeatures = 'emoticons | text_templates | add_attachment |'
+		}
+		// console.log("bottomMargin", bottomMargin)
+		tinymce.init({
+		  selector: selector,
+		  target: target,
+		  // height: height,
+		  min_height: height,
+		  // max_height: height,
+		  autoresize_bottom_margin: bottomMargin,
+		  urlconverter_callback: App.utils.urlconverterCallback,
+		  plugins: 'emoticons paste autoresize',
+		  elementpath:false,
+		  content_style: 'p { margin-block-start: 0; margin-block-end: 0; }',
+		  toolbar: toolbarFeatures,
+		  menubar: false,
+		  statusbar: false,
+		  branding: false,
+		  // forced_root_block: true,
+		  content_css: ["<%= asset_path( 'tinymce_text' )%>"],
+		  remove_linebreaks: false,
+		  paste_as_text: true,
+		  file_picker_types: 'file image media',
+		  init_instance_callback : function(editor) {
+		  	$(editor.targetElm).closest(".drafts--loading").removeClass("drafts--loading");
+		    var freeTiny = document.querySelector('.tox .tox-notification--in');
+		   	if(freeTiny!=null){freeTiny.style.display = 'none';}
+
+		  },
+		  setup: function (editor) {
+
+				var tags = App.utils.templateTags(selector_or_element, editor);
+				if(agent){
+	            	tags.push({
+		                  type: 'menuitem',
+		                  text: 'Texting Agent First Name',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ agent.first-name }}');
+		                  }
+		                });
+	            }
+	            if(admin){
+	            	tags.push({
+		            type: 'nestedmenuitem',
+		            text: 'Admin',
+		            getSubmenuItems: function () {
+		            	return [ 
+		                {
+		                  type: 'menuitem',
+		                  text: 'User Action URL',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ admin.user-action-url }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'User URL',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ admin.user-url }}');
+		                  }
+		                },
+		                ]
+		             
+		            }
+		          });
+	            }
+	            
+	            if(event){
+	            	tags.push({
+		            type: 'nestedmenuitem',
+		            text: 'Event',
+		            getSubmenuItems: function () {
+		            	return [ 
+		                {
+		                  type: 'menuitem',
+		                  text: 'Event Title',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ event.title }}');
+		                  }
+		                },
+		                {
+		            		type: 'nestedmenuitem',
+		            		text: 'Event Session',
+		            		getSubmenuItems: function () {
+
+		            		return [
+		            			{
+				                  type: 'menuitem',
+				                  text: 'Title',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.title }}');
+				                  }
+				                },
+			            		{
+				                  type: 'menuitem',
+				                  text: 'Start Time',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.start-time }}');
+				                  }
+				                },
+				                {
+				                  type: 'menuitem',
+				                  text: 'End Time',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.end-time }}');
+				                  }
+				                },
+				                {
+				                  type: 'menuitem',
+				                  text: 'Location Name',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.location-name }}');
+				                  }
+				                },
+				                {
+				                  type: 'menuitem',
+				                  text: 'Location Address',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.location-address }}');
+				                  }
+				                }
+
+		            		]}
+		            	}
+
+
+		                ]
+		             
+		            }
+		          });
+	            }
+
+	        editor.on('BeforeGetContent', function(o) {
+	        	//Ensures that the content is always serialized as text
+	        
+	        	// console.log("BeforeGetContent!!!!", o)
+	        })
+
+	        editor.on('GetContent', function(o) {
+	        	//Ensures that the content is always serialized as text
+	        	
+	        	// o["format"] = "text";
+	        	// o["save"] = false;
+	        	// o["type"] = "getcontent";
+	        	// console.log("content before processing", o)
+	        	if(!App.utils.isEmptyOrSpaces(o.content)){
+	        		<%# console.log("CONTENT BEFORE PROCESSING: ", o.content) %>
+	        		//trim() needed to cut trailing nbps character, juicing segment count.
+	        		o.content = App.utils.htmlToText(o.content).trim();
+	        	}
+	        		
+	        })
+	        
+
+			editor.on('init', function(e) {
+
+		   		editor.shortcuts.add('meta+u', "", function() {});
+		   		editor.shortcuts.add('meta+i', "", function() {});
+		   		editor.shortcuts.add('meta+b', "", function() {});
+		   		editor.shortcuts.add('ctrl+u', "", function() {});
+		   		
+		   		editor.editor_type = "text";
+
+					var textarea = e.target.targetElm;
+				  	var language = $(textarea).closest("div[data-language]").data("language");
+		 			var attachments = $(textarea).data("attachments");
+				    if(attachments == null || attachments == undefined){attachments = {};}
+
+				    var vCardAttached = attachments && attachments[language] && attachments[language].includes("vcard");
+				  	var pageQrCodeAttached = attachments && attachments[language] && attachments[language].includes("/page-qr/");
+
+				  	if(attachments && attachments[language]){
+
+					  	$.each(attachments[language], function(i,elm){
+
+					  		var fileName = decodeURI(elm.substring(elm.lastIndexOf('/')+1));
+					  		fileName = fileName.substring(0, fileName.indexOf('?'));
+
+
+					  		if(elm=="vcard"){fileName="vcard";}
+
+					  		var regex = /\/page-qr\/(.+)/;
+							var match = elm.match(regex);
+							if (match) {
+							    fileName = `Page QR Code - ${App.utils.titlecase(match[1])}`;
+							} 
+
+					    	App.utils.appendFileToToolbar(fileName, elm, $(textarea).siblings(".attachment_toolbar"));
+					    });
+					}
+				    
+				    var draftContainer = $(textarea).closest(".tab-pane").find(".tox.tox-tinymce").css({minHeight: height});
+
+					var textDropzone = $(textarea).siblings(".hidden_file_input");
+					textDropzone.dropzone({
+						url: "/file/upload", 
+						maxFilesize: 0.650,
+						init: function() {
+			              this.on("sending", function(file, xhr, formData){
+			              		$.toast({text: 'Uploading Attachment', position: 'bottom-center', hideAfter:false})
+			              		textDropzone.addClass("uploading");
+			                  	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+			                  	formData.append("authenticity_token", csrf_token);
+
+
+			                  	if(!App.utils.isEmptyOrSpaces($(textarea).data("attach-to-type"))){
+			                  		
+			                  		formData.append("attach_to_type", $(textarea).data("attach-to-type"));
+			                  		formData.append("attach_to_id", $(textarea).data("attach-to-id"));
+			                  		formData.append("language", $(textarea).data("language"));
+
+			                  		if(!App.utils.isEmptyOrSpaces($(textarea).data("attach-to-stage"))){
+			                  			formData.append("attach_to_stage", $(textarea).data("attach-to-stage"));
+			                  		}
+			              			
+			                  	}
+
+			              	});
+				        },
+				        error: function (file, errorMessage) {
+				        	// console.log("errorMessage", errorMessage);
+				        	$.toast().reset('all');
+				        	$.toast({text: "Error: " + errorMessage, position: 'bottom-center', hideAfter:5000, loaderBg: "#DE3618"});
+				        	// console.log("file", file)
+
+						},
+				        success: function (file, response) {
+				        	App.utils.appendFileToToolbar(file.name, response.location, $(textarea).siblings(".attachment_toolbar"));
+				        	editor.refreshTextPreview();
+				        	$.toast().reset('all');
+						},
+						complete: function(file) {
+
+							
+						},
+				        maxFiles: 5,
+				        addRemoveLinks: true,
+				        acceptedFiles:"image/*,application/pdf,video/mpeg,video/mp4,video/quicktime,video/webm,video/3gpp"
+					});
+
+
+	
+					$(textarea).closest(".tab-pane").on("click", ".attachment_toolbar .remove", App.utils.removeFileFromToolbarRequest);
+					
+
+					var revealContainer = $(textarea).closest('[data-reveal-target="item"]');
+					if(revealContainer.length > 0){
+						function onVisible() {
+						    
+						    if($(textarea).closest("div[data-language].active").length > 0){
+						    	setTimeout(editor.refreshTextPreview, 100);
+						    }
+						}
+						const callback = function(mutationsList, observer) {
+						    for(let mutation of mutationsList) {
+						        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+						            const target = mutation.target;
+						            // Check if the "hidden" class is not present
+						            if (!target.classList.contains('hidden')) {
+						                onVisible();
+						                // Optionally, disconnect the observer if you no longer need to watch for changes
+						                observer.disconnect();
+						            }
+						        }
+						    }
+						};
+						// Options for the observer (which mutations to observe)
+						const config = { attributes: true, childList: false, subtree: false };
+						// Create an instance of MutationObserver
+						const observer = new MutationObserver(callback);
+						// Start observing the target node for configured mutations
+						observer.observe(revealContainer[0], config);
+					}
+
+
+					//on content change, render
+					editor.refreshTextPreview = function(){
+						var text = editor.getContent({ format: 'raw' });
+						var engine = App.utils.liquidEngine;
+						var params = $(textarea).data("user-params");
+						if(params==undefined){params = {}}
+						var actionPages = $(textarea).data("action-pages");
+				
+						// var baseUrl  = $(textarea).closest("*[data-base-url]").data("base-url");
+						var actionPagesData = {}
+						var actionPagesDataNoHtml = {}
+
+						$.map(actionPages, function(elm,i){
+							var pageUrl = elm.base_url + "/" + elm.url_slug;
+							actionPagesData[elm.url_slug] = ("<a href='"+ pageUrl+ "'>" + pageUrl + "</a>");
+							actionPagesDataNoHtml[elm.url_slug] = pageUrl;
+						});
+
+						params["action-page"] = actionPagesData;
+					
+						var nonHtmlRendered = null;
+
+						try{
+							var rendered = engine.parseAndRenderSync(text.replace(/\n/g,"<br/>"), params);
+							params["action-page"] = actionPagesDataNoHtml;
+							nonHtmlRendered = engine.parseAndRenderSync(text, params);
+
+						}
+						catch(err){
+
+							if(stimulusController){
+								stimulusController.updateLiquidError(err);
+								return;
+							}
+						}
+
+						// console.log("rendered::", nonHtmlRendered)
+
+						var attachments = $(textarea).siblings(".attachment_toolbar").find("input");
+
+						var imageAttachmentHtmlString="";
+						var fileAttachmentHtmlString="";
+						$.each(attachments, function(i,elm){
+							var imageUrl = elm.value
+							if(imageUrl=="vcard"){
+								imageAttachmentHtmlString += "<div class='preview_contact_card'><img style='max-height: 35px; max-width: 35px; padding: 0px; margin: 4px;' src='" + params["chapter"]["image_url"] + "' /><div class='ml-5'><div>"+params["chapter"]["name"]+"</div><div class='subtitle'>" + params["chapter"]["phone_number"] + "</div></div></div>"
+							}
+							else if(imageUrl.includes("/page-qr/")){
+								imageAttachmentHtmlString += "<img src='"+imageUrl+"' style='max-width:60px; max-height: 100px; margin: 5px 5px 0 0;' />"
+							}
+							else{
+								var extension = App.utils.getUrlExtension(imageUrl);
+								if (extension.match(/(jpg|jpeg|png|gif)$/i)!=null){
+									imageAttachmentHtmlString += "<a href='#' data-featherlight='"+imageUrl+"'><img src='"+imageUrl+"' style='max-width:60px; max-height: 100px; margin: 5px 5px 0 0;' /></a>"
+								}
+								else{
+									// other file - filename, border. Hover button, link to file new page. 
+									var fileName = App.utils.filenameFromUrl(imageUrl);
+									fileAttachmentHtmlString += "<a target='_new' href='"+imageUrl+"' class='texts--file-preview'>"+fileName+"</a>"
+								}
+							}	
+						});
+
+						var draftContainer = $(textarea).closest(".text_draft_main_content");
+
+						var toxContainer = $(textarea).siblings(".tox.tox-tinymce");
+						var currentHeight = toxContainer.height();
+						var segmentCounter = $(textarea).siblings(".texts--segment-counter");
+						segmentCounter.css({bottom: "unset", top:  (parseInt(currentHeight)-30)+"px"});
+						
+						var linkShortenerError = $(textarea).siblings(".texts--link-shortener-error");
+						linkShortenerError.css({bottom: "unset", top:  (parseInt(currentHeight)-30)+"px"});
+						if(text){
+							if(text.match(/bit.ly/i) != null){
+								linkShortenerError.html("Refrain from using bit.ly links to avoid carrier spam filters");
+							}
+							else if(text.match(/tinyurl/i) != null){
+								linkShortenerError.html("Refrain from using TinyURL links to avoid carrier spam filters");
+							}
+							else{
+								linkShortenerError.html("");
+							}
+
+						}
+
+
+						var fullPreview = ""
+						if(!App.utils.isEmptyOrSpaces(imageAttachmentHtmlString)){
+							fullPreview+="<div>"+imageAttachmentHtmlString+"</div>";
+						}
+						if(!App.utils.isEmptyOrSpaces(fileAttachmentHtmlString)){
+							fullPreview+="<div>"+fileAttachmentHtmlString+"</div>";
+						}
+						fullPreview += rendered;
+
+						
+
+						draftContainer.find(".insert_preview_text").html(fullPreview);
+
+						if(App.utils.isEmptyOrSpaces(rendered)){
+							//hide from-them, show 'no preview italics'
+							draftContainer.find(".from-them").addClass("hidden");
+							draftContainer.find(".no_preview").removeClass("hidden");
+						}
+						else{
+							//show preview, hide no
+							draftContainer.find(".from-them").removeClass("hidden");
+							draftContainer.find(".no_preview").addClass("hidden");
+							draftContainer.find('[data-featherlight]').featherlight();
+						}
+
+						if(showSegmentCounter){
+							var renderedText = App.utils.htmlToText(rendered);
+							// console.log("renderedText:", renderedText)
+							var segments = App.utils.smsSplitSegmenter["auto"](App.utils.smsSplitUtils.unicodeCharacters(renderedText)).length;
+							if(segments <= 10){
+								segmentCounter.addClass("yellow").removeClass("red").html(segments + (segments==1 ? " segment" : " segments" ));
+							}
+							else{
+								segmentCounter.removeClass("yellow").addClass("red").html(segments + " segments");
+							}
+							var pricePerMessage = (attachments.length > 0) ? parseFloat(App.utils.usage_pricing["mms"]).toFixed(3) : parseFloat(App.utils.usage_pricing["sms"] * segments).toFixed(3)
+							segmentCounter.get(0).tippy.setContent(`Cost per message: $${pricePerMessage}`)
+						}
+						if(stimulusController){
+							stimulusController.updateTipsForContent(nonHtmlRendered);
+						}
+
+
+						// texts--link-shortener-error
+
+
+					}
+
+				    let isUpdating = false;
+
+				    editor.on('Paste Change Undo Redo SetContent cut keyup', function (o) {
+				      if (isUpdating) return;
+
+				      // Get the current content from the editor
+				      let content = editor.getContent();
+
+				      // Encode the content using App.utils.smartEncode
+				      let encodedContent = App.utils.smartEncode(content);
+
+				      // If the encoded content is different from the current content, update the editor
+				      if (content !== encodedContent) {
+				        isUpdating = true;
+				        editor.setContent(encodedContent);
+				        isUpdating = false;
+				      }
+
+				      // Refresh the text preview (assuming this is a custom function)
+				      editor.refreshTextPreview();
+				    });
+
+					// console.log("editor.id", editor.id)
+					// console.log("what here:", $(textarea).closest(".multilingual-tab-container").find(".language-pills a[data-toggle='tab'][href='#"+editor.id+"_tab']"))
+					// console.log("my selector:", ".language-pills a[data-toggle='tab'][href='#"+editor.id+"_tab']")
+					// console.log("dis:", $(textarea).closest(".tab-pane").attr("id"))
+					$(textarea).closest(".multilingual-tab-container")
+								.find(".language-pills a[href='#"+$(textarea).closest(".tab-pane").attr("id") + "']").click(function(){
+						setTimeout(editor.refreshTextPreview.bind({editor: editor}), 100);
+					});
+
+
+					if($(textarea).closest(".tab-pane.active[data-language]").length > 0){
+						//set text preview to editor with default language
+						editor.refreshTextPreview();		
+					}
+
+
+					
+					
+
+					//Event RSVP text reply, refresh segment controller when change yes/no/maybe tab
+					if($(textarea).closest(".texts--rsvp-text-reply-container").length > 0){
+
+
+						if($(textarea).closest(".texts--rsvp-text-reply-container").data("attached-rsvp-listener") != true){
+							// console.log("lets attach click listeners here")
+
+							//refreshes the active preview when content is first revealed
+							$(".texts--show-team-member-trigger").on('click', function (e) {
+								// console.log("clicky click")
+								var activeMceId = $(".texts--rsvp-text-reply-container .tab-pane.active .text_draft_main_content .editor_window .tab-pane.active textarea").attr("id");
+							    setTimeout(function(){
+							    	//find the editors for active textarea and refreshTextPreview
+							    	tinyMCE.editors[activeMceId].refreshTextPreview();
+							    }, 100)
+
+							})
+
+							$('a[href="#yes_rsvps"], a[href="#no_rsvps"], a[href="#maybe_rsvps"]').on('shown.bs.tab', function (e) {
+								    //refreshes the content as tsvp tab changed
+								    var activeMceId = $($(e.target).attr("href") + " .tab-pane.active textarea").attr("id");
+								    setTimeout(function(){
+								    	//find the editors for active textarea and refreshTextPreview
+								    	tinyMCE.editors[activeMceId].refreshTextPreview();
+								    }, 10)
+							});
+							$(textarea).closest(".texts--rsvp-text-reply-container").data("attached-rsvp-listener", true);
+							
+						}
+						
+					}
+
+
+				    editor.attachment_toolbar_items = 
+				      	[
+					      	{
+					            type: 'menuitem',
+					            text: 'File',
+					            onAction: function () {
+					            	 $(textarea).siblings(".hidden_file_input").click()
+					            }
+					       	},
+					       	{
+					       		type: 'menuitem',
+					            text: 'vCard',
+					            name: "vcard",
+					            icon: vCardAttached ? "checkmark" : null,
+					       		onAction: function() {
+
+					       			if(editor.attachment_toolbar_items[1].icon==null){
+					       				App.utils.setVcardContextItemChecked(editor, true);
+					       			}
+					       			else{
+					       				App.utils.setVcardContextItemChecked(editor, false);
+					       			}
+					       			App.utils.togglevCardAndUpdateTextareaAttachments(editor.targetElm);
+
+							    }
+					       	},
+					       	{
+					       		type: 'menuitem',
+					            text: 'Page QR Code',
+					            name: "Page QR Code",
+					            icon: pageQrCodeAttached ? "checkmark" : null,
+					       		onAction: function() {
+
+		            	
+				                  	// Show dialog with select2
+				                  	var actionPages = $(textarea).data("action-pages");
+				                  	// console.log("actionPages,",actionPages)
+				                  	var apOptions =  $.map(actionPages, function(elm, i){
+				            			return `<option data-subtitle="${elm.subtitle}" value="${elm.base_url}/page-qr/${elm.url_slug}">${elm.name}</option>`;
+				            		});
+
+
+				                  	var actionPagesPanel = {
+									  title: 'Select Page for QR Code',
+									  body: {
+									    type: 'panel',
+									    items: [
+										    {
+										      type: 'htmlpanel',
+										      html: `<div data-controller="select2" data-select2-placeholder-value="Select a page" data-select2-template-value="results-subtitle" class="w-100 position-relative display-block mb-30">
+										      			<select class="form-control w-100" data-select2-target="select" >
+										      				<option></option>${apOptions}
+										      			</select>
+										      		</div>
+										      		<div style="margin-top: 5px; font-size: 14px; color: #8D959D;">Choose a page to generate & send a personalized QR code linking to that page, with the person's referral code.</div>
+										      		`
+										    }, 
+									    ]
+									  },
+									  buttons: [
+									    {
+									      type: 'custom',
+									      name: 'doesnothing',
+									      text: 'Back',
+									      align: "start",
+									      disabled: false
+									    },
+									    {
+									      type: 'custom',
+									      name: 'insert',
+									      text: 'Insert',
+									      primary: true,
+									      align: "end",
+									      disabled: false
+									    }
+									  ],
+									  onChange: function (dialogApi, details) {
+									    var data = dialogApi.getData();
+									  },
+									  onAction: function (dialogApi, details) {
+									    
+									    // Remove existing qr_code from attachment bar
+									    // Append new qr_code
+
+									  	var apUrl = $(".tox-dialog__body-content select").val();
+									  	var apName =  $(".tox-dialog__body-content select option:selected").html()
+
+									  	if(!App.utils.isEmptyOrSpaces(apName) ){
+									    	App.utils.appendFileToToolbar(`Page QR Code - ${apName}`, apUrl, $(textarea).siblings(".attachment_toolbar"));
+									  	}
+									  	editor.refreshTextPreview();
+									    editor.windowManager.close();
+
+
+									  }
+									};
+
+				                  	editor.windowManager.open(actionPagesPanel)
+
+							    }
+					       	}
+				    	];
+
+
+
+
+	
+			});
+
+		   
+		    editor.ui.registry.addMenuButton('add_attachment', {
+		      text: 'Add Attachment',
+		      fetch: function (callback) {
+		        callback(editor.attachment_toolbar_items);
+		      }
+		    });
+
+			editor.ui.registry.addMenuButton('template_tags', {
+		      text: 'Merge Tags',
+		      fetch: function (callback) {
+		        callback(tags);
+		      }
+		    });
+
+
+			editor.ui.registry.addButton('text_templates', {
+		      text: 'Text Templates',
+		      onAction: function () {
+                $(".texts--text-templates").toggleClass("hidden")
+              }
+		    });
+
+		    
+
+			
+
+
+		  }
+
+
+		});
+		
+
+		// setTimeout(function(){
+		// 	// editor.refreshTextPreview();
+		// 	if(target){
+		// 		// $(target).trigger("keyup")
+		// 		tinymce.editors[$(target).attr("id")].refreshTextPreview()
+		// 		console.log("da editor target", tinymce.editors[$(target).attr("id")]);
+		// 	}
+		// 	// alert("hi")
+		// }, 3000);
+
+		
+
+	},
+	initEmailTiny(selector_or_element, height, admin=false, event=false, legislator=false){
+
+		var selector = null;
+		var target = null;
+		if((typeof selector_or_element) == "string"){
+			selector = selector_or_element;
+		}
+		else{
+			target = selector_or_element;
+		}
+
+		tinymce.init({
+			selector: selector,
+			target: target,
+			height: height,
+			urlconverter_callback: App.utils.urlconverterCallback,
+			plugins: 'emoticons fullscreen image media autolink link',
+			external_plugins: {
+				"codemirror":"/tinymce/plugins/codemirror/plugin.js",
+				"powerpaste":"/tinymce/plugins/powerpaste/plugin.js"
+			},
+			codemirror: {
+				indentOnInit: true, // Whether or not to indent code on init.
+				fullscreen: true,   // Default setting is false
+				path: '/tinymce/plugins/codemirror/codemirror', // Path to CodeMirror distribution
+				saveCursorPosition: false,    // Insert caret marker
+			},
+			powerpaste_html_import: "prompt",
+			elementpath:false,
+			toolbar1: 'code | template_tags | emoticons | link unlink | image | add_attachment | add_button | send_test_email',
+			toolbar2: 'styleselect | bold italic| alignleft aligncenter alignright | bullist numlist | forecolor backcolor',
+			style_formats_merge: true,
+			menubar: false,
+			statusbar: false,
+			branding: false,
+			init_instance_callback : function(editor) {
+				$(editor.targetElm).closest(".drafts--loading").removeClass("drafts--loading");
+				var freeTiny = document.querySelector('.tox .tox-notification--in');
+				if(freeTiny!=null){freeTiny.style.display = 'none';}
+				// editor.formatter.register('red_cta', { inline: 'a', href: "#", styles: { "font-family": "Averta,Avenir,Gotham,Helvetica,Arial,sans-serif", "font-size": "20px", "background-color": "#f2292c", "border-top": "1px solid #fa5e4e", "border-bottom": "2px solid #c73829", "width": "100%", "max-width": "300px", "margin": "30px auto", borderRadius: "5px", "text-align": "center", "color": "white", "text-decoration": "none", "padding": "12px 5px 11px", "font-weight": "bold", "display": "block"} });
+			},
+			setup: function (editor) {
+
+				editor.on('change', function () {
+	                tinymce.triggerSave();
+	            });
+
+				var showTestEmailButton = $(selector_or_element).data("show-send-test-email-button");
+				var tags = App.utils.templateTags(selector_or_element, editor);
+	            if(admin){
+	            	tags.push({
+		            type: 'nestedmenuitem',
+		            text: 'Admin',
+		            getSubmenuItems: function () {
+		            	return [ 
+		                {
+		                  type: 'menuitem',
+		                  text: 'User Action URL',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ admin.user-action-url }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'User URL',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ admin.user-url }}');
+		                  }
+		                },
+		                ]
+		             
+		            }
+		          });
+	            }
+
+	            if(legislator){
+	            	tags.push({
+			            type: 'nestedmenuitem',
+			            text: 'Legislator',
+			            getSubmenuItems: function () {
+			            	return [ 
+			                {
+			                  type: 'menuitem',
+			                  text: 'Full Name',
+			                  onAction: function () {
+			                    App.utils.insertLiquidContent(editor, '{{ legislator.full-name }}');
+			                  }
+			                },
+			                {
+			                  type: 'menuitem',
+			                  text: 'District',
+			                  onAction: function () {
+			                    App.utils.insertLiquidContent(editor, '{{ legislator.district }}');
+			                  }
+			                },
+			                ]
+			             
+			            }
+		          	});
+	            }
+	            if(event){
+	            	tags.push({
+		            type: 'nestedmenuitem',
+		            text: 'Event',
+		            getSubmenuItems: function () {
+		            	return [ 
+		                {
+		                  type: 'menuitem',
+		                  text: 'Event Title',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ event.title }}');
+		                  }
+		                },
+		                {
+		            		type: 'nestedmenuitem',
+		            		text: 'Event Session',
+		            		getSubmenuItems: function () {
+
+		            		return [
+		            			{
+				                  type: 'menuitem',
+				                  text: 'Title',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.title }}');
+				                  }
+				                },
+			            		{
+				                  type: 'menuitem',
+				                  text: 'Start Time',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.start-time }}');
+				                  }
+				                },
+				                {
+				                  type: 'menuitem',
+				                  text: 'End Time',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.end-time }}');
+				                  }
+				                },
+				                {
+				                  type: 'menuitem',
+				                  text: 'Location Name',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.location-name }}');
+				                  }
+				                },
+				                {
+				                  type: 'menuitem',
+				                  text: 'Location Address',
+				                  onAction: function () {
+				                    App.utils.insertLiquidContent(editor, '{{ event-session.location-address }}');
+				                  }
+				                }
+
+		            		]}
+		            	}
+
+
+		                ]
+		             
+		            }
+		          });
+	            }
+				editor.ui.registry.addMenuButton('template_tags', {
+			  		text: 'Merge Tags',
+					fetch: function (callback) {
+						callback(tags);
+					}
+				});
+
+					editor.on('init', function (e) {
+
+
+						var textarea = editor.targetElm;
+						var paneContainer = $(textarea).closest("div[data-language]");
+					  	var language = paneContainer.data("language");
+					  	var resourceId = paneContainer.data("resource-id");
+					  	var resourceType = paneContainer.data("resource-type");
+			 			var attachments = $(textarea).data("attachments");
+					    if(attachments == null || attachments == undefined){attachments = {};}
+				
+					  	if(attachments && attachments[language]){
+						  	$.each(attachments[language], function(i,elm){
+						  		var fileName = decodeURI(elm.substring(elm.lastIndexOf('/')+1));
+						  		fileName = fileName.substring(0, fileName.indexOf('?'));
+						    	App.utils.appendFileToToolbar(fileName, elm, $(textarea).siblings(".attachment_toolbar"));
+						    });
+						}
+				    
+
+			    	   	$(paneContainer).on("click", ".attachment_toolbar .remove", App.utils.removeFileFromToolbarRequest);
+
+
+						editor.editor_type = "email";
+						var emailDropzone = $(editor.targetElm).siblings(".hidden_file_input");
+						emailDropzone.dropzone({
+							url: "/file/upload", 
+							init: function() {
+				              this.on("sending", function(file, xhr, formData){
+				              		$.toast({text: 'Uploading Attachment', position: 'bottom-center', hideAfter:false})
+				              		emailDropzone.addClass("uploading");
+				                  	var csrf_token = $('meta[name="csrf-token"]').attr('content');
+				                  	formData.append("authenticity_token", csrf_token);
+				                  	formData.append("attach_to_type", resourceType);
+				                  	formData.append("language", language);
+				                  	formData.append("attach_to_id",resourceId);
+				              	});
+					        },
+					        success: function (file, response) {
+
+					        	App.utils.appendFileToToolbar(file.name, response.location, $(editor.targetElm).siblings(".attachment_toolbar"));
+					        	var inForm = $(editor.targetElm).closest("form[data-remote='true']")[0]
+					        	if(inForm!=undefined){
+					        		Rails.fire(inForm, 'submit');
+					        	}
+							},
+							complete: function(file) {
+
+								$.toast().reset('all');
+							},
+					        maxFiles: 5,
+					        addRemoveLinks: true,
+					        acceptedFiles:"image/*,application/pdf,video/mpeg,video/mp4,video/quicktime,video/webm,video/3gpp"
+						});
+
+					});
+
+
+
+					editor.ui.registry.addButton('add_attachment', {
+				    	text: 'Add Attachment',
+					    onAction: function (_) {
+			            	$(editor.targetElm).siblings(".hidden_file_input").click();
+		            	}
+				    });
+
+					if(showTestEmailButton){
+						editor.ui.registry.addButton('send_test_email', {
+							text: 'Send Test Email',
+						    onAction: function (_) {
+
+						    	var messageIndex = $(editor.targetElm).closest(".email-legislators--section").index();
+						    	var sendUrl = `/resources/email/test/send?resource_type=ActionPage&resource_id=${$("div[data-action-page-id]").data("action-page-id")}&stage=EmailLegislator&variation=${messageIndex}`;
+								
+								Turbo.visit(sendUrl, { frame: "modal" });
+								$("#primary-modal").modal("show");
+					    	}
+						});
+					}
+
+				    editor.ui.registry.addButton('add_button', {
+				    	text: 'Add Button',
+					    onAction: function (_) {
+
+					    	// Show dialog with select2
+		                  	var actionPages = null;
+		                  	if(selector){
+		                  		actionPages = $(selector).data("action-pages");
+		                  	}
+		                  	else if(target){
+		                  		actionPages = $(target).data("action-pages");
+		                  	}
+		                  	// console.log("actionPages:::", actionPages)
+		                  	var apOptions = $.map(actionPages, function(elm, i){
+		            			return `<option data-subtitle="${elm.subtitle}" value="${elm.content}">${elm.name}</option>`;
+		            		});
+
+					    	var addButtonPanel = {
+							  title: 'Add Button',
+							  body: {
+							    type: 'panel',
+							    items: [
+								    {
+								      type: 'htmlpanel',
+								      html: `
+									      		<div data-controller="button-preview">
+
+
+									      			<div data-action="color-picker:select->button-preview#refreshPreview">
+
+									      				<div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; margin-bottom: 10px;">
+											      			
+											      			<div data-controller="color-picker" style="width: 100%;" data-color-picker-default-color-value="#f2292c">
+											      				<div class="readonly-label-important" style="margin-bottom: 5px;">BG Color</div>
+											      				<button type="button" data-color-picker-target="button" role="button" style="border: 1px solid #e9ecef;"></button>
+																<input name="background-color" data-button-preview-target="backgroundColor" class="status-color" type="hidden" value="#f2292c" />
+															</div>
+
+
+															<div data-controller="color-picker" style="width: 100%;" data-color-picker-default-color-value="#ffffff">
+																<div class="readonly-label-important" style="margin-bottom: 5px;">Text Color</div>
+																<button type="button" data-color-picker-target="button" role="button" style="border: 1px solid #e9ecef;"></button>
+																<input name="text-color" data-button-preview-target="textColor" class="status-color" type="hidden" value="#ffffff" />
+															</div>
+
+															<div style="width: 100%; margin-right:20px;">
+																<div class="readonly-label-important" style="margin-bottom: 5px;">Font Size</div>
+																<input data-action="keyup->button-preview#refreshPreview" class="form-control-important" type="number" value="20" data-button-preview-target="fontSize" />
+															</div>
+
+														</div>
+
+														<div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; margin-bottom: 10px;">
+															<div style="width: 100%;">
+																<div class="readonly-label-important" style="margin-bottom: 5px;">Text</div>
+																<input data-action="keyup->button-preview#refreshPreview" class="form-control-important" type="text" value="Click Here" data-button-preview-target="text" />
+															</div>
+														</div>
+														<div class="readonly-label-important" style="margin-bottom: 5px;">Page URL</div>
+											      		<div data-controller="select2" data-select2-placeholder-value="Select a page" data-select2-template-value="results-subtitle" class="w-100 position-relative display-block" style="margin-bottom:5px;">
+											      			<select data-action="change->button-preview#refreshPreview"  data-button-preview-target="actionPage" class="form-control w-100" data-select2-target="select" >
+											      				<option></option>${apOptions}
+											      			</select>
+											      		</div>
+											      		<div class="select-error-block" style="color: #ef6767; margin-bottom: 10px;"></div>
+
+											      		<div class="readonly-label-important" style="margin-bottom: 5px;">Button Preview</div>
+											      		<div data-button-preview-target="buttonPreview" class="button-preview--preview">
+
+											      		</div>
+											      	</div>
+
+										      	</div>
+
+								      		`
+								    }, 
+							    ]
+							  },
+							  buttons: [
+							    {
+							      type: 'custom',
+							      name: 'doesnothing',
+							      text: 'Back',
+							      align: "start",
+							      disabled: false
+							    },
+							    {
+							      type: 'custom',
+							      name: 'insert',
+							      text: 'Insert',
+							      primary: true,
+							      align: "end",
+							      disabled: false
+							    }
+							  ],
+							  onChange: function (dialogApi, details) {
+							    var data = dialogApi.getData();
+
+							  },
+							  onAction: function (dialogApi, details) {
+							    if (details.name === 'insert') {
+
+							    	var apUrl = $(".tox-dialog__body-content select").val();
+							    	if( !App.utils.isEmptyOrSpaces( apUrl ) ){
+							    		App.utils.insertLiquidContent(editor, ("<p>&nbsp;</p>" + $(".tox-dialog__body-content .button-preview--preview").html() + "<p>&nbsp;</p>" ) );
+							    		$(".tox-dialog__body-content .select-error-block").html("");
+							      		editor.windowManager.close();
+							      	}
+							      	else{
+							      		$(".tox-dialog__body-content .select-error-block").html("Please select a Page");
+							      	}
+
+							    }
+							    else {
+							      	//close
+							    	editor.windowManager.close();
+							    }
+							  }
+							};
+
+					    	editor.windowManager.open(addButtonPanel);
+
+		            	}
+				    });
+
+			},
+			force_p_newlines: false,                            
+			// images_upload_url: '/image/upload',
+			images_upload_handler: function (blobInfo, success, failure, progress) {
+			    var xhr, formData;
+
+			    xhr = new XMLHttpRequest();
+			    xhr.withCredentials = false;
+			    xhr.open('POST', '/image/upload');
+
+			    xhr.upload.onprogress = function (e) {
+			      progress(e.loaded / e.total * 100);
+			    };
+
+			    xhr.onload = function() {
+			      var json;
+
+			      if (xhr.status < 200 || xhr.status >= 300) {
+			        failure('HTTP Error: ' + xhr.status);
+			        return;
+			      }
+
+			      json = JSON.parse(xhr.responseText);
+
+			      if (!json || typeof json.location != 'string') {
+			        failure('Invalid JSON: ' + xhr.responseText);
+			        return;
+			      }
+
+			      success(json.location);
+			    };
+
+			    xhr.onerror = function () {
+			      failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+			    };
+
+			    formData = new FormData();
+			    formData.append('file', blobInfo.blob(), blobInfo.filename());
+			    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+
+			    xhr.send(formData);
+			},
+			file_picker_types: 'file image media',
+			file_picker_callback: function(callback, value, meta) {
+			},
+			automatic_uploads: true
+		});
+	},
+
+
+	initPageTiny(selector_or_element, height){
+
+		var selector = null;
+		var target = null;
+		if((typeof selector_or_element) == "string"){
+			selector = selector_or_element;
+		}
+		else{
+			target = selector_or_element;
+		}
+
+		tinymce.init({
+			selector: selector,
+			target: target,
+			height: height,
+			urlconverter_callback: App.utils.urlconverterCallback,
+			plugins: 'emoticons fullscreen image media autolink link lists',
+			external_plugins: {
+				"codemirror":"/tinymce/plugins/codemirror/plugin.js",
+				"powerpaste":"/tinymce/plugins/powerpaste/plugin.js"
+			},
+			codemirror: {
+				indentOnInit: true, // Whether or not to indent code on init.
+				fullscreen: true,   // Default setting is false
+				path: '/tinymce/plugins/codemirror/codemirror', // Path to CodeMirror distribution
+				saveCursorPosition: false,    // Insert caret marker
+			},
+			powerpaste_html_import: "prompt",
+			elementpath:false,
+			toolbar1: 'code | fullscreen | template_tags | emoticons | link unlink | image media',
+			toolbar2: 'styleselect | bold italic | alignleft aligncenter alignright | bullist numlist forecolor backcolor',
+			image_title: true,
+			menubar: false,
+			statusbar: false,
+			branding: false,
+			body_id : "action_page",
+			content_css: ["<%= asset_path( 'journal' )%>", "<%= asset_path( 'action_page.css' )%>"],	//css for action pages
+			valid_elements: "*[*]",
+			valid_children: "+body[style]",
+			init_instance_callback : function(editor) {
+				$(editor.targetElm).closest(".drafts--loading").removeClass("drafts--loading");
+				var freeTiny = document.querySelector('.tox .tox-notification--in');
+				if(freeTiny!=null){freeTiny.style.display = 'none';}
+			},
+			setup: function (editor) {
+				editor.on('change', function () {
+	                tinymce.triggerSave();
+	            });
+				editor.on('NodeChange', function(e) {
+			      if (e.element.nodeName === 'IMG') {
+			        // Adds the `data-featherlight` attribute to the image
+			        const imgSrc = e.element.getAttribute('src');
+			        e.element.setAttribute('data-featherlight', imgSrc);
+			      }
+			    });
+	            if( $(selector_or_element).data("has-template-tags") != false){
+					editor.ui.registry.addMenuButton('template_tags', {
+				  		text: 'Merge Tags',
+						fetch: function (callback) {
+							callback(App.utils.templateTags(selector_or_element, editor));
+						}
+					});
+				}
+				
+				editor.editor_type = "page";
+			},
+			force_p_newlines: false,                            
+			images_upload_handler: function (blobInfo, success, failure, progress) {
+			    var xhr, formData;
+
+			    xhr = new XMLHttpRequest();
+			    xhr.withCredentials = false;
+			    xhr.open('POST', '/image/upload');
+
+			    xhr.upload.onprogress = function (e) {
+			      progress(e.loaded / e.total * 100);
+			    };
+
+			    xhr.onload = function() {
+			      var json;
+
+			      if (xhr.status < 200 || xhr.status >= 300) {
+			        failure('HTTP Error: ' + xhr.status);
+			        return;
+			      }
+
+			      json = JSON.parse(xhr.responseText);
+
+			      if (!json || typeof json.location != 'string') {
+			        failure('Invalid JSON: ' + xhr.responseText);
+			        return;
+			      }
+
+				  tinymce.activeEditor.$('img').each(function() {
+				    if (this.src === blobInfo.blobUri()) {
+				      this.setAttribute('data-featherlight', json.location);
+				    }
+				  });
+				  
+			      success(json.location);
+			    };
+
+			    xhr.onerror = function () {
+			      failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+			    };
+
+			    formData = new FormData();
+			    formData.append('file', blobInfo.blob(), blobInfo.filename());
+			    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			    
+			    xhr.send(formData);
+			},
+			file_picker_types: 'file, image',
+			file_picker_callback: function(callback, value, meta){
+			},
+			automatic_uploads: true
+		});
+	},
+	insertLiquidContent(editor, content){
+		if(editor.editor_type == "text"){
+			if( editor.getContent({ format: 'text' }).slice(-1).match(/\s|\n/i) == null ){
+				//no preceding space or newline
+				editor.insertContent(" " + content);
+			}
+			else{
+				editor.insertContent(content);
+			}
+		}
+		else{
+			editor.insertContent('&nbsp;'+content);
+		}
+	},
+	templateTags: function(selector, editor){
+
+			var tags = [
+		          {
+		            type: 'nestedmenuitem',
+		            text: 'User',
+		            /*-First Name, Last Name, Full Name,Email,Mobile Number, Street, City, State, Full Country, Full ZIP/Postal Code, Organization Name, Chapter Name*/
+		            getSubmenuItems: function () {
+		              return [
+		              	
+		                {
+		                  type: 'menuitem',
+		                  text: 'First Name',
+		                  onAction: function () {
+		                  	App.utils.insertLiquidContent(editor, "{{ user.first-name }}")
+		                   
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Last Name',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.last-name }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Full Name',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.full-name }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Email',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.email }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Phone Number',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.phone-number }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Referral Code',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.referral-code }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Street Address',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.address1 }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'City',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.city }}');
+		                  }
+		                },
+		                		                {
+		                  type: 'menuitem',
+		                  text: 'State',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.state }}');
+		                  }
+		                },
+		                {
+		                	
+		                  type: 'menuitem',
+		                  text: 'Country',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.country }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Zip Code/Postal Code',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ user.zip-code }}');
+		                  }
+		                },
+
+		                {
+				            type: 'nestedmenuitem',
+				            text: 'Custom User Properties',
+				            getSubmenuItems: function () {
+
+				            	return $.map($(selector).data("user-properties"), function(elm, i){
+				            		return {
+					                  type: 'menuitem',
+					                  text: elm["name"],
+					                  onAction: function () {
+					                    App.utils.insertLiquidContent(editor,  elm["content"]);
+					                  }
+				                	}
+				            	});
+				             
+				            }
+				          }
+
+		              ];
+		            }
+		          },
+		          {
+		            type: 'nestedmenuitem',
+		            text: 'Chapter',
+		            getSubmenuItems: function () {
+
+		            	return [ 
+		                {
+		                  type: 'menuitem',
+		                  text: 'Chapter Name',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ chapter.name }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Chapter City',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ chapter.city }}');
+		                  }
+		                },
+		                {
+		                  type: 'menuitem',
+		                  text: 'Chapter Logo URL',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ chapter.image_url }}');
+		                  }
+		                },
+						{
+		                  type: 'menuitem',
+		                  text: 'Organization Name',
+		                  onAction: function () {
+		                    App.utils.insertLiquidContent(editor, '{{ organization.name }}');
+		                  }
+		                },
+		                ]
+		             
+		            }
+		          },
+		          {
+		            type: 'menuitem',
+		            text: 'Page Link',
+		            onAction: function () {
+
+		            	
+		                  	// Show dialog with select2
+		                  	var actionPages = $(selector).data("action-pages");
+		                  	// console.log("actionPages,",actionPages)
+		                  	var apOptions =  $.map(actionPages, function(elm, i){
+		            			return `<option data-subtitle="${elm.subtitle}" value="${elm.url_slug}">${elm.name}</option>`;
+		            		});
+
+		                  	// console.log("apOptions", apOptions)
+		                  	var actionPagesPanel = {
+							  title: 'Insert Page URL',
+							  body: {
+							    type: 'panel',
+							    items: [
+								    {
+								      type: 'htmlpanel',
+								      html: `<div style="" data-controller="select2" data-select2-placeholder-value="Select a page" data-select2-template-value="results-subtitle" class="w-100 position-relative display-block">
+								      			<select class="form-control w-100" data-select2-target="select">
+								      				<option></option>${apOptions}
+								      			</select>
+								      		</div>`
+								    }, 
+							    ]
+							  },
+							  buttons: [
+							    {
+							      type: 'custom',
+							      name: 'doesnothing',
+							      text: 'Back',
+							      align: "start",
+							      disabled: false
+							    },
+							    {
+							      type: 'custom',
+							      name: 'insert',
+							      text: 'Insert',
+							      primary: true,
+							      align: "end",
+							      disabled: false
+							    }
+							  ],
+							  onChange: function (dialogApi, details) {
+							    var data = dialogApi.getData();
+							    // console.log("on change yoooo")
+							  },
+							  onAction: function (dialogApi, details) {
+							    if (details.name === 'insert') {
+							      var actionPageUrl = $(".tox-dialog__body-content select").val();
+							      // var actionPageName = $(".tox-dialog__body-content select option[value='"+actionPageUrl+"']").html()
+							      if(!App.utils.isEmptyOrSpaces(actionPageUrl)){
+							      	App.utils.insertLiquidContent(editor, `{{ action-page.${actionPageUrl} }}` );
+							      }
+							      editor.windowManager.close();
+							    } else {
+							      //close
+							      editor.windowManager.close();
+							    }
+							  }
+							};
+
+		                  	editor.windowManager.open(actionPagesPanel)
+		                  
+		             
+		            }
+		          }
+		        ];
+
+		        return tags;
+		    }
+};
+
+var serializeHash = function () {
+    var attrs = {};
+
+    $.each($(this).serializeArray(), function(i, field) {
+        attrs[field.name] = field.value;
+    });
+
+    return attrs;
+};
+$.fn.extend({ serializeHash: serializeHash });
+
+//https://github.com/sdrdis/jquery.serialize-hash/blob/master/jquery.serialize-hash.js
+ $.fn.serializeNestedHash = function() {
+    var hash = {};
+    function stringKey(key, value) {
+      var beginBracket = key.lastIndexOf('[');
+      if (beginBracket == -1) {
+        var hash = {};
+        hash[key] = value;
+        return hash;
+      }
+      var newKey = key.substr(0, beginBracket);
+      var newValue = {};
+      newValue[key.substring(beginBracket + 1, key.length - 1)] = value;
+      return stringKey(newKey, newValue);
+    }
+
+    var els = $(this).find(':input').get();
+    $.each(els, function() {
+
+    	if(this.name && /input/i.test(this.nodeName)  && /checkbox/i.test(this.type) && this.value == "true"){
+    		// Sets checkboxes to either true or value
+    		$.extend(true, hash, stringKey(this.name, this.checked ));
+    	}
+    	else if(this.name && /input/i.test(this.nodeName) && /hidden/i.test(this.type) && this.value == "true"){
+    		$.extend(true, hash, stringKey(this.name, true ));
+    	}
+       	else if (this.name && !this.disabled && (this.checked || /select|textarea/i.test(this.nodeName) || /hidden|text|search|tel|url|email|password|datetime|date|month|week|time|datetime-local|number|range|color/i.test(this.type))) {
+            var val = $(this).val();
+            $.extend(true, hash, stringKey(this.name, val));
+        }
+    });
+    return hash;
+};
+
+
+
+jQuery.fn.fadeOutAndRemove = function(speed){
+    $(this).fadeOut(speed,function(){
+        $(this).remove();
+    })
+}
+
+
+function slugify(string) {
+  const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;'
+  const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------'
+  const p = new RegExp(a.split('').join('|'), 'g')
+  return string.toString().toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(/&/g, '-and-') // Replace & with ‘and’
+    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    // .replace(/-+$/, '') // Trim - from end of text
+}
+App.initialized = false;
+App.init = function() {
+	//Apply 1 time event listeners
+	$(document).on("click", 'a[data-toggle="tab"][data-fetch-url]', function(e) {
+		if ($(this).data("completed") != true && $(this).data("fetching") != true) {
+			var self = this;
+			$(self).data("fetching", true);
+			$.get($(this).attr("data-fetch-url"), {}, function(resp) {
+				if($(self).attr("data-fetch-post-controller")=="MemberLookup" && $(self).attr("data-fetch-post-action")=="initActivity"){
+					$($(self).attr("href")).find(".rp_spinner").remove();
+					$($(self).attr("href")).find("#member---activities-list").append(resp);
+				}
+				else{
+					$($(self).attr("href")).html(resp);
+				}
+				
+				App.controllers[$(self).attr("data-fetch-post-controller")][$(self).attr("data-fetch-post-action")]();
+				$(self).data("completed", true);
+				$(self).data("fetching", false);
+			});
+		}
+	});
+
+	// fetch w/ data-fetch-url if page loads with hash
+	var url = document.location.toString();
+    if (url.match('#') &&  $('a[data-toggle="tab"][data-fetch-url][href="#'+url.split('#')[1]+'"]').length > 0 ) {
+    	$('a[data-toggle="tab"][data-fetch-url][href="#'+url.split('#')[1]+'"]').click();
+    }
+	
+	$(document).on("click", '.paginated_tab a', function(e) {
+		e.preventDefault();
+		var self = this;
+		$(self).closest(".tab-pane").append(App.utils.spinnerHtml())
+		$.get($(this).attr("href"), {}, function(resp) {
+			$(self).closest(".tab-pane").html(resp);
+		})
+	});
+	$(document).on('click', '.navbar .dropdown-menu', function (e) {
+	  e.stopPropagation();
+	});
+
+
+	$(document).on('click', '.active-btn-group--single-select > .btn', function (e) {
+	   $(this).addClass("active").siblings().removeClass("active");
+	});
+
+	$(document).on('click', '.active-btn-group--multiple-select > .btn', function (e) {
+	   $(this).toggleClass("active")//.siblings().removeClass("active");
+	});
+
+   	$(document).on('click', "a#nav-toggle.hamburger", function (e) {
+   		$(this).toggleClass("active");
+        $("body").toggleClass("navbar--sidebar-toggled-open");
+        $("#sidebar-menu").toggleClass("collapsed in");
+
+   	});
+	   	
+
+    $(document).on("click", ".lia-switch:not(.disabled) .lia-content-container .selectable-item:not(.active)", function(e){
+        $(this).closest(".dropdown-menu").addClass("disabled")
+         $.post("/lia/change", {lia_type: $(this).data("lia-type"), lia_id: $(this).data("lia-id")}, function(resp){
+             location.reload();
+         });
+    });
+    $('.dropdown-submenu').on("click", function(e){
+        e.stopPropagation();
+        e.preventDefault();
+    });
+
+    //command key for search bar
+    document.addEventListener('keydown', function(event) {
+	    // Check if Command (metaKey) or Ctrl is pressed along with 'K'
+	    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+	        event.preventDefault(); // Prevent the default action of the keypress
+	        var searchBar = document.getElementById('main-search'); // Get the search bar element
+	        if (searchBar) {
+	            searchBar.focus(); // Set focus on the search bar
+	        }
+	    }
+	});
+
+    dataConfirmModal.setDefaults({
+	  modalClass: "centered",
+	  cancelClass: "pull-left"
+	});
+}
+
+
+function ready(event) {
+	// console.log("ready function evnet:", event)
+	if (App.initialized || (event && event.data && event.data.timing && event.data.timing.visitStart) ) {
+		//Not initial page load, simply reconstruct page.
+		App.utils.initializeCurrentPage();
+
+	}
+	else {
+		App.init();
+		//Initial pageload, attach all event handlers
+		App.controllers["ScheduledCalls"] = new ScheduledCalls();
+		App.controllers["ReportingDashboard"] = new ReportingDashboard();
+		App.controllers["MemberLookup"] = new MemberLookup();
+		App.controllers["Settings"] = new Settings();
+		App.controllers["Websites"] = new Websites();
+		App.controllers["Pages"] = new Pages();
+		// App.controllers["Campaigns"] = new Campaigns();
+		App.controllers["Demands"] = new Demands();
+		App.utils.initializeCurrentPage();
+
+		// if(App.initialized != true){
+		// 	App.utils.initializeParsley();
+		// }
+
+		App.initialized=true;
+	}
+
+
+	// $("div.email_draft_content").emailDraft();
+	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="popover"]').popover();
+	$('.dropdown-toggle').dropdown();
+	$.toast.options.loaderBg="#22bec5";
+	$.toast.options.position = "bottom-center";
+		
+	// if(App.initialized != true){
+	App.utils.initializeParsley();
+	// }
+
+
+
+    // excluded: "input[type=button], input[type=submit], input[type=reset], input[type=hidden], input:hidden"
+
+
+
+
+	$('*[data-show-loading-on-click]').on('click', function() {
+		if(!$(this).hasClass("disabled")){$(this).button('loading');}
+	});
+	$("textarea.expanding-textarea").each(function() {
+		$(this).height($(this).prop('scrollHeight')+10);
+	});
+
+
+}
+
+// document.addEventListener("DOMContentLoaded",function(){
+//     ready();
+// });
+document.addEventListener("turbo:load",function(){
+    ready();
+});
+
+
+// document.addEventListener("ready", ready);
+// $(document).on("ready", ready);
+// document.addEventListener("turbolinks:load", ready);

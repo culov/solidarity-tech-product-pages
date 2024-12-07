@@ -1,0 +1,90 @@
+.page-not_found {
+  padding: 90px 35px 25px;
+}
+
+.page-not_found__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-not_found__text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-not_found__subtitle {
+  margin: 0;
+
+  font-family: var(--ff-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--c-violet);
+}
+
+.page-not_found__title {
+  margin: 0;
+
+  font-family: var(--ff-primary);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--c-text-black);
+  letter-spacing: -0.02em;
+}
+
+.page-not_found__description {
+  margin: 0;
+
+  font-family: var(--ff-secondary);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.875;
+  color: var(--c-grey-600);
+}
+
+.page-not_found__image-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.page-not_found__image {
+  display: block;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .page-not_found {
+    padding-top: 210px;
+  }
+
+  .page-not_found__content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px
+  }
+
+  .page-not_found__text {
+    max-width: 560px;
+  }
+
+  .page-not_found__title {
+    margin-bottom: 12px;
+
+    font-size: 3.75rem;
+  }
+
+  .page-not_found__description {
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .page-not_found__image-wrap {
+    max-width: 480px;
+  }
+}

@@ -1,0 +1,31 @@
+<label class="input">
+    <% if defined?(labelText) %>
+      <span class="input__label">
+        <%= labelText %><%= defined?(required) ? '*' : ''%>
+      </span>
+    <% end %>
+    <div class="icon-button-input">
+      <button
+        class="icon-button-input__button"
+        <%= defined?(disabled) ? 'disabled=disabled' : ''%>
+      >
+        <%= render template: 'marketing/common/icon', :locals => {
+          iconName: iconName,
+          iconClass: 'icon-button-input__button-icon'
+        } %>
+      </button>
+      <input
+        type="<%= defined?(type) ? type : 'text' %>"
+        placeholder="<%= defined?(placeholder) ? placeholder : '' %>"
+        name="<%= defined?(name) ? name : '' %>"
+        <%= defined?(required) ? 'required=required' : ''%>
+        <%= defined?(disabled) ? 'disabled=disabled' : ''%>
+        class="input__field icon-button-input__field"
+        />
+    </div>
+    <% if defined?(comment) %>
+        <span class="input__comment">
+          <%= comment %>
+        </span>
+    <% end %>
+</label>

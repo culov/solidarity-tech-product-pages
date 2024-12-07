@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  token: MyString
+  os_type: MyString
+  user_id: 1
+  model: MyString
+  version: MyString
+
+two:
+  token: MyString
+  os_type: MyString
+  user_id: 1
+  model: MyString
+  version: MyString

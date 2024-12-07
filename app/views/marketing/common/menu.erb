@@ -1,0 +1,19 @@
+<menu class="menu">
+    <% Mock::MENU.each do |item| %>
+        <li class="menu__item">
+            <% if item[:items] %>
+                <div class="menu-item__sub-wrap">
+                    <button class="menu-item__sub-name">
+                        <%= item[:name] %>
+                        <%= render template: 'marketing/common/icon', :locals => {
+                          :iconName => 'ui_caret_down',
+                          :iconClass => 'menu-item__icon'
+                        } %>
+                    </button>
+                </div>
+            <% else  %>
+                <a class="menu-item__link" href="<%= item[:path] %>"><%= item[:name] %></a>
+            <% end %>
+        </li>
+    <% end %>
+</menu>

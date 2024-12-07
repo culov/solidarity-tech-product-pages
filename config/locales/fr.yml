@@ -1,0 +1,23 @@
+fr:
+      email: E-mail
+      full_name: Nom complet
+      name: Nom
+      phone_number: Numéro de téléphone
+      first_name: Prénom
+      last_name: Nom de famille
+      password: Mot de passe
+      language: Langue préférée
+      email_invalid: Cette adresse e-mail est invalide
+      six_minimum: Minimum de 6 caractères
+      zip_code: Code postal
+      zip_code_error: Veuillez entrer un code postal %{region} valide
+      email_error: Cette adresse e-mail est invalide
+      full_name_error: S'il vous plait entrez votre nom entier
+      language_error: Veuillez sélectionner une langue préférée
+      email_placeholder: your.address@gmail.com
+      did_you_mean: Vouliez-vous dire?
+      petition:
+            signature_goal: "<strong>%{goal_start} ont signé jusqu'à présent</strong>, aidez-nous à atteindre %{goal_end}"
+      all:
+            signature: Signature
+            clear: Nettoyer

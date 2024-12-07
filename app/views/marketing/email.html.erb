@@ -1,0 +1,27 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Engage supporters with Solidarity Tech's email marketing tools for nonprofit organizations. Create campaigns, automations & segment lists - all integrated in one CRM.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::EMAIL[:hero][:title],
+  :description => Mock::EMAIL[:hero][:description],
+  :label => Mock::EMAIL[:hero][:label],
+  :image => Mock::EMAIL[:hero][:image],
+  :colors => Mock::EMAIL[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::EMAIL[:trigger_block_v][:title],
+  :extra_title => Mock::EMAIL[:trigger_block_v][:extra_title],
+  :image => Mock::EMAIL[:trigger_block_v][:image],
+  :colors => Mock::EMAIL[:trigger_block_v][:colors],
+  :triggers => Mock::EMAIL[:trigger_block_v][:triggers],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::EMAIL[:features][:start],
+  :items => Mock::EMAIL[:features][:items],
+} %>
+
+<%= render template: 'marketing/components/cta' %>

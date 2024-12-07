@@ -1,0 +1,22 @@
+<label class="input">
+    <% if defined?(labelText) %>
+      <span class="input__label">
+        <%= labelText %>
+      </span>
+    <% end %>
+    <input
+      type="<%= defined?(type) ? type : 'text' %>"
+      <% if defined?(name) && name == "full_name" %>
+      data-parsley-minwords="2"
+      <% end %>
+      placeholder="<%= defined?(placeholder) ? placeholder : '' %>"
+      name="<%= defined?(name) ? name : '' %>"
+      <%= defined?(required) ? 'required=required' : ''%>
+      class="input__field"
+    />
+        <% if defined?(comment) %>
+            <span class="input__comment">
+              <%= comment %>
+            </span>
+        <% end %>
+</label>

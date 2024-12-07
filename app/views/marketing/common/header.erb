@@ -1,0 +1,11 @@
+<header class="wrap header  <%= defined?(is_light) ? 'header--light' : '' %>">
+    <div class="content header__content">
+        <%= render template: 'marketing/components/logotype' %>
+        <div class="header__menu">
+            <%= render template: 'marketing/common/menu' %>
+            <%= render template: 'marketing/common/button', :locals => { :text => 'Sign Up', :link => "/pricing", :id => "signup-button"} %>
+        </div>
+        <%= render template: 'marketing/common/menu_button' %>
+        <%= render template: 'marketing/common/sub_menu' %>
+    </div>
+</header>

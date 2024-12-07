@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  chapter_id: 1
+  user_id: 1
+  description: MyText
+  field_type: MyString
+  label: MyString
+  internal_name: MyString
+  options: 
+
+two:
+  chapter_id: 1
+  user_id: 1
+  description: MyText
+  field_type: MyString
+  label: MyString
+  internal_name: MyString
+  options: 

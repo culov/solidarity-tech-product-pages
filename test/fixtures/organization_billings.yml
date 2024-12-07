@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  billing_method: MyString
+  billing_price_per_contact: 9.99
+  billing_price_per_incoming_text: 9.99
+  billing_price_per_outgoing_text: 9.99
+  billing_price_per_voice_minute: 9.99
+  billing_agent_user_id: 1
+  default_payment_card_id: 1
+
+two:
+  billing_method: MyString
+  billing_price_per_contact: 9.99
+  billing_price_per_incoming_text: 9.99
+  billing_price_per_outgoing_text: 9.99
+  billing_price_per_voice_minute: 9.99
+  billing_agent_user_id: 1
+  default_payment_card_id: 1

@@ -1,0 +1,12 @@
+<footer class="wrap form-footer">
+  <div class="content form-footer__content">
+    <p class="form-footer__copyright"><a href="https://www.solidarity.tech/terms" target="_blank">Terms</a> | <a href="https://www.solidarity.tech/terms" target="_blank">Privacy</a></p>
+    <a class="form-footer__mail-link" href="mailto:<%= Mock::META[:email] %>">
+      <%= render template: 'marketing/common/icon', :locals => {
+        :iconName => 'ui_mail',
+        :iconClass => 'form-footer__mail-link-icon'
+      } %>
+      <%= Mock::META[:email] %>
+    </a>
+  </div>
+</footer>

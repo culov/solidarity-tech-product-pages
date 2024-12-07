@@ -1,0 +1,131 @@
+.crm-special {
+  background-color: var(--c-background-dark);
+
+  background-image: url('crm_special_bg.svg');
+  background-repeat: no-repeat;
+  background-position: 40% 25%;
+  background-size: 400vw;
+}
+
+/*===== Title =====*/
+
+.crm-special__title {
+  margin: 35px 10px 45px;
+
+  font-family: var(--ff-primary);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.16;
+  color: var(--c-white);
+  text-align: center;
+}
+
+.crm-special__title--1 {
+  color: var(--c-blue);
+}
+
+.crm-special__title--3 {
+  color: var(--c-violet-light);
+}
+
+/*===== Image =====*/
+
+.crm-special__image-wrap {
+  width: 100%;
+}
+
+.crm-special__image {
+  display: none;
+}
+
+.crm-special__image--mobile {
+  display: block;
+  width: 100%;
+}
+
+/*===== Triggers =====*/
+
+.crm-special__triggers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  margin: 35px 10px 90px;
+
+  --c-trigger-icon: var(--c-blue);
+  --c-trigger-icon-wrap: rgba(44, 217, 255, 0.09);
+  --c-trigger-text: var(--c-white);
+}
+
+@media screen and (min-width: 480px) {
+  .crm-special {
+    background-position: 40% 20%;
+    background-size: 350vw;
+  }
+
+  .crm-special__image-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .crm-special {
+    background-position: 45% 6%;
+    background-size: 140vw;
+  }
+
+  .crm-special__title {
+    max-width: 800px;
+    margin: 55px auto 5px 0;
+
+    font-size: 3.125rem;
+    text-align: left;
+  }
+
+  .crm-special__image-wrap {
+    max-width: initial;
+  }
+
+  .crm-special__image {
+    display: block;
+    width: 100%;
+  }
+
+  .crm-special__image--mobile {
+    display: none;
+  }
+
+  .crm-special__triggers {
+    margin: 40px 0 85px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 45px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .crm-special {
+    background-position: 0 20%;
+    background-size: 110vw;
+  }
+
+  .crm-special__triggers {
+    gap: 70px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .crm-special {
+    background-position: 0 15%;
+    background-size: 101vw;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .crm-special {
+    background-position: 0 -20%;
+    background-size: 101vw;
+  }
+}

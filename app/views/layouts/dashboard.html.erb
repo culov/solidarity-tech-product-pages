@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<% 
+    @settings_submenu = request.fullpath.include?("/settings")
+    @mobile_full_height = request.fullpath.include?("/texts/inbox")
+    @urs = current_admin.user_role_scope
+    @organization_access = @urs && @urs.scope_type == "Organization" ? true : false
+    @can_switch_scope = @organization_access && (@urs.get_scoped_organization_ids.size > 1 || @urs.get_scoped_chapter_ids.size > 1 )
+    
+
+    solidarity_user = current_solidarity_user && current_solidarity_user.is_admin ? current_solidarity_user : current_admin.urs.solidarity_user
+
+    @all_urs = solidarity_user.user_role_scopes.preload(:scope).sort_by{|urs|urs.scope.name.to_s}
+
+%>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title><%=@urs.logged_in_as.name %> Dashboard | Solidarity Tech</title>
+
+
+    <link rel="icon" href="https://irdu.s3.amazonaws.com/favicons/st/favicon.ico" type="image/x-icon">
+    <meta name="format-detection" content="telephone=no">
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/airbrake-js/1.6.2/client.min.js"></script>
+    <script type="text/javascript">
+                
+    var airbrake = new airbrakeJs.Client({
+      projectId: 269067,
+      projectKey: 'dc46f7b92167b8e89116519f4e6b21b7'
+    });
+
+    </script>
+    <script src="https://editor.unlayer.com/embed.js"></script>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.21.8/grapes.min.js" integrity="sha512-4J00lSLrJYO9s3Wa+VRh2GSy/nPe1Fc5F9pfXyGMpEE20oUrlld9tD6x4mNJxOREYEIpG5Au2ATulsEuk+BKag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.21.8/css/grapes.min.css" integrity="sha512-smu2cC6OBuMJWOsb4i4+NzP5TXcTgMWZQydceIIwoKXtE56HG+4jfWB5/Epx7Dhg2Eim9l2LPXK4PvgTnbZV2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <%= javascript_include_tag 'dashboard' %>
+
+
+
+    <%= action_cable_meta_tag %>
+    <%= csp_meta_tag %>
+
+    <!-- <meta name="turbolinks-cache-control" content="no-preview" /> -->
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-174021106-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-174021106-1');
+    </script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRFVqPN3i2772iHgrUzuz7E2QydqVy9ko&libraries=places,drawing,visualization&callback=initMap"
+        async defer></script>
+    <script type="text/javascript">function initMap() {}</script>
+
+    <link href="https://s3.amazonaws.com/solidarity.tech/fonts/font-awesome/css/all.min.css" rel="stylesheet" type="text/css" />
+
+
+
+    <script type="text/javascript">
+        App.utils.assessments = <%= current_admin.assessment_statuses.to_json.html_safe %>;
+        <% if @billing_plan %>
+        App.utils.usage_pricing = <%= @billing_plan.usage_pricing.to_json.html_safe %>;
+        <% end %>
+    </script>
+
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_NDmOoXazlGhhQ46p4PkhPGbsCTSs7vDsJTJ3TeOgMnU',{api_host:'https://app.posthog.com'});
+        posthog.capture(
+            'event_name', 
+            { 
+                $set: { name: "<%=solidarity_user.full_name%> - <%= @root_organization.name %>"  },
+            }
+        );
+    </script>
+
+
+    <%= yield(:head) -%>
+
+
+
+</head>
+
+
+<%
+
+    @chapter = current_admin.chapter
+
+
+%>
+
+
+<body class="fix-header <%='settings-page' if @settings_submenu%> <%= 'mobile--full-height' if @mobile_full_height%>" data-controller="modal">
+
+
+
+    <div id="wrapper" >
+
+
+
+<%
+    @icon = ""
+    @title = ""
+    @subtitle = ""
+
+
+
+    if @urs
+        if @urs.logged_in_as_type == "Organization"
+
+            @org = @urs.logged_in_as
+            @icon = @org.icon_url
+            @title = @org.title
+            @subtitle = @org.subtitle
+
+        elsif @urs.logged_in_as_type == "Chapter"
+            @org = @chapter.organization
+            @logged_in_chapter = @urs.logged_in_as
+            @icon = @logged_in_chapter.small_logo_url
+            @icon = @org.icon_url if @icon.nil?
+            @title = @logged_in_chapter.navbar_name
+            @subtitle = @logged_in_chapter.city
+        end
+
+
+        if @icon.blank?
+            @icon = "https://ui-avatars.com/api/?background=e9ecef&name=#{@title}&color=343a40"
+        end
+
+    end
+
+%>
+
+    
+      <nav class="navbar navbar-default navbar-static-top m-b-0">
+
+    
+        <a type="button" id="nav-toggle"  class="navbar-toggle collapsed hamburger pull-right" data-target="#sidebar-menu" aria-expanded="false" aria-controls="navbar">
+                <span></span>
+                
+        </a>
+
+
+        <div id="navbar-header" class="navbar-header" data-turbo-permanent>
+            <div 
+                <% if @can_switch_scope %>
+                data-controller="tippy" 
+                data-tippy-content-template-id-value="dashboard--change-scope-template" 
+                data-tippy-trigger-value="click" 
+                data-tippy-placement-value="bottom"
+                class="tippy--rounded-corners navbar--account-change navbar--button"
+                data-tippy-interactive-value="true"
+                <% end %>
+            >
+
+            <div class="top-left-part <%='can-switch-scope' if @can_switch_scope%>" id="org-switch-dropdown" aria-haspopup="true" aria-expanded="false" data-tippy-target="item" >
+
+                <div id="logged-in-as-container">
+                   
+                    <div class="lia--image-container">
+                        <img class="img" src="<%=@icon%>" width="29" />
+                    </div>
+                  
+                    <div class="logged-in-text">
+                        <div data-controller="fitty" class="lia-title" title="<%=@title%>"><%=@title%></div>
+                        <% if @title != @subtitle %>
+                        <div title="<%=@subtitle%>" class="lia-subtitle"><%=@subtitle%></div>
+                        <% end %>
+                    </div>
+                </div>
+                <div class="caret-container">
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                </div>
+                <div class="clear"></div>
+
+            </div>
+
+
+
+            <% if @can_switch_scope  %>
+
+            <template id="dashboard--change-scope-template" class="hidden">
+                <div class="st-dropdown lia-switch m-0" aria-labelledby="scope-switch-dropdown">
+
+
+                <div class="lia-header-container">
+                    <span>LOG IN AS</span>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="lia-content-container">
+                    <div class="selectable-items">
+                        
+                        <% 
+                                @org_ids = @urs.get_scoped_organization_ids
+                                if @org_ids.count > 0
+                        %>
+                                    <div><h5>Organizations</h5></div>
+
+                                    <% Organization.where(:id => @org_ids).each do |org| %>
+
+                                        
+                                            <div class="organization selectable-item <%= 'active' if @urs.logged_in_as_id == org.id && @urs.logged_in_as_type == "Organization" %>" data-lia-id="<%=org.id.to_s%>" data-lia-type="Organization">
+                                                <% cache [org, "lia_dropdown"] do %>
+                                                    <img src="<%=org.image_url %>" width="20" class="mr-10"/>
+                                                    <span><%=org.full_name%></span>
+                                                <% end %>
+                                            </div>
+                                        
+
+                                     <% end %>
+                                <% end %>
+
+                        <% 
+
+                                @chapter_ids = @urs.get_scoped_chapter_ids
+                                if @chapter_ids.count > 0
+                        %>
+
+                                   
+
+                                    <% 
+
+                                        @chapters = Chapter.where(:id => @chapter_ids).select("id, name, city, small_logo_url, is_active, updated_at").order("city ASC")
+                                        @active_chapters = @chapters.select{|c|c.is_active}
+                                        @non_active_chapters = @chapters.select{|c|c.is_active!=true}
+
+                                    %>
+
+                                    <% if @active_chapters.count > 0 %>
+                                        <div><h5>Active Chapters</h5></div>
+                                    <% end %>
+
+                                    <% @active_chapters.each do |chapter| %>
+                                       
+                                            <div class="chapter selectable-item <%= 'active' if @urs.logged_in_as_id == chapter.id && @urs.logged_in_as_type == "Chapter" %>" data-lia-id="<%=chapter.id.to_s%>" data-lia-type="Chapter">
+                                                <% cache [chapter, "lia_dropdown"] do %>
+                                                   <img src="<%=chapter.image_url %>" width="20" class="mr-10"/>
+                                                   <span> <%=chapter.full_name%> </span>
+                                                 <% end %>
+                                            </div>
+                                       
+                                    <% end %>
+
+                                    <% if @non_active_chapters.count > 0 %>
+
+                                    <div class="divider"></div>
+                                    <div data-controller="reveal">
+                                        <div class="left-right-split cursor-pointer" data-action="click->reveal#toggle">
+                                            <h5 >Inactive Chapters</h5>
+                                            <div>
+                                                <div class="hidden" data-reveal-target="item" >
+                                                    <i class="fa fa-chevron-down"></i>
+                                                </div>
+                                                <div class="" data-reveal-target="item" >
+                                                    <i class="fa fa-chevron-left"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                  
+                                        <div data-reveal-target="item" class="hidden">
+                                            <% @non_active_chapters.each do |chapter| %>
+                                                
+                                                    <div class="chapter selectable-item <%= 'active' if @urs.logged_in_as_id == chapter.id && @urs.logged_in_as_type == "Chapter" %>" data-lia-id="<%=chapter.id.to_s%>" data-lia-type="Chapter">
+                                                           <% cache [chapter, "lia_dropdown"] do %>
+                                                                <img src="<%=chapter.image_url %>" width="20" class="mr-10"/>
+                                                                <span> <%=chapter.full_name%> </span>
+                                                            <% end %>
+                                                    </div>
+                                            
+                                            <% end %>
+                                        </div>
+                                          </div>
+
+                                    <% end %>
+
+                                <% end %>
+                       
+
+
+
+                    </div>
+                 </div>
+              </div>
+          </template>
+        <% end %>
+
+
+            
+          </div>
+
+   
+            <div id="main-search-container" data-turbo-permanent>
+               
+
+
+                <form style="flex: 1" id="autocomplete-user-container" autocomplete="off" data-controller="autocomplete autocomplete-user" data-autocomplete-url-value="/search/all?state=main-search" data-action="autocomplete.change->autocomplete-user#goToPage submit->autocomplete-user#preventDefault
+                loadstart->autocomplete-user#searching load->autocomplete-user#show
+                ">
+                    <div class="main-search--form-content">
+                        <i class="far fa-search search-icon"></i>
+                        <input id="main-search" min-length="2" placeholder="Search anything" type="text" data-autocomplete-target="input" data-autocomplete-user-target="input" />
+                        
+                        <ul class="list-group" data-autocomplete-target="results" data-autocomplete-user-target="results" hidden>
+                          
+                           <% @past_searches = Searchjoy::Search.where(:user_id =>  current_admin.id).where("convertable_id IS NOT NULL").includes(:convertable).order("created_at DESC").limit(10).select{|ps| !ps.convertable.nil?} %>
+                           <% if @past_searches.count == 0 %>
+                                <li role="option" aria-disabled="true" class="list-group-item">Start typing to search...</li>
+                            <% else %>
+
+                                <li class="list-group-item-header left-right-split">
+                                    <span>Recent Searches</span>
+                                    <a href="/searches">See All</a>
+                                </li>
+                                <% 
+                                    @past_searches.each do |sj|
+                                        result = sj.convertable
+
+                                %>
+                                    <%= render partial: "dashboard/search/all", locals: {result: result} %>
+                                <% end %>
+
+                            <% end %>
+                        </ul>
+
+
+                    </div>
+                </form>
+                
+
+
+            </div>  
+    
+        
+             <button class="btn-link navbar--support-button navbar--button " data-controller="tippy" data-tippy-content-value="Support" data-tippy-target="item" onclick="Intercom('show')" >
+                <i class="fal fa-headset"></i>
+             </button>
+
+            <div 
+                data-controller="tippy" 
+                data-tippy-content-template-id-value="dashboard--change-account-template" 
+                data-tippy-trigger-value="click" 
+                data-tippy-placement-value="bottom"
+                class="tippy--rounded-corners navbar--account-change navbar--button dashboard--change-acount-avatar-container"
+                data-tippy-interactive-value="true">
+                    <button class="btn-link h-100" data-tippy-target="item">
+
+                        <!-- <img class='dashboard--change-acount-avatar hidden-sm hidden-md hidden-lg hidden-xl' src="<%=solidarity_user.avatar_url%>" /> -->
+                        <span class='dashboard--change-acount-avatar hidden-sm hidden-md hidden-lg hidden-xl'>
+                            <i class="fal fa-user-circle"></i>
+                        </span>
+                        <span class="hidden-xs" style="color:white;"><%=solidarity_user.full_name%></span>
+                        <!-- <i class="fa fa-caret-down ml-5 caret-container" aria-hidden="true"></i> -->
+
+                    </button>
+                    
+            </div>
+
+            <template id="dashboard--change-account-template" class="hidden">
+
+                <div class="st-dropdown account-switch " aria-labelledby="account-switch-dropdown">
+                    
+                    <%  @my_urs = current_admin.urs
+                        if @all_urs.count > 1
+                    %>
+                    <div class="lia-header-container">
+                        <span>CHANGE ACCOUNT</span>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="account-content-container" data-turbo="false">
+                        <div class="selectable-items">
+                            
+                            <% 
+                                @all_urs.each do |this_urs| %>
+                                    <div>
+                                        <form action="/account/change" method="POST" class="st-dropdown-item selectable-item <%='active' if @my_urs.id == this_urs.id %>">
+                                            <input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+                                            <input type="hidden" name="urs_id" value="<%=this_urs.id.to_s%>">
+                                            <button type="submit" data-urs-id="<%=this_urs.id.to_s%>"><%= this_urs.scope.name.to_s %></button>
+                                        </form>
+                                    </div>
+                                <% end %>
+                           
+                        
+                        </div>
+                    </div>
+
+                    <% end %>
+
+                    <div class="dashboard--my-account-footer selectable-items <%= 'border-top' if @all_urs.count > 1%>">
+                         <div>
+                            <a data-action="click->tippy#hide" class="st-dropdown-item selectable-item" href="/account"><i class="far fa-user mr-10"></i>My Account
+                            </a>
+                        </div>
+                        <div>
+                            <form action="/logout" method="POST" class="st-dropdown-item logout selectable-item">
+                                <input type="hidden" value="delete" name="_method">
+                                <button type="submit" class="red"><i class="far fa-sign-out mr-10"></i>Logout</button>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                 </div>
+
+
+            </template>
+        
+
+
+      </nav>
+        <!-- End Top Navigation -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar -->
+        <!-- ============================================================== -->
+
+        <%= render partial: "dashboard/shared/sidebar_menu" %>
+
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar -->
+        <!-- ============================================================== -->
+
+
+        <!-- ============================================================== -->
+        <!-- Start Settings Sidebar if Needed -->
+        <!-- ============================================================== -->
+
+        <%  if @settings_submenu %>
+                <%= render partial: "dashboard/shared/settings" %>
+        <% end %>
+
+
+        <!-- ============================================================== -->
+        <!-- Page Content -->
+        <!-- ============================================================== -->
+        <div id="page-wrapper" 
+            <% if content_for?(:call_container) %>
+                data-controller="call" 
+                data-call-partner-hash-id-value="<%=@user.hash_id%>" 
+                data-call-agent-hash-id-value="<%=current_admin.hash_id%>"
+                <% if params[:make_call] && params[:make_call].to_bool == true %>
+                data-call-trigger-call-value="true"
+                <% end %>
+                <% if !params[:phonebank_id].blank? %>
+                data-call-phonebank-id-value="<%=params[:phonebank_id].to_s%>"
+                <% end %>
+                
+            <% end %>
+
+            data-st-controller-name="<%=controller.class.to_s.gsub("::","--")%>" 
+            data-page="<%=body_page_name%>" 
+            class="<%='settings' if @settings_submenu%>" <%='data-st-controller="Settings"'.html_safe if @settings_submenu %> > 
+
+            <div class="container-fluid main-content">
+
+                <% if content_for?(:call_container) %>
+              
+                    <%=yield(:call_container)%>
+                    
+                <% end %>
+
+                <div class="dash_top_padding"></div>
+
+
+
+                <% if @organization_plan && @organization_plan.has_unpaid_invoice? && !request.fullpath.include?("/settings/billing") %>
+                    <div class="alert alert-danger">
+                        <div class="d-flex">
+                            <div><i class="fas fa-exclamation-triangle mr-20"></i></div>
+                            <div>Your account has an unpaid invoice. 
+
+                                <% if current_admin.has_access?("settings.billing.manage") %>
+                                    <a href="/settings/billing/overview">Please pay your overdue invoice </a>
+                                <% else %>
+                                    Contact an administator who has billing access 
+                                <% end %>
+                           
+                                before your access is paused in <%= distance_of_time_in_words(Time.now, 
+                                @organization_plan.unpaid_invoice.period_end + BILLING_GRACE_PERIOD
+                                ) %>.
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+
+                <% if flash[:success] %>
+                  <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <p><%= flash[:success].html_safe %></p>
+                  </div>
+                <% end %>
+                <% if flash[:warning] %>
+                  <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <p><%= flash[:warning].html_safe %></p>
+                  </div>
+                <% end %>
+                <% if flash[:error] %>
+                  <div class="alert alert-danger">
+                    <p><%= flash[:error].html_safe %></p>
+                  </div>
+                <% end %>
+
+
+                <% if current_admin.root_organization.requires_a2p_upgrade? && @urs.role_id == 1 && !request.fullpath.include?("/settings/brand-registration") %>
+                    <div class="alert alert-danger">
+                        <p>
+                            <strong>CRITICAL ISSUE:</strong> The number of phone numbers your account is using, requires you to provide more information or <strong>carriers will start filtering your texts</strong> and adding more phone numbers will become impossible. <a href="/settings/brand-registration">Please update your information here</a>
+                        </p>
+                    </div>
+                <% end %>
+
+
+
+                <div id="content"><%= content_for?(:content) ? yield(:content) : yield %></div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <% if params[:invite_overlay] && params[:invite_overlay].to_boolean == true %>
+        <div data-controller="modal">
+            <div id="invite-team-overlay" data-modal-target="modal" class="modal fade centered" role="dialog" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog" data-action="turbo:load@window->modal#show load@window->modal#show">
+                <div class="modal-content">
+                    
+                    <turbo-frame id="team-invite-new-email">
+                        <%= render template: "dashboard/settings/team/invite/new", formats: [:html] %>
+                    </turbo-frame>
+
+                </div>
+              </div>
+            </div>
+        </div>
+    <% end %>
+
+
+
+
+<%= yield(:foot) -%>
+
+
+
+
+<%= csrf_meta_tags %>
+
+<script type="text/template" id="template_vcard">
+        <span class="tag label label-info vcard">
+           <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white"></i></a> 
+           <span>Contact Card</span>
+           <input class="form--dont-clear" type="hidden" name='attachments[{{ language }}][]' value="vcard" />
+        </span>
+</script>
+
+<script type="text/template" id="template_file_upload">
+        <span data-filename="{{ filename }}" class="tag label label-info file">
+           <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white"></i></a> 
+           <span>{{ filename }}</span>
+           <input class="form--dont-clear" type="hidden" name='attachments[{{ language }}][]' value="{{ file_url }}" />
+        </span>
+</script>
+
+<script type="text/template" id="template_image_upload">
+        <span data-filename="{{ filename }}" data-controller='bootstrap-utils' class="tag label label-info file attachment--image" data-toggle="tooltip" data-trigger="hover" data-title="<img style='max-height: 150px; max-width: 150px;' src='{{ file_url }}'/>" data-html="true">
+           <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white"></i></a> 
+           <span>{{ filename }}</span>
+           <input class="form--dont-clear" type="hidden" name='attachments[{{ language }}][]' value="{{ file_url }}" />
+        </span>
+</script>
+
+
+<div data-modal-target="modal" class="modal fade centered" role="dialog" id="primary-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div>
+            <turbo-frame id="modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-action="click->modal#clear" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title font-weight-bold"></h4>
+                </div>
+              
+          
+                <div class="modal-body">
+                  <div class="rp_spinner">
+                    <div class="fa fa-circle-o-notch r fa-spin"></div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Back</button>
+                </div>
+          </turbo-frame>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<% my_toast = flash[:toast] && flash[:toast].is_a?(Hash) ? flash[:toast].deep_symbolize_keys : flash[:toast] %>
+
+<turbo-frame id="toast">
+    <div id="toasts--container">
+        <% if my_toast && my_toast[:message] %>
+            <%= render partial: "dashboard/shared/toast", locals: {message: my_toast[:message], title: my_toast[:title], hide_after: 8000} %>
+        <% end %>
+    </div>
+</turbo-frame>
+
+
+<script>
+  window.intercomSettings = {
+    api_base: "https://api-iam.intercom.io",
+    app_id: "er96705e",
+    name: "<%= solidarity_user.full_name %>", // Full name
+    email: "<%= solidarity_user.email %>", // Email address
+    hide_default_launcher: true,
+    organization_name: "<%= @root_organization.name %>",
+    created_at: "<%= solidarity_user.created_at.to_i %>", // Signup date as a Unix timestamp
+    user_hash: "<%= OpenSSL::HMAC.hexdigest( 'sha256', ENV['INTERCOM_HMAC'].to_s , solidarity_user.email.to_s ) %>"
+  };
+</script>
+
+<script>
+// We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/er96705e'
+(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/er96705e';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+</script>
+
+
+
+<%= render template: 'dashboard/shared/sprites' %>
+
+
+<%= render partial: 'dashboard/shared/onboarding_checklist' %>
+
+
+</body>
+
+</html>

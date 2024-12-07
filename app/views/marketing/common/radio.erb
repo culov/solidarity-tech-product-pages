@@ -1,0 +1,28 @@
+<div class="input">
+    <% if defined?(labelText) %>
+      <span class="input__label">
+        <%= labelText %><%= defined?(required) ? '*' : ''%>
+      </span>
+    <% end %>
+   <div class="radio">
+     <% values.each do |value| %>
+       <label class="radio__item">
+          <input
+            type="radio"
+            name="<%= name %>"
+            value="<%= value %>"
+            <%= defined?(defaultValue) && defaultValue === value ? 'checked=checked' : '' %>
+            <%= defined?(required) ? 'required=required' : ''%>
+            class="radio__field"
+          />
+          <span class="radio__icon"></span>
+          <%= value %>
+       </label>
+     <% end %>
+   </div>
+    <% if defined?(comment) %>
+        <span class="input__comment">
+          <%= comment %>
+        </span>
+    <% end %>
+</div>

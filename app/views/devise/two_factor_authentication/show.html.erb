@@ -1,0 +1,43 @@
+<script type="text/javascript">
+	 $(function(){
+    	$(".btn").click(function(){$(this).button("loading");})
+    });
+</script>
+
+
+
+<div class="container">
+	<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+		<div class="row" style="margin-bottom: 30px;">
+			<h2 >Enter your verification code</h2>
+
+			<% if resource.direct_otp %>
+				<p>Enter the code that was texted to you at <%= !current_admin.nil? ? current_admin.pretty_phone_number : current_user.pretty_phone_number %></p>
+			<% else %>
+				<% Airbrake.notify(:failed_user_login => "IMPORTANT!!! The 2fa issue", :params => params, :resource => resource) %>
+				<p>Enter the code from your authenticator app</p>
+			<% end %>
+		</div>
+
+	<div class="row">
+		<form action="/users/two_factor_authentication" accept-charset="UTF-8" method="post">
+			<input name="utf8" type="hidden" value="&#x2713;" />
+			<input type="hidden" name="_method" value="put" />
+			<div class="center"  style="width: 200px; margin: 0 auto; margin-bottom: 20px;" >
+	  		<input type="text" class="form-control"name="code" id="code" value="" autofocus="autofocus" placeholder="123456" />
+	  	</div>
+
+	  		<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+	  		<input type="submit" class="btn btn-primary" name="commit" value="Submit" data-disable="true" data-disable-with="Submit" />
+		</form>
+
+		<div style="margin-top:20px;">
+	  		<a action="get" href="/users/two_factor_authentication/resend_code">Resend Code</a>
+			<a rel="nofollow" class="ml-10" data-method="delete" href="/logout">Sign out</a>
+		</div>
+	</div>
+
+
+	</div>
+</div>
+

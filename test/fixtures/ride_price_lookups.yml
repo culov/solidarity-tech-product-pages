@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_label: MyString
+  end_label: MyString
+  service: MyString
+
+two:
+  start_label: MyString
+  end_label: MyString
+  service: MyString

@@ -1,0 +1,59 @@
+.onboarding {
+  min-height: calc(100vh - 180px);
+}
+
+.onboarding__title {
+  margin: 0 0 8px;
+
+  font-family: var(--ff-secondary);
+  font-weight: 600;
+  font-size: 1.875rem;
+  line-height: 1.2;
+  color: var(--c-text-black);
+  text-align: center;
+}
+
+.onboarding__text {
+  margin: 0 0 18px;
+
+  font-family: var(--ff-secondary);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--c-grey-600);
+  text-align: center;
+}
+
+
+@media screen and (min-width: 992px) {
+  .onboarding {
+    margin-top: -80px;
+  }
+}
+
+.parsley-errors-list{
+    margin-block-start: 0;
+    padding-inline-start: 0;
+    list-style-type: none;
+    color: var(--c-text-red);
+    margin-block-end: 10px;
+}
+.parsley-errors-list:empty{
+  display: none;
+}
+
+.iti{
+  width: 100%;
+}
+.onboarding .error{
+  color: var(--c-text-red);
+}
+select:invalid { color: var(--c-grey-500);}
+select{
+  background-color: white;
+}
+.hidden{display: none;}
+.pb-12{padding-bottom: 12px;}
+.pt-20{padding-top: 20px;}
+
+

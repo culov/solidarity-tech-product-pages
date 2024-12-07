@@ -1,0 +1,40 @@
+:root {
+  --c-main: var(--c-black);
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+
+  padding-top: 22px;
+}
+
+.header--light {
+  --c-main: var(--c-white)
+}
+
+.header__content {
+  position: relative;
+  
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__menu {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .header {
+    padding-top: 32px;
+  }
+
+  .header__menu {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+}

@@ -1,0 +1,20 @@
+<section class="wrap beveled submenu-block">
+  <div class="content submenu-block__content">
+    <h2 class="submenu-block__title"><%= title %></h2>
+    <ul class="submenu-block__list">
+      <% Mock::SUB_MENU[:items].each do |item| %>
+        <li>
+          <a class="submenu-block__link" href="<%= item[:path] %>">
+            <div class="submenu-block__link-ico-wrap">
+              <%= render template: 'marketing/common/icon', :locals => {
+                :iconName => item[:icon],
+                :iconClass => 'submenu-block__link-icon'
+              } %>
+            </div>
+            <span><%= item[:name] %></span>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>

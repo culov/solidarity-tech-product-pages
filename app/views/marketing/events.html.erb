@@ -1,0 +1,30 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Promote rallies, meetings & grassroots events using Solidarity Tech's all-in-one event management for nonprofits. Streamline registrations, reminders & check-ins.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::EVENT[:hero][:title],
+  :description => Mock::EVENT[:hero][:description],
+  :label => Mock::EVENT[:hero][:label],
+  :image => Mock::EVENT[:hero][:image],
+  :colors => Mock::EVENT[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::EVENT[:trigger_block_v_1][:title],
+  :extra_title => Mock::EVENT[:trigger_block_v_1][:extra_title],
+  :image => Mock::EVENT[:trigger_block_v_1][:image],
+  :colors => Mock::EVENT[:trigger_block_v_1][:colors],
+  :triggers => Mock::EVENT[:trigger_block_v_1][:triggers],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::EVENT[:trigger_block_v_2][:title],
+  :extra_title => Mock::EVENT[:trigger_block_v_2][:extra_title],
+  :image => Mock::EVENT[:trigger_block_v_2][:image],
+  :colors => Mock::EVENT[:trigger_block_v_2][:colors],
+  :triggers => Mock::EVENT[:trigger_block_v_2][:triggers],
+} %>
+
+<%= render template: 'marketing/components/cta' %>

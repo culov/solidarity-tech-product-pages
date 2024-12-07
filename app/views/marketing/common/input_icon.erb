@@ -1,0 +1,34 @@
+<label class="input">
+    <% if defined?(labelText) %>
+      <span class="input__label">
+        <%= labelText %><%= defined?(required) ? '*' : ''%>
+      </span>
+    <% end %>
+    <div class="input__icon-wrap">
+      <% if defined?(iconBefore) %>
+       <%= render template: 'marketing/common/icon', :locals => {
+         iconName: iconBefore,
+          iconClass: 'input__icon input__icon--before'
+       }  %>
+      <% end %>
+      <% if defined?(iconAfter) %>
+        <%= render template: 'marketing/common/icon', :locals => {
+          iconName: iconAfter,
+          iconClass: 'input__icon input__icon--after'
+        }  %>
+      <% end %>
+      <input
+        type="<%= defined?(type) ? type : 'text' %>"
+        placeholder=" <%= defined?(placeholder) ? placeholder : '' %>"
+        name="<%= defined?(name) ? name : '' %>"
+        <%= defined?(required) ? 'required=required' : ''%>
+        class="input__field"
+        />
+    </div>
+
+    <% if defined?(comment) %>
+        <span class="input__comment">
+          <%= comment %>
+        </span>
+    <% end %>
+</label>

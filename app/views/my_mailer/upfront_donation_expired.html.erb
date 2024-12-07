@@ -1,0 +1,23 @@
+<% 
+	@url = UrlShortener.generate("/me/join", "pay_dues", @user, nil, nil, 100)
+
+	
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  	<div>
+    	<p>Hi <%= @user.real_first_name %></p>
+    </div>
+    <div>
+	    <p>
+	      Your membership to LA Rideshare Drivers just expired. We rely on your continued support to keep the lights on. Please renew your membership dues
+	    </p>
+	    <a class="btn" href="<%= @url.full_url %>"></a>
+	</div>
+  </body>
+</html>

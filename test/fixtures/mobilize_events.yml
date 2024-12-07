@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  start_time: 2017-09-18 22:23:39
+  location_name: MyString
+  chapter_id: 1
+  starting_script: MyText
+  timezone: MyString
+
+two:
+  title: MyString
+  start_time: 2017-09-18 22:23:39
+  location_name: MyString
+  chapter_id: 1
+  starting_script: MyText
+  timezone: MyString

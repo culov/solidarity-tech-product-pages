@@ -1,0 +1,3998 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/activities":
+    get:
+      summary: Retrieves all activities
+      tags:
+      - Activities
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter activities
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: user_id
+        in: query
+        description: User ID to filter activities for a specific user.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Activity"
+                  meta:
+                    type: object
+                    properties:
+                      total_count:
+                        type: integer
+                      limit:
+                        type: integer
+                      offset:
+                        type: integer
+  "/agent_assignments":
+    get:
+      summary: Lists agent assignments
+      tags:
+      - Agent Assignments
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: user_id
+        in: query
+        description: User ID to filter agent assignments related to a specific user.
+        required: false
+        schema:
+          type: integer
+      - name: agent_user_id
+        in: query
+        description: Agent User ID to filter agent user assignments related to a specific
+          agent user.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: agent assignments listed
+    post:
+      summary: Creates an agent assignment
+      tags:
+      - Agent Assignments
+      description: Creates an agent assignment with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: agent assignment created
+        '404':
+          description: agent or user agent not in organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the user
+                  nullable: false
+                agent_user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the agent user
+                  nullable: true
+                is_active:
+                  type: boolean
+                  description: Indicates if the assignment is currently active
+                  nullable: true
+              required:
+              - user_id
+              - agent_user_id
+        required: true
+        description: Data containing agent assignment information
+  "/agent_assignments/{id}":
+    get:
+      summary: Shows a single agent assignment
+      tags:
+      - Agent Assignments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the agent assignment to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: agent assignment found
+        '404':
+          description: agent assignment not found
+    put:
+      summary: Updates an agent assignment
+      tags:
+      - Agent Assignments
+      description: Updates an agent assignment with the specified details.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the agent assignment to update
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: agent assignment updated
+        '404':
+          description: agent assignment not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the user
+                  nullable: false
+                agent_user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the agent user
+                  nullable: true
+                is_active:
+                  type: boolean
+                  description: Indicates if the assignment is currently active
+                  nullable: true
+        required: true
+        description: Data containing updated agent assignment information
+    delete:
+      summary: Deletes an agent assignment
+      tags:
+      - Agent Assignments
+      description: Deletes an agent assignment with the specified ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the agent assignment to delete
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: not found
+  "/calls":
+    get:
+      summary: Retrieves all calls
+      tags:
+      - Calls
+      parameters:
+      - name: user_id
+        in: query
+        description: User ID to filter calls related to a specific user.
+        required: false
+        schema:
+          type: integer
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Call"
+                  meta:
+                    type: object
+                    properties:
+                      total_count:
+                        type: integer
+                      limit:
+                        type: integer
+                      offset:
+                        type: integer
+  "/chapter_phone_numbers":
+    get:
+      summary: Lists chapter phone numbers
+      tags:
+      - Chapter Phone Numbers
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: chapter_id
+        in: query
+        description: Filters chapter phone numbers by chapter_id within the accessible
+          scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: chapter phone numbers listed
+  "/chapters":
+    get:
+      summary: Retrieves all chapters
+      tags:
+      - Chapters
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter chapters
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Chapter"
+                  meta:
+                    type: object
+                    properties:
+                      total_count:
+                        type: integer
+                      limit:
+                        type: integer
+                      offset:
+                        type: integer
+  "/custom_user_properties":
+    get:
+      summary: Retrieves all custom user properties
+      tags:
+      - Custom User Properties
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter custom
+          user properties created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        key:
+                          type: string
+                        field_type:
+                          type: string
+                        options:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              label:
+                                type: object
+                                additionalProperties:
+                                  type: string
+                                  nullable: true
+                              value:
+                                type: string
+                          nullable: true
+                        scope_id:
+                          type: integer
+                        scope_type:
+                          type: string
+                  meta:
+                    type: object
+                    properties:
+                      total_count:
+                        type: integer
+                      limit:
+                        type: integer
+                      offset:
+                        type: integer
+  "/email_blasts":
+    get:
+      summary: Lists email blasts
+      tags:
+      - Email Blasts
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: email blasts listed
+  "/email_blasts/{id}":
+    get:
+      summary: Shows a single email blast
+      tags:
+      - Email Blasts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the email blast to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: email blast found
+        '404':
+          description: email blast not found
+  "/event_attendances":
+    get:
+      summary: Lists event attendances
+      tags:
+      - Event Attendances
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: event_id
+        in: query
+        description: Filters attendances by event_id within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: event attendances listed
+    post:
+      summary: Creates an event attendance
+      tags:
+      - Event Attendances
+      description: Creates an event attendance with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: event attendance created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the Mobilize event
+                  nullable: false
+                event_session_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the specific event session
+                  nullable: false
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the user attending to the event
+                  nullable: false
+                attended:
+                  type: boolean
+                  description: Indicates if the user attended the event
+                  nullable: false
+              required:
+              - event_id
+              - event_session_id
+              - user_id
+              - attended
+        required: true
+        description: Data containing event attendance information
+  "/event_rsvps":
+    get:
+      summary: Lists event rsvps
+      tags:
+      - Event Rsvps
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: event_id
+        in: query
+        description: Filters rsvps by event_id within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: event rsvps listed
+    post:
+      summary: Creates an event rsvp
+      tags:
+      - Event Rsvps
+      description: Creates an event rsvp with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: event rsvp created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the Mobilize event
+                  nullable: false
+                event_session_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the specific event session
+                  nullable: false
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the user RSVPing to the event
+                  nullable: false
+                is_attending:
+                  type: string
+                  description: Indicates if the user is attending the event
+                  nullable: false
+                  enum:
+                  - 'yes'
+                  - 'no'
+                  - maybe
+                is_confirmed:
+                  type: boolean
+                  description: Indicates if the RSVP is confirmed
+                  nullable: false
+                agent_user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the agent user, if applicable
+                  nullable: true
+                source:
+                  type: string
+                  description: Source of the RSVP
+                  nullable: true
+                source_system:
+                  type: string
+                  description: System from which the RSVP originated
+                  nullable: true
+              required:
+              - event_id
+              - event_session_id
+              - is_attending
+              - agent_user_id
+        required: true
+        description: Data containing event RSVP information
+  "/event_rsvps/{id}":
+    get:
+      summary: Shows a single event rsvp
+      tags:
+      - Event Rsvps
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the event rsvp to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: event rsvp found
+        '404':
+          description: event rsvp not found
+    put:
+      summary: Updates an event rsvp
+      tags:
+      - Event Rsvps
+      description: Updates an event rsvp with the specified details.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the event rsvp to update
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: event rsvp updated
+        '404':
+          description: event rsvp not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_attending:
+                  type: string
+                  description: Indicates if the user is attending the event
+                  nullable: false
+                  enum:
+                  - 'yes'
+                  - 'no'
+                  - maybe
+                is_confirmed:
+                  type: boolean
+                  description: Indicates if the RSVP is confirmed
+                  nullable: false
+                agent_user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the agent user, if applicable
+                  nullable: true
+                source:
+                  type: string
+                  description: Source of the RSVP
+                  nullable: true
+                source_system:
+                  type: string
+                  description: System from which the RSVP originated
+                  nullable: true
+        required: true
+        description: Data containing event RSVP information
+    delete:
+      summary: Deletes an event rsvp
+      tags:
+      - Event Rsvps
+      description: Deletes an event rsvp with the specified ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the event rsvp to delete
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: not found
+  "/event_sessions":
+    get:
+      summary: Lists event sessions
+      tags:
+      - Event Sessions
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: event_id
+        in: query
+        description: Filters sessions by event_id within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: event sessions listed
+    post:
+      summary: Creates an event session
+      tags:
+      - Event Sessions
+      description: Creates an event session with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: event session created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the Mobilize event
+                  nullable: false
+                start_time:
+                  type: integer
+                  format: int64
+                  description: UTC timestamp in seconds since the Unix epoch
+                  nullable: true
+                end_time:
+                  type: integer
+                  format: int64
+                  description: UTC timestamp in seconds since the Unix epoch
+                  nullable: true
+                title:
+                  type: string
+                  description: Title of the event session
+                  nullable: true
+                location_name:
+                  type: string
+                  description: Name of the location
+                  nullable: true
+                location_data:
+                  type: object
+                  properties:
+                    components:
+                      type: string
+                      nullable: true
+                    coordinates:
+                      type: string
+                      nullable: true
+                    address_city:
+                      type: string
+                      nullable: true
+                    full_address:
+                      type: string
+                      nullable: true
+                    address_state:
+                      type: string
+                      nullable: true
+                    address_line_1:
+                      type: string
+                      nullable: true
+                    address_country:
+                      type: string
+                      nullable: true
+                    address_postal_code:
+                      type: string
+                      nullable: true
+                location_address:
+                  type: string
+                  description: Physical address of the event location
+                  nullable: true
+                show_rsvp_bar:
+                  type: boolean
+                  description: Flag to show RSVP bar
+                  nullable: true
+                show_title_in_form:
+                  type: boolean
+                  description: Flag to show title in the form
+                  nullable: true
+              required:
+              - event_id
+              - start_time
+              - end_time
+        required: true
+        description: Data containing event session information
+  "/event_sessions/{id}":
+    get:
+      summary: Shows a single event session
+      tags:
+      - Event Sessions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the event session to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: event session found
+        '404':
+          description: event session not found
+    put:
+      summary: Updates an event session
+      tags:
+      - Event Sessions
+      description: Updates an event session with the specified details.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the event session to update
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: event session updated
+        '404':
+          description: event session not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_time:
+                  type: integer
+                  format: int64
+                  description: UTC timestamp in seconds since the Unix epoch
+                  nullable: true
+                end_time:
+                  type: integer
+                  format: int64
+                  description: UTC timestamp in seconds since the Unix epoch
+                  nullable: true
+                title:
+                  type: string
+                  description: Title of the event session
+                  nullable: true
+                location_name:
+                  type: string
+                  description: Name of the location
+                  nullable: true
+                location_address:
+                  type: string
+                  description: Physical address of the event location
+                  nullable: true
+                show_rsvp_bar:
+                  type: boolean
+                  description: Flag to show RSVP bar
+                  nullable: true
+                show_title_in_form:
+                  type: boolean
+                  description: Flag to show title in the form
+                  nullable: true
+        required: true
+        description: Data containing updated event session information
+    delete:
+      summary: Deletes an event session
+      tags:
+      - Event Sessions
+      description: Deletes an event session with the specified ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the event session to delete
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: not found
+  "/events":
+    get:
+      summary: Lists events
+      tags:
+      - Events
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: events listed
+  "/events/{id}":
+    get:
+      summary: Shows a single event
+      tags:
+      - Events
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the event to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: event found
+        '404':
+          description: event not found
+  "/organizations":
+    get:
+      summary: Lists organizations
+      tags:
+      - Organizations
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: organizations listed
+  "/organizations/{id}":
+    get:
+      summary: Shows a single organization
+      tags:
+      - Organizations
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the organization to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: organization found
+        '404':
+          description: organization not found
+  "/pages":
+    get:
+      summary: Lists pages
+      tags:
+      - Pages
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: pages listed
+  "/pages/{id}":
+    get:
+      summary: Shows a single page
+      tags:
+      - Pages
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the page to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: page found
+        '404':
+          description: page not found
+  "/phonebanks":
+    get:
+      summary: Lists phonebanks
+      tags:
+      - Phonebanks
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: event_id
+        in: query
+        description: Filters phonebanks by event_id within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: phonebanks listed
+  "/phonebanks/{id}":
+    get:
+      summary: Shows a single phonebank
+      tags:
+      - Phonebanks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the phonebank to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: phonebank found
+        '404':
+          description: phonebank not found
+  "/scheduled_calls":
+    get:
+      summary: Lists scheduled calls
+      tags:
+      - Scheduled Calls
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: user_id
+        in: query
+        description: User ID to filter scheduled calls related to a specific user.
+        required: false
+        schema:
+          type: integer
+      - name: agent_user_id
+        in: query
+        description: Agent User ID to filter agent user assignments related to a specific
+          agent user.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: scheduled calls listed
+  "/scheduled_calls/{id}":
+    get:
+      summary: Shows a single scheduled call
+      tags:
+      - Scheduled Calls
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the scheduled call to retrieve
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: scheduled call not found
+  "/scheduled_tasks":
+    get:
+      summary: Lists scheduled tasks
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: user_id
+        in: query
+        description: User ID to filter scheduled tasks related to a specific user.
+        required: false
+        schema:
+          type: integer
+      - name: agent_user_id
+        in: query
+        description: Agent User ID to filter agent user assignments related to a specific
+          agent user.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: scheduled tasks listed
+    post:
+      summary: Creates an scheduled task
+      tags:
+      - Scheduled Tasks
+      description: Creates an scheduled task with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: scheduled task created
+        '404':
+          description: agent or user agent not in organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_at:
+                  type: string
+                  format: date-time
+                  description: The date and time when the task is due
+                  nullable: false
+                remind_at:
+                  type: string
+                  format: date-time
+                  description: The date and time when a reminder for the task should
+                    be sent
+                  nullable: true
+                agent_user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the agent user assigned to the task
+                  nullable: true
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the user who created the task
+                  nullable: false
+                notes:
+                  type: string
+                  description: Additional notes or details about the task
+                  nullable: true
+                marked_as_completed:
+                  type: boolean
+                  description: Indicates if the task has been marked as completed
+                  nullable: true
+              required:
+              - due_at
+              - user_id
+        required: true
+        description: Data containing scheduled task information
+  "/scheduled_tasks/{id}":
+    get:
+      summary: Shows a single scheduled task
+      tags:
+      - Scheduled Tasks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the scheduled task to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: scheduled task found
+        '404':
+          description: scheduled task not found
+    put:
+      summary: Updates an scheduled task
+      tags:
+      - Scheduled Tasks
+      description: Updates an scheduled task with the specified details.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the scheduled task to update
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: scheduled task updated
+        '404':
+          description: scheduled task not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_at:
+                  type: string
+                  format: date-time
+                  description: The date and time when the task is due
+                  nullable: false
+                remind_at:
+                  type: string
+                  format: date-time
+                  description: The date and time when a reminder for the task should
+                    be sent
+                  nullable: true
+                agent_user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the agent user assigned to the task
+                  nullable: true
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the user who created the task
+                  nullable: false
+                notes:
+                  type: string
+                  description: Additional notes or details about the task
+                  nullable: true
+                marked_as_completed:
+                  type: boolean
+                  description: Indicates if the task has been marked as completed
+                  nullable: true
+        required: true
+        description: Data containing updated scheduled task information
+    delete:
+      summary: Deletes an scheduled task
+      tags:
+      - Scheduled Tasks
+      description: Deletes an scheduled task with the specified ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the scheduled task to delete
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: not found
+  "/task_agents":
+    get:
+      summary: Lists task agents
+      tags:
+      - Task Agents
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: task_id
+        in: query
+        description: Filters task agents by task within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: task agents listed
+    post:
+      summary: Creates an task agent
+      tags:
+      - Task Agents
+      description: Creates an task agent with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: task agent created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the task agent
+                  nullable: false
+                task_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the task
+                  nullable: false
+              required:
+              - user_id
+              - task_id
+        required: true
+        description: Data containing task agent information
+  "/task_agents/{id}":
+    get:
+      summary: Shows a single task agent
+      tags:
+      - Task Agents
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the task agent to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: task agent found
+        '404':
+          description: task agent not found
+    delete:
+      summary: Deletes an task agent
+      tags:
+      - Task Agents
+      description: Deletes an task agent with the specified ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the task agent to delete
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: not found
+  "/task_assignments":
+    get:
+      summary: Lists task assignments
+      tags:
+      - Task Assignments
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: task_id
+        in: query
+        description: Filters task assignments by task within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: agent_user_id
+        in: query
+        description: Filters task assignments by agent user within the accessible
+          scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: task assignments listed
+    post:
+      summary: Creates an task assignment
+      tags:
+      - Task Assignments
+      description: Creates an task assignment with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: task assignment created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the task assignment
+                  nullable: false
+                task_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the task
+                  nullable: false
+              required:
+              - user_id
+              - task_id
+        required: true
+        description: Data containing task assignment information
+  "/task_assignments/{id}":
+    get:
+      summary: Shows a single task assignment
+      tags:
+      - Task Assignments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the task assignment to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: task assignment found
+        '404':
+          description: task assignment not found
+    put:
+      summary: Updates an task assignment
+      tags:
+      - Task Assignments
+      description: Updates an task assignment with the specified details.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the task assignment to update
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: task assignment updated
+        '404':
+          description: event rsvp not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_attending:
+                  type: string
+                  description: Indicates if the user is attending the event
+                  nullable: false
+                  enum:
+                  - 'yes'
+                  - 'no'
+                  - maybe
+                is_confirmed:
+                  type: boolean
+                  description: Indicates if the RSVP is confirmed
+                  nullable: false
+                agent_user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the agent user, if applicable
+                  nullable: true
+                source:
+                  type: string
+                  description: Source of the RSVP
+                  nullable: true
+                source_system:
+                  type: string
+                  description: System from which the RSVP originated
+                  nullable: true
+        required: true
+        description: Data containing task assignment information
+    delete:
+      summary: Deletes an task assignment
+      tags:
+      - Task Assignments
+      description: Deletes an task assignment with the specified ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the task assignment to delete
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: not found
+  "/team_members":
+    get:
+      summary: Lists team members
+      tags:
+      - Team Members
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: team members listed
+  "/text_blasts":
+    get:
+      summary: Lists text blasts
+      tags:
+      - Text Blasts
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: text blasts listed
+  "/text_blasts/{id}":
+    get:
+      summary: Shows a single text blast
+      tags:
+      - Text Blasts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the text blast to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: text blast found
+        '404':
+          description: text blast not found
+  "/text_templates":
+    get:
+      summary: Lists text templates
+      tags:
+      - Text Templates
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: event_id
+        in: query
+        description: Filters rsvps by event_id within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: text templates listed
+    post:
+      summary: Creates an text template
+      tags:
+      - Text Templates
+      description: Creates an text template with the specified details.
+      parameters: []
+      responses:
+        '201':
+          description: text template created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the entity
+                  nullable: false
+                scope_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the scope
+                  nullable: false
+                scope_type:
+                  type: string
+                  description: Type of the scope
+                  nullable: false
+                template:
+                  type: object
+                  additionalProperties: false
+                  description: Template content in various languages, where keys are
+                    2-character language codes.
+                  patternProperties:
+                    "^[a-z]{2}$":
+                      type: string
+                      description: The message in the specified language.
+                  example:
+                    en: Hi, {{ user.first-name }}, this is an event text template
+                event_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the associated event, if applicable
+                  nullable: true
+              required:
+              - iname
+              - scope_id
+              - scope_type
+        required: true
+        description: Data containing text template information
+  "/text_templates/{id}":
+    get:
+      summary: Shows a single text template
+      tags:
+      - Text Templates
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the text template to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: text template found
+        '404':
+          description: text template not found
+    put:
+      summary: Updates an text template
+      tags:
+      - Text Templates
+      description: Updates an text template with the specified details.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the text template to update
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: text template updated
+        '404':
+          description: text template not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the entity
+                  nullable: false
+                scope_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the scope
+                  nullable: false
+                scope_type:
+                  type: string
+                  description: Type of the scope
+                  nullable: false
+                template:
+                  type: object
+                  additionalProperties: false
+                  description: Template content in various languages, where keys are
+                    2-character language codes.
+                  patternProperties:
+                    "^[a-z]{2}$":
+                      type: string
+                      description: The message in the specified language.
+                  example:
+                    en: Hi, {{ user.first-name }}, this is an event text template
+                event_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the associated event, if applicable
+                  nullable: true
+        required: true
+        description: Data containing text template information
+    delete:
+      summary: Deletes an text template
+      tags:
+      - Text Templates
+      description: Deletes an text template with the specified ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identifier of the text template to delete
+        schema:
+          type: integer
+      responses:
+        '404':
+          description: not found
+  "/textbanks":
+    get:
+      summary: Lists textbanks
+      tags:
+      - Textbanks
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: event_id
+        in: query
+        description: Filters textbanks by event_id within the accessible scope.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: textbanks listed
+  "/textbanks/{id}":
+    get:
+      summary: Shows a single textbank
+      tags:
+      - Textbanks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the textbank to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: textbank found
+        '404':
+          description: textbank not found
+  "/texts":
+    post:
+      summary: Sends a text message
+      tags:
+      - Texts
+      parameters:
+      - name: user_id
+        in: query
+        schema:
+          type: integer
+        required: true
+      - name: body
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: media_urls
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+        required: false
+      - name: attach_contact_card
+        in: query
+        schema:
+          type: boolean
+        required: false
+      - name: shorten_urls
+        in: query
+        schema:
+          type: boolean
+        required: false
+      responses:
+        '201':
+          description: text sent successfully
+        '404':
+          description: user not found
+    get:
+      summary: Retrieves a list of texts
+      tags:
+      - Texts
+      parameters:
+      - name: user_id
+        in: query
+        schema:
+          type: integer
+        required: false
+      - name: _limit
+        in: query
+        schema:
+          type: integer
+          default: 20
+        required: false
+      - name: _offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+        required: false
+      - name: _since
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Text"
+                  meta:
+                    type: object
+                    properties:
+                      total_count:
+                        type: integer
+                      limit:
+                        type: integer
+                      offset:
+                        type: integer
+  "/user_actions":
+    post:
+      summary: Creates a user action
+      tags:
+      - User Actions
+      description: 'Creates a user action for a user. Note: This endpoint cannot be
+        used for creating actions related to donation pages or scheduled call pages.'
+      parameters: []
+      responses:
+        '201':
+          description: user action created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the Page, required for new user actions
+                  nullable: false
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier for the User
+                  nullable: true
+                created_at:
+                  type: integer
+                  format: int64
+                  description: UTC timestamp in seconds since the Unix epoch for the
+                    creation time of the user action
+                  nullable: true
+                data:
+                  type: object
+                  properties:
+                    phone_number:
+                      type: string
+                      description: User's phone number
+                      nullable: true
+                    email:
+                      type: string
+                      format: email
+                      description: User's email address
+                      nullable: true
+                    first_name:
+                      type: string
+                      nullable: true
+                    last_name:
+                      type: string
+                      nullable: true
+                    preferred_language:
+                      type: string
+                      nullable: true
+                    second_language:
+                      type: string
+                      nullable: true
+                    chapter_id:
+                      type: integer
+                      nullable: true
+                    address:
+                      type: object
+                      nullable: true
+                      properties:
+                        address1:
+                          type: string
+                          nullable: true
+                        address2:
+                          type: string
+                          nullable: true
+                        city:
+                          type: string
+                          nullable: true
+                        state:
+                          type: string
+                          nullable: true
+                        zip_code:
+                          type: string
+                          nullable: true
+                        country:
+                          type: string
+                          nullable: true
+                    sms_permission:
+                      type: boolean
+                      nullable: true
+                    call_permission:
+                      type: boolean
+                      nullable: true
+                    email_permission:
+                      type: boolean
+                      nullable: true
+                    custom_user_properties:
+                      type: object
+                      additionalProperties:
+                        type: string
+                      nullable: true
+              required:
+              - page_id
+              oneOf:
+              - required:
+                - user_id
+              - required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    oneOf:
+                    - required:
+                      - phone_number
+                    - required:
+                      - email
+        required: true
+        description: Data containing user action information
+  "/user_lists":
+    get:
+      summary: Lists user lists
+      tags:
+      - User Lists
+      parameters:
+      - name: _limit
+        in: query
+        description: Limits the number of items returned. Default is 20, maximum is
+          100.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of items to skip before starting to return the results.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch to filter calls
+          created after this time.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: user lists listed
+  "/user_lists/{id}":
+    get:
+      summary: Shows a single user list
+      tags:
+      - User Lists
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user list to retrieve
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: user list found
+        '404':
+          description: user list not found
+  "/user_notes":
+    post:
+      summary: Creates a user note
+      tags:
+      - User Notes
+      parameters:
+      - name: user_id
+        in: query
+        schema:
+          type: integer
+        required: true
+      - name: content
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: created_at
+        in: query
+        schema:
+          type: integer
+        required: false
+      responses:
+        '201':
+          description: user note created successfully
+        '422':
+          description: unprocessable entity
+        '404':
+          description: unprocessable entity
+  "/users":
+    post:
+      summary: Creates or updates a user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: user created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              oneOf:
+              - type: object
+                properties:
+                  phone_number:
+                    type: string
+                    format: phone
+                    nullable: true
+                  email:
+                    type: string
+                    format: email
+                    nullable: true
+                required:
+                - phone_number
+              - type: object
+                properties:
+                  phone_number:
+                    type: string
+                    format: phone
+                    nullable: true
+                  email:
+                    type: string
+                    format: email
+                    nullable: true
+                required:
+                - email
+              properties:
+                first_name:
+                  type: string
+                  nullable: true
+                last_name:
+                  type: string
+                  nullable: true
+                preferred_language:
+                  type: string
+                second_language:
+                  type: string
+                  nullable: true
+                chapter_id:
+                  type: integer
+                  nullable: true
+                custom_user_properties:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  nullable: true
+                address:
+                  type: object
+                  nullable: true
+                  properties:
+                    address1:
+                      type: string
+                      nullable: true
+                    address2:
+                      type: string
+                      nullable: true
+                    city:
+                      type: string
+                      nullable: true
+                    state:
+                      type: string
+                      nullable: true
+                    zip_code:
+                      type: string
+                      nullable: true
+                    country:
+                      type: string
+                      nullable: true
+                sms_permission:
+                  type: boolean
+                  nullable: true
+                call_permission:
+                  type: boolean
+                  nullable: true
+                email_permission:
+                  type: boolean
+                  nullable: true
+              example:
+                phone_number: '1234567890'
+                email: john.doe@example.com
+                first_name: John
+                last_name: Doe
+                preferred_language: en
+                chapter_id: 1
+                custom_user_properties:
+                  membership_status: Active
+                address:
+                  address1: 123 Main St
+                  city: Anytown
+                  state: CA
+                  zip_code: '90210'
+                  country: USA
+                sms_permission: true
+                call_permission: true
+                email_permission: true
+        required: true
+        description: User data
+    get:
+      summary: Retrieves a list of users
+      tags:
+      - Users
+      parameters:
+      - name: _limit
+        in: query
+        description: Maximum number of users to return
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: _offset
+        in: query
+        description: Number of users to skip before starting to return
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: _since
+        in: query
+        description: UTC timestamp in seconds since the Unix epoch (e.g., 1622559600)
+          to filter users updated after this time
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/User"
+                  meta:
+                    type: object
+                    properties:
+                      total_count:
+                        type: integer
+                      limit:
+                        type: integer
+                      offset:
+                        type: integer
+  "/users/{id}":
+    put:
+      summary: Updates a user
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the user to update
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: user updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone_number:
+                  type: string
+                  format: phone
+                  nullable: true
+                email:
+                  type: string
+                  format: email
+                  nullable: true
+                first_name:
+                  type: string
+                  nullable: true
+                last_name:
+                  type: string
+                  nullable: true
+                preferred_language:
+                  type: string
+                  nullable: true
+                second_language:
+                  type: string
+                  nullable: true
+                chapter_id:
+                  type: integer
+                  nullable: true
+                custom_user_properties:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  nullable: true
+                address:
+                  type: object
+                  properties:
+                    address1:
+                      type: string
+                      nullable: true
+                    address2:
+                      type: string
+                      nullable: true
+                    city:
+                      type: string
+                      nullable: true
+                    state:
+                      type: string
+                      nullable: true
+                    zip_code:
+                      type: string
+                      nullable: true
+                    country:
+                      type: string
+                      nullable: true
+                  nullable: true
+                sms_permission:
+                  type: boolean
+                  nullable: true
+                call_permission:
+                  type: boolean
+                  nullable: true
+                email_permission:
+                  type: boolean
+                  nullable: true
+        required: true
+security:
+- BearerAuth: []
+servers:
+- url: https://api.solidarity.tech/v1
+  variables:
+    defaultHost:
+      default: api.solidarity.tech/v1
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        hash_id:
+          type: string
+        phone_number:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        preferred_language:
+          type: string
+        second_language:
+          type: string
+          nullable: true
+        chapter_id:
+          type: integer
+        branch_id:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        custom_user_properties:
+          type: object
+          additionalProperties:
+            type: string
+        address:
+          type: object
+          properties:
+            address1:
+              type: string
+              nullable: true
+            address2:
+              type: string
+              nullable: true
+            city:
+              type: string
+              nullable: true
+            state:
+              type: string
+              nullable: true
+            zip_code:
+              type: string
+              nullable: true
+            country:
+              type: string
+              nullable: true
+        sms_permission:
+          type: boolean
+        call_permission:
+          type: boolean
+        email_permission:
+          type: boolean
+    Chapter:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        logo_url:
+          type: string
+          nullable: true
+        organization_id:
+          type: integer
+        chapter_phone_number:
+          type: string
+    UserNote:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        user_id:
+          type: integer
+    CustomUserProperty:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        key:
+          type: string
+        field_type:
+          type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+        scope_id:
+          type: integer
+        scope_type:
+          type: string
+    Call:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        direction:
+          type: string
+        agent_user_id:
+          type: integer
+          nullable: true
+        duration:
+          type: integer
+        picked_up:
+          type: boolean
+        left_voicemail:
+          type: boolean
+        twilio_call_sid:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+    Text:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        direction:
+          type: string
+        body:
+          type: string
+        media_urls:
+          type: array
+          items:
+            type: string
+        segment_size:
+          type: integer
+        chapter_phone_number_id:
+          type: integer
+        twilio_error_code:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+    Activity:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        actionable_id:
+          type: integer
+        actionable_type:
+          type: string
+        action:
+          type: object
+          properties:
+            id:
+              type: integer
+            user_id:
+              type: integer
+            agent_user_id:
+              type: integer
+              nullable: true
+            field_type:
+              type: string
+              nullable: true
+            old_value:
+              type: string
+              nullable: true
+            new_value:
+              type: string
+              nullable: true
+            data_import_id:
+              type: integer
+              nullable: true
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        scope_id:
+          type: integer
+        scope_type:
+          type: string
+          nullable: true
+        event_type:
+          type: string
+        location_name:
+          type: string
+          nullable: true
+        location_data:
+          type: object
+          nullable: true
+          properties:
+            components:
+              type: string
+            coordinates:
+              type: string
+            address_city:
+              type: string
+            full_address:
+              type: string
+            address_state:
+              type: string
+            address_line_1:
+              type: string
+            address_country:
+              type: string
+            address_postal_code:
+              type: string
+        mobilize_event_sessions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              mobilize_event_id:
+                type: integer
+              start_time:
+                type: string
+                format: date-time
+              end_time:
+                type: string
+                format: date-time
+              title:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+              location_name:
+                type: string
+              location_data:
+                type: object
+                properties:
+                  components:
+                    type: string
+                  coordinates:
+                    type: string
+                  address_city:
+                    type: string
+                  full_address:
+                    type: string
+                  address_state:
+                    type: string
+                  address_line_1:
+                    type: string
+                  address_country:
+                    type: string
+                  address_postal_code:
+                    type: string
+              lonlat:
+                type: string
+              location_address:
+                type: string
+              show_rsvp_bar:
+                type: boolean
+              show_title_in_form:
+                type: boolean
+        rsvps_count:
+          type: integer
+        attendance_count:
+          type: integer
+        automation_status:
+          type: object
+          properties:
+            rsvp_confirmation_email:
+              type: boolean
+            rsvp_confirmation_text:
+              type: boolean
+            day_before_email_reminder:
+              type: boolean
+            day_before_text_reminder:
+              type: boolean
+            day_of_email_reminder:
+              type: boolean
+            day_of_text_reminder:
+              type: boolean
+        created_at:
+          type: string
+          format: date-time
+    EventSession:
+      type: object
+      properties:
+        event_id:
+          type: integer
+          format: int64
+          description: Identifier for the Mobilize event
+          nullable: false
+        start_time:
+          type: integer
+          format: int64
+          description: UTC timestamp in seconds since the Unix epoch
+          nullable: true
+        end_time:
+          type: integer
+          format: int64
+          description: UTC timestamp in seconds since the Unix epoch
+          nullable: true
+        title:
+          type: string
+          description: Title of the event session
+          nullable: true
+        location_name:
+          type: string
+          description: Name of the location
+          nullable: true
+        location_data:
+          type: object
+          nullable: true
+          properties:
+            components:
+              type: string
+              nullable: true
+            coordinates:
+              type: string
+              nullable: true
+            address_city:
+              type: string
+              nullable: true
+            full_address:
+              type: string
+              nullable: true
+            address_state:
+              type: string
+              nullable: true
+            address_line_1:
+              type: string
+              nullable: true
+            address_country:
+              type: string
+              nullable: true
+            address_postal_code:
+              type: string
+              nullable: true
+        location_address:
+          type: string
+          description: Physical address of the event location
+          nullable: true
+        show_rsvp_bar:
+          type: boolean
+          description: Flag to show RSVP bar
+          nullable: true
+        show_title_in_form:
+          type: boolean
+          description: Flag to show title in the form
+          nullable: true
+      required:
+      - event_id
+      - start_time
+      - end_time
+    EventRsvp:
+      type: object
+      properties:
+        event_id:
+          type: integer
+          format: int64
+          description: Identifier for the Mobilize event
+          nullable: false
+        event_session_id:
+          type: integer
+          format: int64
+          description: Identifier for the specific event session
+          nullable: false
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user RSVPing to the event
+          nullable: false
+        is_attending:
+          type: string
+          description: Indicates if the user is attending the event
+          nullable: false
+          enum:
+          - 'yes'
+          - 'no'
+          - maybe
+        is_confirmed:
+          type: boolean
+          description: Indicates if the RSVP is confirmed
+          nullable: false
+        agent_user_id:
+          type: integer
+          format: int64
+          description: Identifier for the agent user, if applicable
+          nullable: true
+        source:
+          type: string
+          description: Source of the RSVP
+          nullable: true
+        source_system:
+          type: string
+          description: System from which the RSVP originated
+          nullable: true
+      required:
+      - event_id
+      - event_session_id
+      - user_id
+    EventAttendace:
+      type: object
+      properties:
+        event_id:
+          type: integer
+          format: int64
+          description: Identifier for the Mobilize event
+          nullable: false
+        event_session_id:
+          type: integer
+          format: int64
+          description: Identifier for the specific event session
+          nullable: false
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user attending to the event
+          nullable: false
+        attended:
+          type: boolean
+          description: Indicates if the user attended the event
+          nullable: false
+      required:
+      - event_id
+      - event_session_id
+      - user_id
+      - attended
+    ScheduledTask:
+      type: object
+      properties:
+        due_at:
+          type: string
+          format: date-time
+          description: The date and time when the task is due
+          nullable: false
+        remind_at:
+          type: string
+          format: date-time
+          description: The date and time when a reminder for the task should be sent
+          nullable: true
+        agent_user_id:
+          type: integer
+          format: int64
+          description: Identifier for the agent user assigned to the task
+          nullable: true
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user who created the task
+          nullable: false
+        notes:
+          type: string
+          description: Additional notes or details about the task
+          nullable: true
+        task_type:
+          type: string
+          description: The type or category of the task
+          nullable: false
+        marked_as_completed:
+          type: boolean
+          description: Indicates if the task has been marked as completed
+          nullable: true
+      required:
+      - due_at
+      - user_id
+      - agent_user_id
+    AgentAssignment:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user
+          nullable: false
+        agent_user_id:
+          type: integer
+          format: int64
+          description: Identifier for the agent user
+          nullable: true
+        is_active:
+          type: boolean
+          description: Indicates if the assignment is currently active
+          nullable: true
+      required:
+      - user_id
+      - agent_user_id
+    Phonebank:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the phonebank
+          nullable: false
+        title:
+          type: string
+          description: Title of the phonebank
+          nullable: false
+        medium:
+          type: string
+          description: Medium used for the phonebank
+          nullable: false
+        begins_at:
+          type: string
+          format: date-time
+          description: Start time of the phonebank
+          nullable: false
+        ends_at:
+          type: string
+          format: date-time
+          description: End time of the phonebank
+          nullable: true
+        targets:
+          type: string
+          description: Targets for the phonebank
+          nullable: false
+        mobilize_event_id:
+          type: integer
+          format: int64
+          description: Identifier for the associated mobilize event
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: Creation time of the phonebank record
+          nullable: false
+        target_parameters:
+          type: object
+          description: Parameters for targeting in the phonebank
+          nullable: true
+          properties:
+            rules:
+              type: array
+              description: Rules for targeting
+              nullable: false
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Identifier for the rule
+                    nullable: false
+                  type:
+                    type: string
+                    description: Type of the value
+                    nullable: false
+                  input:
+                    type: string
+                    description: Type of input
+                    nullable: false
+                  value:
+                    type: string
+                    description: Value for the rule
+                    nullable: false
+                  operator:
+                    type: string
+                    description: Operator for the rule
+                    nullable: false
+            valid:
+              type: boolean
+              description: Validity of the target parameters
+              nullable: false
+            condition:
+              type: string
+              description: Condition for combining rules
+              nullable: false
+        hours:
+          type: object
+          description: Hours allocated for the textbank
+          nullable: true
+          properties:
+            end:
+              type: string
+              description: End time in HH:MM format
+              example: '20:00'
+              nullable: false
+            start:
+              type: string
+              description: Start time in HH:MM format
+              example: '10:00'
+              nullable: false
+            enabled:
+              type: boolean
+              description: Indicates if the hours are enabled
+              example: false
+              nullable: false
+            timezone:
+              type: string
+              description: Timezone of the hours
+              example: America/Los_Angeles
+              nullable: false
+        assignment_strategy:
+          type: string
+          description: Strategy for assigning calls in the phonebank
+          nullable: true
+        exclude_previously_rsvpd:
+          type: boolean
+          description: Indicates if previously RSVP’d contacts are excluded
+          nullable: true
+        sort_order:
+          type: string
+          description: Sort order for contacts in the phonebank
+          nullable: true
+        sort_order_custom_filter:
+          type: object
+          description: Custom filter for sorting order
+          nullable: true
+        contact_strategy:
+          type: string
+          description: Strategy for contacting in the phonebank
+          nullable: true
+        call_script:
+          type: string
+          description: Script for calls in the phonebank
+          nullable: true
+        dialer_strategy:
+          type: string
+          description: Dialer strategy used in the phonebank
+          nullable: true
+        voicemail:
+          type: object
+          description: Voicemail settings for the phonebank
+          nullable: true
+        abandoned_calls:
+          type: string
+          description: Policy for abandoned calls in the phonebank
+          nullable: true
+        acceptable_abandon_rate:
+          type: number
+          format: float
+          description: Acceptable rate of abandoned calls in the phonebank
+          nullable: true
+        sms_automation:
+          type: object
+          description: SMS automation settings for the phonebank
+          nullable: true
+        minimum_callers_for_predictive_dialing:
+          type: integer
+          format: int64
+          description: Minimum number of callers for predictive dialing to be enabled
+          nullable: true
+    Textbank:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the textbank
+          nullable: false
+        title:
+          type: string
+          description: Title of the textbank
+          nullable: false
+        medium:
+          type: string
+          description: Medium used for the textbank
+          nullable: false
+        begins_at:
+          type: string
+          format: date-time
+          description: Start time of the textbank
+          nullable: false
+        ends_at:
+          type: string
+          format: date-time
+          description: End time of the textbank
+          nullable: true
+        targets:
+          type: string
+          description: Targets for the textbank
+          nullable: false
+        mobilize_event_id:
+          type: integer
+          format: int64
+          description: Identifier for the associated mobilize event
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: Creation time of the textbank record
+          nullable: false
+        sms_starting_script:
+          type: object
+          description: Starting script for SMS in the textbank, localized by language
+          nullable: true
+          properties:
+            en:
+              type: string
+              description: English version of the starting SMS script applies for
+                multiple languages
+              example: Hi, {{ user.first-name }}, what's going on?
+              nullable: false
+        sms_attachments:
+          type: object
+          description: Attachments for SMS in the textbank, localized by language
+          nullable: true
+          properties:
+            en:
+              type: array
+              description: English version of the SMS attachments
+              items:
+                type: string
+                format: uri
+                description: URL of the attachment
+              nullable: false
+        target_parameters:
+          type: object
+          description: Parameters for targeting in the phonebank
+          nullable: true
+          properties:
+            rules:
+              type: array
+              description: Rules for targeting
+              nullable: false
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Identifier for the rule
+                    nullable: false
+                  type:
+                    type: string
+                    description: Type of the value
+                    nullable: false
+                  input:
+                    type: string
+                    description: Type of input
+                    nullable: false
+                  value:
+                    type: string
+                    description: Value for the rule
+                    nullable: false
+                  operator:
+                    type: string
+                    description: Operator for the rule
+                    nullable: false
+            valid:
+              type: boolean
+              description: Validity of the target parameters
+              nullable: false
+            condition:
+              type: string
+              description: Condition for combining rules
+              nullable: false
+        hours:
+          type: object
+          description: Hours allocated for the textbank
+          nullable: true
+          properties:
+            end:
+              type: string
+              description: End time in HH:MM format
+              example: '20:00'
+              nullable: false
+            start:
+              type: string
+              description: Start time in HH:MM format
+              example: '10:00'
+              nullable: false
+            enabled:
+              type: boolean
+              description: Indicates if the hours are enabled
+              example: false
+              nullable: false
+            timezone:
+              type: string
+              description: Timezone of the hours
+              example: America/Los_Angeles
+              nullable: false
+        assignment_strategy:
+          type: string
+          description: Strategy for assigning texts in the textbank
+          nullable: true
+        exclude_previously_rsvpd:
+          type: boolean
+          description: Indicates if previously RSVP’d contacts are excluded
+          nullable: true
+        sort_order:
+          type: string
+          description: Sort order for contacts in the textbank
+          nullable: true
+        sort_order_custom_filter:
+          type: object
+          description: Custom filter for sorting order
+          nullable: true
+        contact_strategy:
+          type: string
+          description: Strategy for contacting in the textbank
+          nullable: true
+    EmailBlast:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the Email Blast
+          nullable: false
+        name:
+          type: string
+          description: Name of the Email Blast
+          nullable: false
+        target_parameters:
+          type: object
+          properties:
+            rules:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    nullable: false
+                  type:
+                    type: string
+                    nullable: false
+                  field:
+                    type: string
+                    nullable: false
+                  input:
+                    type: string
+                    nullable: false
+                  value:
+                    type: array
+                    items:
+                      type: string
+                    nullable: false
+                  operator:
+                    type: string
+                    nullable: false
+              nullable: false
+            valid:
+              type: boolean
+              nullable: false
+            condition:
+              type: string
+              nullable: false
+          nullable: false
+        subject:
+          type: object
+          properties:
+            en:
+              type: string
+              nullable: false
+          nullable: false
+        content:
+          type: object
+          nullable: false
+        attachments:
+          type: object
+          nullable: false
+        from:
+          type: string
+          nullable: false
+        email_sender_id:
+          type: integer
+          format: int64
+          nullable: true
+        reply_to:
+          type: string
+          nullable: true
+        email_wrapper_id:
+          type: integer
+          format: int64
+          nullable: true
+        supported_languages:
+          type: array
+          items:
+            type: string
+          nullable: false
+        track_opens:
+          type: boolean
+          nullable: false
+        track_clicks:
+          type: boolean
+          nullable: false
+        limit_sends:
+          type: integer
+          format: int64
+          nullable: true
+        is_valid:
+          type: boolean
+          nullable: false
+        scheduled_to_send_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_send_in_progress:
+          type: boolean
+          nullable: true
+        finished_delivering_at:
+          type: string
+          format: date-time
+          nullable: true
+        target_count_at_send_time:
+          type: integer
+          format: int64
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: false
+        results:
+          type: object
+          properties:
+            sent:
+              type: integer
+              nullable: false
+            delivererd:
+              type: integer
+              nullable: false
+            unsubscribed:
+              type: integer
+              nullable: false
+            bounced:
+              type: integer
+              nullable: false
+            complained:
+              type: integer
+              nullable: false
+            opened:
+              type: integer
+              nullable: false
+            clicked:
+              type: integer
+              nullable: false
+          nullable: false
+    TextBlast:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the Text Blast
+          nullable: false
+        name:
+          type: string
+          description: Name of the Text Blast
+          nullable: false
+        target_parameters:
+          type: object
+          properties:
+            rules:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    nullable: false
+                  type:
+                    type: string
+                    nullable: false
+                  field:
+                    type: string
+                    nullable: false
+                  input:
+                    type: string
+                    nullable: false
+                  value:
+                    type: string
+                    nullable: false
+                  operator:
+                    type: string
+                    nullable: false
+              nullable: false
+            valid:
+              type: boolean
+              nullable: false
+            condition:
+              type: string
+              nullable: false
+          nullable: false
+        content:
+          type: object
+          properties:
+            en:
+              type: string
+              nullable: false
+          nullable: false
+        attachments:
+          type: object
+          nullable: false
+        supported_languages:
+          type: array
+          items:
+            type: string
+          nullable: false
+        track_clicks:
+          type: boolean
+          nullable: false
+        limit_sends:
+          type: integer
+          format: int64
+          nullable: true
+        is_valid:
+          type: boolean
+          nullable: false
+        scheduled_to_send_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_send_in_progress:
+          type: boolean
+          nullable: false
+        finished_delivering_at:
+          type: string
+          format: date-time
+          nullable: true
+        target_count_at_send_time:
+          type: integer
+          format: int64
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          nullable: false
+        results:
+          type: object
+          properties:
+            sent:
+              type: integer
+              nullable: false
+            delivery_issue:
+              type: integer
+              nullable: false
+            clicked:
+              type: integer
+              nullable: false
+          nullable: false
+    ScheduledCall:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user associated with the scheduled call
+          nullable: false
+        agent_user_id:
+          type: integer
+          format: int64
+          description: Identifier for the agent user associated with the scheduled
+            call
+          nullable: true
+        call_time:
+          type: string
+          format: date-time
+          description: The scheduled time for the call
+          nullable: false
+        language:
+          type: string
+          description: The language preference for the scheduled call
+          nullable: true
+        page_id:
+          type: integer
+          format: int64
+          description: Identifier for the action page associated with the scheduled
+            call
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          description: The creation time of the scheduled call record
+          nullable: false
+        agent_user_call_id:
+          type: integer
+          format: int64
+          description: Unique identifier for the call made by the agent user
+          nullable: true
+      required:
+      - user_id
+      - call_time
+      - page_id
+      - created_at
+    Page:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the Page
+          nullable: false
+        type:
+          type: string
+          description: Type of the action page
+          nullable: false
+        url_slug:
+          type: string
+          description: URL slug for the Page
+          nullable: false
+        name:
+          type: string
+          description: Name of the Page
+          nullable: false
+        website_id:
+          type: integer
+          format: int64
+          description: Identifier for the website associated with the Page
+          nullable: false
+        is_published:
+          type: boolean
+          description: Indicates if the Page is published
+          nullable: false
+        full_url:
+          type: string
+          format: uri
+          description: Full URL of the Page
+          nullable: false
+        scope_id:
+          type: integer
+          format: int64
+          description: Scope identifier for the Page
+          nullable: false
+        scope_type:
+          type: string
+          description: Scope type of the Page
+          nullable: false
+        supported_languages:
+          type: array
+          items:
+            type: string
+          description: Supported languages for the Page
+          nullable: false
+        follow_up:
+          type: object
+          description: Follow up configuration for the Page
+          nullable: true
+        confirmations:
+          type: object
+          description: Confirmation settings for the Page
+          nullable: true
+        admin_notifications:
+          type: object
+          description: Admin notification settings for the Page
+          nullable: true
+        requires_user:
+          type: boolean
+          description: Indicates if the Page requires a user
+          nullable: false
+        always_hide_primary_nav:
+          type: boolean
+          description: Indicates if the primary navigation should always be hidden
+            for the Page
+          nullable: false
+        always_hide_footer:
+          type: boolean
+          description: Indicates if the footer should always be hidden for the Page
+          nullable: false
+        allow_multiple_responses:
+          type: boolean
+          description: Indicates if the Page allows multiple responses
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          description: Creation time of the Page
+          nullable: false
+        form:
+          type: array
+          description: Form configuration for the Page
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the form field
+                nullable: false
+              show:
+                type: string
+                description: Visibility requirement of the form field
+                enum:
+                - required
+                - optional
+                - always_required
+                nullable: false
+              type:
+                type: string
+                description: Type of the form field
+                enum:
+                - input
+                - select
+                - checkbox
+                - radio
+                - textarea
+                - file
+                nullable: false
+              label:
+                type: object
+                description: Label for the form field, supporting multiple languages
+                properties:
+                  en:
+                    type: string
+                    description: English label
+                  es:
+                    type: string
+                    description: Spanish label
+                nullable: false
+              input_template:
+                type: string
+                description: Template type for the input field
+                nullable: false
+              opt_in_language:
+                type: string
+                description: Language used for opt-in confirmation
+                nullable: true
+              requires_opt_in:
+                type: boolean
+                description: Indicates if opt-in is required
+                nullable: false
+              phone_number_origin:
+                type: string
+                description: Origin of the phone number
+                enum:
+                - home_country
+                - current_location
+                nullable: false
+              validates_if_textable:
+                type: boolean
+                description: Indicates if the phone number should be validated for
+                  textability
+                nullable: false
+              desktop_label_column_width:
+                type: integer
+                format: int32
+                description: Width of the label column on desktop devices
+                nullable: false
+          nullable: true
+    UserList:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the UserList
+          nullable: false
+        parameters:
+          type: object
+          additionalProperties: true
+          description: JSONB parameters associated with the UserList
+          nullable: false
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user associated with the UserList
+          nullable: false
+        scope_id:
+          type: integer
+          format: int64
+          description: Identifier for the scope associated with the UserList
+          nullable: false
+        scope_type:
+          type: string
+          description: Type of scope associated with the UserList
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the UserList was created
+          nullable: false
+    ChapterPhoneNumber:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          description: Phone number associated with the chapter
+          nullable: false
+        assigned_user_count:
+          type: integer
+          format: int64
+          description: Count of users assigned to this phone number
+          nullable: false
+        chapters:
+          type: array
+          description: Chapters associated with this phone number
+          items:
+            "$ref": "#/components/schemas/Chapter"
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the ChapterPhoneNumber was created
+          nullable: false
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the organization
+          nullable: false
+        image_url:
+          type: string
+          description: URL of the organization's image
+          nullable: true
+        parent_organization_id:
+          type: integer
+          format: int64
+          description: ID of the parent organization, if any
+          nullable: true
+        default_language:
+          type: string
+          description: Default language of the organization
+          nullable: false
+        supported_languages:
+          type: array
+          items:
+            type: string
+          description: List of languages supported by the organization
+          nullable: false
+    TextTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the TextTemplate
+          nullable: false
+        name:
+          type: string
+          description: Name of the TextTemplate
+          nullable: false
+        scope_id:
+          type: integer
+          format: int64
+          description: Identifier for the scope associated with the TextTemplate
+          nullable: false
+        scope_type:
+          type: string
+          description: Type of scope associated with the TextTemplate
+          nullable: false
+        template:
+          type: object
+          description: Template content in various languages, where keys are 2-character
+            language codes and values are the corresponding messages.
+          additionalProperties:
+            type: string
+          nullable: false
+        event_id:
+          type: integer
+          format: int64
+          description: Identifier for the event associated with the TextTemplate,
+            if applicable
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the TextTemplate was created
+          nullable: false
+      required:
+      - name
+      - scope_id
+      - scope_type
+    TeamMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the TeamMember
+          nullable: false
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user associated with the TeamMember
+          nullable: false
+        scope_id:
+          type: integer
+          format: int64
+          description: Identifier for the scope associated with the TeamMember
+          nullable: false
+        scope_type:
+          type: string
+          description: Type of scope associated with the TeamMember
+          nullable: false
+        logged_in_as_id:
+          type: integer
+          format: int64
+          description: Identifier for the entity the TeamMember is logged in as
+          nullable: true
+        logged_in_as_type:
+          type: string
+          description: Type of entity the TeamMember is logged in as
+          nullable: true
+        last_app_activity_at:
+          type: string
+          format: date-time
+          description: The date and time of the last app activity by the TeamMember
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the TeamMember was created
+          nullable: false
+    TaskAgent:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the TaskAgent
+          nullable: false
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user associated with the TaskAgent
+          nullable: false
+        task_id:
+          type: integer
+          format: int64
+          description: Identifier for the task associated with the TaskAgent
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the TaskAgent was created
+          nullable: false
+    TaskAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the TaskAssignment
+          nullable: false
+        user_id:
+          type: integer
+          format: int64
+          description: Identifier for the user associated with the TaskAssignment
+          nullable: false
+        task_id:
+          type: integer
+          format: int64
+          description: Identifier for the task associated with the TaskAssignment
+          nullable: false
+        agent_user_id:
+          type: integer
+          format: int64
+          description: Identifier for the agent user associated with the TaskAssignment
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the TaskAssignment was created
+          nullable: false

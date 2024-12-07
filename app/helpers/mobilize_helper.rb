@@ -1,0 +1,2 @@
+module MobilizeHelper
+end

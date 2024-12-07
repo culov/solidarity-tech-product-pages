@@ -1,0 +1,30 @@
+<section class="wrap hero <%= defined?(extraClass) ? extraClass : '' %>">
+
+    <div class="content hero__content" style="
+            --from-left: <%= image[:fromLeft] %>;
+            --from-right: <%= image[:fromRight] %>;
+            ">
+        <%= render template: 'marketing/common/label_icon', :locals => label %>
+        <h1 class="hero__title"><%= title %></h1>
+        <p class="hero__description"><%= description %></p>
+        <div class="hero__image-wrap">
+
+          <%= render template: 'marketing/common/image', locals: {
+            :image => image[:src],
+            :className => 'hero__image',
+          } %>
+        </div>
+    </div>
+
+    <div class="wrap hero-bg" style="
+      --c-background: <%= colors[:background] %>;
+      --c-shadow_left: <%= colors[:shadow_left] %>;
+      --c-shadow_right: <%= colors[:shadow_right] %>;
+    ">
+        <div class="content hero-bg__shadows">
+            <div class="hero-bg__shadow-left"></div>
+            <div class="hero-bg__shadow-right"></div>
+        </div>
+    </div>
+
+</section>

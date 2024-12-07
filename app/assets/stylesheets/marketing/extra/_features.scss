@@ -1,0 +1,33 @@
+.features_hero {
+  clip-path: polygon(
+    0 0,
+    100% 0%,
+    100% calc(100% - var(--offset)),
+    0% 100%
+  );
+}
+
+.features_hero .hero__title,
+.features_hero .hero__description {
+  color: var(--c-white);
+}
+
+.features_hero .hero__image-wrap {
+  margin-bottom: 0;
+  width: 80%;
+}
+
+.features_hero  .hero__image {
+}
+
+.features_hero .hero-bg {
+  clip-path: none;
+  background-image: url('hero_grid_bg.svg');
+  background-size: cover;
+  background-position: center;
+
+}
+
+.features_hero + .beveled {
+  margin-top: calc(-1 * var(--offset));
+}

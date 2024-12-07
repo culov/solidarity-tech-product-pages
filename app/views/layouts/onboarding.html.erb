@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Solidarity Tech Onboarding</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_include_tag 'onboarding' %>
+    <%= stylesheet_link_tag "marketing/onboarding", "data-turbo-track": "reload" %>
+    <link rel="icon" href="https://s3.amazonaws.com/solidarity.tech/images/icons/favicon.ico" type="image/x-icon">
+    <meta name="turbo-visit-control" content="reload">
+    <meta name="format-detection" content="telephone=no">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6EHR49GT5Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-6EHR49GT5Q');
+    </script>
+    <script>
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      posthog.init('phc_63aqAU8mieXpPmzAHiKz9eM7N0UMkmpj47dBh1fy77r',{api_host:'https://us.i.posthog.com', 
+          })
+    </script>
+  </head>
+
+  <body>
+    <main>
+      <div class="form-layout">
+        <%= render template: 'marketing/common/form_header', locals: {no_header_links: true} %>
+        <div class="form-layout__content-wrap">
+          <div class="form-layout__content">
+            <%= yield %>
+          </div>
+        </div>
+        <%= render template: 'marketing/common/form_footer' %>
+      </div>
+    </main>
+
+    <%= render template: 'marketing/common/sprite' %>
+
+    <%= javascript_include_tag "marketing/dropdown" %>
+    <%= javascript_include_tag "marketing/number" %>
+    <%= javascript_include_tag "marketing/uploader" %>
+    <%= javascript_include_tag "marketing/modal" %>
+  </body>
+</html>

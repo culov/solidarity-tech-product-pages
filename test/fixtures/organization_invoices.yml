@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  period_start: 2020-03-29 19:37:13
+  period_end: 2020-03-29 19:37:13
+  data: 
+  organization_id: 1
+  paid: false
+
+two:
+  title: MyString
+  period_start: 2020-03-29 19:37:13
+  period_end: 2020-03-29 19:37:13
+  data: 
+  organization_id: 1
+  paid: false

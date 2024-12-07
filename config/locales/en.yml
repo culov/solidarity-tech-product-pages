@@ -1,0 +1,138 @@
+en:
+      email: Email
+      full_name: Full Name
+      name: Name
+      phone_number: Phone Number
+      first_name: First Name
+      last_name: Last Name
+      password: Password
+      language: Preferred Language
+      email_invalid: That email address is invalid
+      six_minimum: Minimum of 6 characters
+      zip_code: Zip Code
+      zip_code_error: Please enter a valid, 5-digit %{region} zip code 
+      email_error: That email address is invalid
+      full_name_error: Please enter your full name
+      language_error: Please select a preferred language
+      email_placeholder: your.address@gmail.com
+      did_you_mean: Did you mean?
+      petition:
+            signature_goal: "<strong>%{goal_start} have signed so far</strong>, help us get to %{goal_end}"
+      all:
+            signature: Signature
+            clear: Clear
+      account:
+            join:
+                  title: We're LA rideshare drivers uniting for fair treatment & higher pay
+                  subtitle: Our drivers association is independent, democratic & driver-led. Tell us what you're ready to fight for.
+                  join_us: Join us to build driver power and win
+                  submit: Submit
+                  join_in: Join In
+                  join_us: Join Us
+            complete:
+                  title: Almost finished!
+                  subtitle: Finish this last step to become a member of {{navbar_name}}
+                  ally_subtitle: ""
+                  driver_questions: "Driver Questions"
+                  driver_frequency: How often do you drive rideshare?
+                  ally_questions: Community Supporter Questions
+                  ally_what_to_change: What do you want to change about the rideshare industry?
+                  ally_1: Fairness and representation for drivers
+                  ally_2: Emission standards for vehicles
+                  ally_3: Rideshare vehicle cap to cut pollution
+                  ally_4: Open rideshare data for traffic reduction
+                  full_time: "full-time (30+ hours per week)"
+                  part_time: "part-time (10-29 hours per week)"
+                  occasional: "occasionally (0-9 hours per week)"
+                  what_companies: What companies do you work for?
+                  email: Email
+                  name: Name
+                  full_name: Full Name
+                  first_name: First Name
+                  phone_number: Phone Number
+                  last_name: Last Name
+                  password: Password
+                  language: Preferred Language
+                  i_am_a: I am a...
+                  email_invalid: That email address is invalid
+                  six_minimum: Minimum of 6 characters
+                  zip_code: Zip code
+                  zip_code_error: Please enter a valid, 5-digit %{region} zip code 
+                  email_error: That email address is invalid
+                  full_name_error: Please enter your full name
+                  language_error: Please select a preferred language
+                  email_placeholder: your.address@gmail.com
+                  did_you_mean: Did you mean?
+            demands:
+                  dont_support: Don't Support
+                  almost_support: Almost Suport
+                  support: Support
+                  fully_support: Fully Support
+                  strongly_support: Strongly Support
+                  header_title: We're {{city}} rideshare drivers uniting for fair treatment & higher pay
+                  header_subtitle: Our association is democratic & driver-led. Tell us what you're ready to fight for.
+                  call_to_action_title: Join us to build driver power and win
+                  mobile_phone_number: Mobile Phone Number
+                  zip_code: Zip Code
+                  voting_title: You decide what issues we prioritize.
+                  voting_subtitle: Tell us what you're ready to fight for.
+                  voting_suggestion: "Optional: Suggest a new demand"
+                  sort_top_demands: Sort the changes most important to you
+                  touch_to_drag: Touch and drag to sort your top
+                  demands: demands
+                  continue: Continue
+            schedule_call:
+                  set_up_a_call: Set up a quick call to get started
+                  select_time: Select a time for one of our organizers to call you
+                  select_a_day: Select a Day
+                  call_language: Call Language
+            action:
+                  email_your_legislator: Email Your Legislator!
+                  send_email: Send Email
+                  send_me_texts: Send me text messages about this campaign
+                  i_am_a: I am a...
+                  full_name: Full Name
+      uber_opt_out:
+            title: Don't Let Uber Take Your Rights Away
+            content_html:  <p>Uber's latest <a href="https://www.documentcloud.org/documents/6560126-Rasier-Technology-Services-Agreement-November-25.html" target="_blank">Terms of Service</a> includes an arbitration agreement which takes away your right to file a complaint in a court of law. Drivers have <strong>30 days</strong> after accepting the agreement to opt-out of arbitration, before your rights are taken away.</p><p>Uber makes it difficult to read the terms of service and properly opt-out. Rideshare Drivers United made this tool to cut through the legal jargon and get you back your rights.</p><p id="quickly_fill_out_form">Quickly 1) fill out this simple form and 2) send the generated email <strong>from the email address you have on record with Uber</strong>, to retain your legal rights; otherwise Uber will argue that you have waived them.</p><p>Our right to opt-out of this agreement is <strong>protected by law</strong>, and acknowledge by Uber in the terms when they write - "You will not be subject to retaliation if you exercise your right to opt out of this"</p>
+            registered: I'm a registered Uber driver.
+            form_note_html: <p>In order for Uber to opt-you out of arbitration, you must use the phone number, email, name, and city of residence, Uber has on record for you.</p>
+            receive_texts: I want to receive occasional, relevant text updates from Rideshare Drivers United. Message and data rates may apply. Text STOP to cancel.
+            cc_me: CC me on opt-out email to Uber.
+            prepare_email: Prepare Opt-Out Email
+            phone_number: Phone Number
+            zip_code: Zip Code
+            email: Email
+            did_you_mean: Did you mean?
+            full_name: Full Name
+            city_of_residence: City of Residence
+            you_must_use: You must use one of the two methods to send this email from the email address you used to register with Uber
+            method_1: Method 1
+            method_2: Method 2
+            method_1_instructions: Copy and paste the email below and send it to optout@uber.com, from the email account Uber has on record for you.
+            you_must_send_from: You must send this from
+            method_2_instructions: Easy, but only use this method if your default email client is connected with 
+            open_and_send: Open in Email Client & Send
+            ask_your_friends: Ask your friends to take action too!
+
+      mailer:
+            invitation:
+                  hi: Hi
+                  you_scheduled_a_call: You've scheduled a call with an organizer from Rideshare Drivers United. We'll text you a reminder before the call, and call you at the time you selected.
+                  short_call: 15 Minute Meeting
+                  event_type: Event Type
+                  visit_here_to: Visit here to
+                  reschedule_or_cancel: Re-schedule the call
+                  event_date_time: Event Date/Time
+                  reminder: Reminder
+                  tomorrow_at: Tomorrow at
+                  organizer_will_call: an organizer from Rideshare Drivers United will call you for a brief introduction chat
+      date_range:
+            long:
+                  different_months_same_year: "%{from_month} %{from_day} %{sep} %{until_month} %{until_day}, %{year}"
+                  different_years: "%{from_month} %{from_day}, %{from_year} %{sep} %{until_month} %{until_day}, %{until_year}"
+                  same_month: "%{month} %{from_day} %{sep} %{until_day}, %{year}"
+            short:
+                  different_months_same_year: "%{from_month} %{from_day} %{sep} %{until_month} %{until_day}, %{year}"
+                  different_years: "%{from_month} %{from_day}, %{from_year} %{sep} %{until_month} %{until_day}, %{until_year}"
+                  same_month: "%{month} %{from_day} %{sep} %{until_day}, %{year}"

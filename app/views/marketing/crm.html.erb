@@ -1,0 +1,43 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Solidarity Tech CRM is designed for non-profits, unions, and advocacy organizations. Streamline your operations with an all-in-one platform that includes contact management, multi-channel communication, field apps, and customizable tools. Perfect for organizing and building powerful campaigns.">
+<%- end -%>
+
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::CRM[:hero][:title],
+  :description => Mock::CRM[:hero][:description],
+  :label => Mock::CRM[:hero][:label],
+  :image => Mock::CRM[:hero][:image],
+  :colors => Mock::CRM[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::CRM[:features_1][:start],
+  :items => Mock::CRM[:features_1][:items],
+} %>
+
+<%= render template: 'marketing/components/crm_special', :locals => {
+  :title_part_1 => Mock::CRM[:special_block][:title_part_1],
+  :title_part_2 => Mock::CRM[:special_block][:title_part_2],
+  :title_part_3 => Mock::CRM[:special_block][:title_part_3],
+  :image => Mock::CRM[:special_block][:image],
+  :image_mobile => Mock::CRM[:special_block][:image_mobile],
+  :triggers => Mock::CRM[:special_block][:triggers],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::CRM[:features_2][:start],
+  :items => Mock::CRM[:features_2][:items],
+} %>
+
+<%= render template: 'marketing/components/trigger_block', :locals => {
+  :title => Mock::CRM[:trigger_block][:title],
+  :extra_title => Mock::CRM[:trigger_block][:extra_title],
+  :images => Mock::CRM[:trigger_block][:images],
+  :colors => Mock::CRM[:trigger_block][:colors],
+  :triggers => Mock::CRM[:trigger_block][:triggers],
+  :extraClass => 'trigger-block--crm',
+} %>
+
+<%= render template: 'marketing/components/cta' %>

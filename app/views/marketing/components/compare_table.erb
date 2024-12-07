@@ -1,0 +1,76 @@
+<section class="wrap compare-table">
+  <div class="content compare-table__content">
+    <h2 class="compare-table__title"><%= table[:title] %></h2>
+    <div class="compare-table__header" >
+      <% table[:headers].each do |head| %>
+        <div class="compare-table__head">
+          <h3 class="compare-table__head-name">
+            <%= head[:name] %>
+            <% if head[:isPopular] %>
+              <span class="compare-table__head-label">Most Popular</span>
+            <% end %>
+          </h3>
+          <p class="compare-table__head-price">
+            <% if head[:name] != "Enterprise" %>
+            <span class="compare-table__head-price-symbol">$</span>
+            <span class="compare-table__head-price-amount <%= head[:name]%>-pricing"></span>
+            <span class="compare-table__head-price-period">per month</span>
+            <% else %>
+     
+            <span class="compare-table__head-price-amount">&nbsp;</span>
+            <span class="compare-table__head-price-period">Contact Us</span>
+            <% end %>
+          </p>
+          <a class="compare-table__head-button <%= head[:isPopular] ? "compare-table__head-button--fill" : "" %>" data-pricing-target="link" href="<%= head[:link] %>"><%= head[:buttonText] %></a>
+        </div>
+      <% end %>
+    </div>
+    <% table[:categories].each do |category| %>
+      <div class="compare-table__category compare-table__category--open">
+        <div class="compare-table__category-name-row">
+          <h4 class="compare-table__category-name">
+            <%= category[:name] %>
+            <%= render template: 'marketing/common/icon', :locals => {
+              iconName: 'ui_caret_down',
+              iconClass: 'compare-table__category-icon'
+            } %>
+          </h4>
+        </div>
+        <% category[:features].each do |feature| %>
+          <div class="compare-table__category-feature">
+            <p class="compare-table__category-feature-name">
+              <span class="compare-table__category-feature-text"><%= feature[:name] %></span>
+             <% if !feature[:details].blank? %>
+              <span data-controller="tippy" data-tippy-content-value="<%=feature[:details]%>" data-tippy-target="item">
+                <%= render template: 'marketing/common/icon', :locals => {
+                  iconName: 'ui_help',
+                  iconClass: 'compare-table__category-feature-icon'
+                } %>
+              </span>
+              <% end %>
+            </p>
+            <% feature[:values].each do |value| %>
+              <p class="compare-table__category-feature-value">
+                <% if value === true %>
+                  <%= render template: 'marketing/common/icon', :locals => {
+                      iconName: 'ui_check_icon',
+                      iconClass: 'compare-table__category-feature-value-true'
+                    } %>
+                <% end %>
+                <% if value === false %>
+                  <%= render template: 'marketing/common/icon', :locals => {
+                    iconName: 'ui_minus',
+                    iconClass: 'compare-table__category-feature-value-false'
+                  } %>
+                <% end %>
+                <% if (value != false) and (value != true) %>
+                  <%= value %>
+                <% end %>
+              </p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>

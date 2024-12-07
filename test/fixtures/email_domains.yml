@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  domain: MyString
+  verified: false
+  dns_records: 
+  scope_id: 1
+  scope_type: MyString
+
+two:
+  domain: MyString
+  verified: false
+  dns_records: 
+  scope_id: 1
+  scope_type: MyString

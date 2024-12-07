@@ -1,0 +1,41 @@
+<label class="input">
+
+  <% if defined?(labelText) %>
+      <span class="input__label">
+        <%= labelText %><%= defined?(required) ? '*' : '' %>
+      </span>
+  <% end %>
+
+  <div class="number">
+    <input
+      type="number"
+      <%= defined?(required) ? 'required=required' : ''%>
+      class="input__field number__field"
+      />
+    <button
+      type="button"
+      class="number__button number__button--up"
+    >
+      <%= render template: 'marketing/common/icon', :locals => {
+        iconName: 'ui_caret_down',
+        iconClass: 'number__button-icon'
+      } %>
+    </button>
+    <button
+      type="button"
+      class="number__button number__button--down"
+    >
+      <%= render template: 'marketing/common/icon', :locals => {
+        iconName: 'ui_caret_down',
+        iconClass: 'number__button-icon'
+      } %>
+    </button>
+  </div>
+
+  <% if defined?(comment) %>
+        <span class="input__comment">
+          <%= comment %>
+        </span>
+  <% end %>
+
+</label>

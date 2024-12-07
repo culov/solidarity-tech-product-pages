@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  medium: MyString
+  begins_at: 2018-09-11 13:11:00
+  targets: MyString
+  triggered_by: MyString
+  mobilize_event_id: 1
+  instructions: MyText
+
+two:
+  medium: MyString
+  begins_at: 2018-09-11 13:11:00
+  targets: MyString
+  triggered_by: MyString
+  mobilize_event_id: 1
+  instructions: MyText

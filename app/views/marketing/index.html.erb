@@ -1,0 +1,55 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Solidarity Tech's all-in-one nonprofit CRM includes digital tools like texting, calling, email & websites for advocacy groups, unions & grassroots organizers.">
+<%- end -%>
+
+<div data-controller="modal">
+
+  <%= render template: 'marketing/common/header', :locals => {
+    :is_light => true,
+  } %>
+
+  <%= render template: 'marketing/components/landing_hero', :locals => {
+    :title => Mock::LANDING[:hero][:title],
+    :description => Mock::LANDING[:hero][:description],
+    :description_text_transform => Mock::LANDING[:hero][:description_text_transform],
+    :primary_button => Mock::LANDING[:hero][:primary_button],
+    :secondary_button => Mock::LANDING[:hero][:secondary_button],
+    :image => Mock::LANDING[:hero][:image],
+    :colors => Mock::LANDING[:hero][:colors],
+  } %>
+
+  <%= render template: 'marketing/components/sub_menu_block', :locals => {
+    :title => Mock::LANDING[:sub_menu_block][:title],
+  } %>
+
+  <%= render template: 'marketing/components/logos_block', :locals => {
+    :title => Mock::LANDING[:logos_block_1][:title],
+    :logos => Mock::LANDING[:logos_block_1][:logos],
+  } %>
+
+  <%= render template: 'marketing/components/features', :locals => {
+    :start => Mock::LANDING[:features][:start],
+    :items => Mock::LANDING[:features][:items],
+    :title => Mock::LANDING[:features][:title],
+    :sub_title => Mock::LANDING[:features][:sub_title],
+  } %>
+
+  <%= render template: 'marketing/components/logos_block', :locals => {
+    :title => Mock::LANDING[:logos_block_2][:title],
+    :logos => Mock::LANDING[:logos_block_2][:logos],
+  } %>
+
+
+  <%= render template: 'marketing/components/cta' %>
+
+
+
+   <!-- Modal -->
+    <div id="videoModal" class="modal" data-modal-target="container" data-action="click->modal#close" style="display: none;">
+        <div class="modal-content">
+            <span data-action="click->modal#close" class="close">&times;</span>
+            <div data-action="click->modal#contentClick" class="content-click"><iframe src="https://www.loom.com/embed/3c1a170a3b7941c591a47da46875eb15?sid=93325949-a769-4225-9b71-f1708125644f&muted=false" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+        </div>
+    </div>
+
+</div>

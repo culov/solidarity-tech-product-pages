@@ -1,0 +1,213 @@
+
+<%
+      require "browser/aliases"
+      Browser::Base.include(Browser::Aliases)
+      @browser = Browser.new(request.user_agent, accept_language: "en-us")
+
+%>
+
+<%- content_for(:head)  do -%>
+<style>
+  .iti-flag {background-image: url("<%= asset_path( 'flags.png' )%>");}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .iti-flag {background-image: url("<%= asset_path( 'flags@2x.png' )%>");}
+}
+.intl-tel-input.allow-dropdown{
+  width: 100%;
+}
+.form-horizontal .well .form-group{
+  margin-left: 0;
+  margin-right: 0;
+}
+.red.error{color: red;}
+.btn.btn-primary.submit{outline: none;}
+span, p, input, label, a, select, option, div{ font-family: "Raleway", "Arial Narrow Bold", sans-serif; }
+@media (max-width: 767px){.page-header{margin: 25px 0 21px;}}
+</style>
+
+<title>Login</title>
+
+  <%= stylesheet_link_tag   'intlTelInput' %>
+  <%= javascript_include_tag   'intlTelInput' %>
+  <%= javascript_include_tag   'validator.min' %>
+<script src="<%=asset_path('libphonenumber-js.min.js')%>"></script>
+
+<script type="text/javascript">
+  var countryCode = null;
+  $(function(){
+
+    $(".btn").click(function(){$(this).button("loading");})
+
+    $(".request-password").click(function(e){
+      e.preventDefault();
+
+      $("form").validator("validate");
+      if($(".has-error #pretty_phone_number").length == 0){
+
+      
+
+        $.post("/users/password/generate", {"phone_number": $("#user_phone_number").val() },function(resp){
+          if(resp.success == true){
+            $(".final-submit").removeClass("hidden");
+            $(".request-password-container").addClass("hidden");
+            $("#pretty_phone_number").attr("disabled", true);
+            $("#code").focus();
+          }
+          else{
+            $("#pretty_phone_number").attr("disabled", true);
+            $(".request-password-container").html("<strong style='color: red;'>"+resp.message+"</strong>")
+          }
+
+        });
+
+      }
+      else{
+        $(".btn.btn-primary.request-password").button("reset");
+      }
+
+
+    });
+
+
+        $("form").validator({
+          custom: {
+            validPhoneNumber: function($el) {
+                var dialCode = $el.intlTelInput("getSelectedCountryData").dialCode;
+                var localNum = $el.val().replace(/\D/g,'');
+                var finalPhoneNumber = dialCode+localNum;
+
+                var validNumber=false;
+                var countryCode = $el.intlTelInput("getSelectedCountryData").iso2 == undefined ? "US" : $el.intlTelInput("getSelectedCountryData").iso2.toString().toUpperCase()
+                validNumber = (libphonenumber.isValidNumber( finalPhoneNumber, countryCode)  ) || libphonenumber.isValidNumber(finalPhoneNumber,"PR")
+
+
+                if(validNumber){
+                  $("#user_phone_number").val(finalPhoneNumber)
+                }
+                else{
+                  return "Please input a valid US phone number"
+                }
+            }
+          }
+        });
+
+
+
+        $("#pretty_phone_number").intlTelInput({
+            initialCountry: "us",
+            utilsScript: "<%= asset_path( 'phone_utils.js' )%>",
+            autoPlaceholder: true,
+            formatOnDisplay: true,
+            onlyCountries: ["US", "CA"]
+          });
+
+         $("#pretty_phone_number").keyup(function(e){
+
+          var selectedCountryCode = $(".selected-flag .iti-flag").attr("class").replace('iti-flag ', '');
+          if(selectedCountryCode.length > 0){
+            countryCode = selectedCountryCode.toUpperCase();
+          }
+          $(this).val(new libphonenumber.AsYouType(countryCode).input($(this).val()))
+        });
+
+
+
+
+        $(document).on("submit", "form#new_user", function(e){
+              var $el = $("#pretty_phone_number")
+              var dialCode = $el.intlTelInput("getSelectedCountryData").dialCode;
+              var localNum = $el.val().replace(/\D/g,'');
+              var finalPhoneNumber = dialCode+localNum;
+
+              var validNumber=false;
+              var countryCode = $el.intlTelInput("getSelectedCountryData").iso2 == undefined ? "US" : $el.intlTelInput("getSelectedCountryData").iso2.toString().toUpperCase()
+              validNumber = (libphonenumber.isValidNumber( finalPhoneNumber, countryCode)  ) || libphonenumber.isValidNumber(finalPhoneNumber,"PR")
+
+              if(validNumber){
+                $("#admin_login #admin_phone_number").val(finalPhoneNumber)
+              }
+
+
+        });
+
+
+  })
+</script>
+
+
+
+
+  
+
+
+
+
+<%- end -%>
+
+
+
+
+<%= csrf_meta_tags %>
+
+<div class="container">
+  
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+  <div class="row">
+    <h2 class="pull-left">Login</h2>
+    <!-- <a class="pull-right"  style="margin-top: 30px;" href="/join">Sign Up</a> -->
+  </div>
+
+  <!-- <p class="subtitle">Rideshare Drivers Association is a driver-run organization that's building driver power and fighting for higher wages.</p> -->
+  <form class="form-horizontal" class="new_user" id="new_user" action="" accept-charset="UTF-8" method="post" data-toggle="validator" role="form">
+    <fieldset>
+
+    <div class="row" style="margin-top: 20px;">
+      <div class="form-group">
+
+        <label for="pretty_phone_number" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Phone Number</label>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <input type="tel" id="pretty_phone_number" autofocus="autofocus" class="form-control" data-error="Please enter a valid phone number" name="pretty_phone_number" data-validPhoneNumber onkeypress="return event.charCode >= 48 && event.charCode <= 57" autocomplete="off" required>
+
+          <div class="help-block with-errors"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+     <div class="row">
+      <div class="form-group request-password-container">
+        
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-primary request-password" data-show-loading-on-click>Login with Phone Number</button>
+        </div>
+      </div>
+    </div>
+
+      
+
+  <div class="row">
+      <div class="form-group final-submit hidden">
+        <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12">If an account at the above phone number exists, we've texted you a verificiation code to enter below.</p>
+        <label  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Verification Code</label>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <input type="text" class="form-control" style="width: 200px; margin-bottom: 20px;" name="user[otp]" id="code" value=""/>
+          <button type="submit" class="btn btn-primary submit continue pull-left">Continue</button>
+
+        </div>
+      </div>
+  </div>
+
+     
+
+
+    </fieldset>
+    <input name="user[phone_number]" id="user_phone_number" type="hidden" />
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  </form>
+  
+  </div>
+</div>
+

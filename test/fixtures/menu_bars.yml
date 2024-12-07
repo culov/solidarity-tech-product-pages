@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  components: 
+  website_id: 1
+  background_color: MyString
+  text_color: MyString
+  brand_image_status: MyString
+  brand_image_upload_id: 1
+  brand_text_status: MyString
+  brand_text_custom: MyString
+
+two:
+  components: 
+  website_id: 1
+  background_color: MyString
+  text_color: MyString
+  brand_image_status: MyString
+  brand_image_upload_id: 1
+  brand_text_status: MyString
+  brand_text_custom: MyString

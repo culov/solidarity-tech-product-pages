@@ -1,0 +1,63 @@
+<title>Solidarity Tech 2-Factor Authentication</title>
+<div class="">
+	<div class="">
+		<div class="row" style="margin-bottom: 30px;">
+			<h2 >Enter your verification code</h2>
+
+			<%
+				if resource && resource.direct_otp.blank?
+					# for some reason, we occasionally don't have direct_otp at this point.
+					Airbrake.notify(:no_direct_otp_why => resource) 
+					resource.send_new_otp
+
+				end
+			%>
+
+			<% if resource.direct_otp %>
+				<p>Enter the code that was emailed to you at <%= current_admin.solidarity_user.email.to_s %></p>
+			<% else %>
+			
+				<p>Enter the code from your authenticator app</p>
+			<% end %>
+		</div>
+
+	<div class="row">
+		<form action="/admins/two_factor_authentication" accept-charset="UTF-8" method="post" data-action="turbo:submit-start->form#loading turbo:submit-end->form#enableButton" accept-charset="UTF-8" 
+      data-parsley-validate="true" data-controller="form">
+
+			<input name="utf8" type="hidden" value="&#x2713;" />
+			<div class="center"  style="width: 200px; margin: 0 auto; margin-bottom: 20px;" >
+	  		<input type="number" class="form-control"name="code" id="code" value="" autofocus="autofocus" placeholder="123456" required minlength="6" maxlength="6" pattern="\d{6}" data-parsley-error-message="This value must be 6-digits"
+              />
+	  	</div>
+
+	  		<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+	  		<input type="submit" class="btn btn-primary" name="commit" value="Submit"  data-form-target="submitButton" />
+
+		</form>
+
+		<div style="margin-top:20px;">
+	  		<a action="get" href="/admins/two_factor_authentication/resend_code">Resend Code</a>
+				<a rel="nofollow" class="ml-10" href="/logout" data-turbo="false">Sign out</a>
+		</div>
+	</div>
+
+
+	</div>
+</div>
+
+
+<!-- 
+<p><%= flash[:notice] %></p>
+
+<%= form_tag([resource_name, :two_factor_authentication], :method => :put) do %>
+  <%= text_field_tag :code, '', autofocus: true %>
+  <%= submit_tag "Submit" %>
+<% end %>
+
+<% if resource.direct_otp %>
+  <%= link_to "Resend Code", send("resend_code_#{resource_name}_two_factor_authentication_path"), action: :get %>
+<% else %>
+<%= link_to "Send me a code instead", send("resend_code_#{resource_name}_two_factor_authentication_path"), action: :get %>
+<% end %>
+<%= link_to "Sign out", send("destroy_#{resource_name}_session_path"), :method => :delete %> -->

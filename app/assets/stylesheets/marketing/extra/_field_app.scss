@@ -1,0 +1,25 @@
+.field_app_hero {
+  clip-path: polygon(
+    0 0,
+    100% 0%,
+    100% calc(100% - var(--offset)),
+    0% 100%
+  );
+}
+
+.field_app_hero .hero__image-wrap {
+  margin-bottom: 0;
+  max-width: 100%;
+}
+
+.field_app_hero  .hero__image {
+  margin-top: -13.5%;
+}
+
+.field_app_hero .hero-bg {
+  clip-path: none;
+}
+
+.field_app_hero + .beveled {
+  margin-top: calc(-1 * var(--offset));
+}

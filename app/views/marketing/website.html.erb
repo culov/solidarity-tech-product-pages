@@ -1,0 +1,37 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Build your nonprofit's website easily with Solidarity Tech's integrated tools. Drag-and-drop editing, donate buttons, event pages & more - all optimized for advocacy.">
+<%- end -%>
+<%= render template: 'marketing/common/header', :locals => {
+  :is_light => true,
+} %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::FEATURES[:hero][:title],
+  :description => Mock::FEATURES[:hero][:description],
+  :label => Mock::FEATURES[:hero][:label],
+  :image => Mock::FEATURES[:hero][:image],
+  :colors => Mock::FEATURES[:hero][:colors],
+  :extraClass => 'features_hero'
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::FEATURES[:trigger_block_v][:title],
+  :extra_title => Mock::FEATURES[:trigger_block_v][:extra_title],
+  :image => Mock::FEATURES[:trigger_block_v][:image],
+  :colors => Mock::FEATURES[:trigger_block_v][:colors],
+  :triggers => Mock::FEATURES[:trigger_block_v][:triggers],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::FEATURES[:features_1][:start],
+  :items => Mock::FEATURES[:features_1][:items],
+  :title => Mock::FEATURES[:features_1][:title],
+  :sub_title => Mock::FEATURES[:features_1][:sub_title],
+} %>
+
+<%= render template: 'marketing/components/cta' %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::FEATURES[:features_2][:start],
+  :items => Mock::FEATURES[:features_2][:items],
+} %>

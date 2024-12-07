@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Uber & Lyft Drivers Forum - <%= yield :thredded_page_title %> - Rideshare Drivers United</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <%= stylesheet_link_tag 'thredded', 'data-turbolinks-track': 'reload' %>
+    <%= csrf_meta_tag %>
+    <link href="https://fonts.googleapis.com/css?family=News+Cycle:700" rel="stylesheet">
+    <%= javascript_include_tag 'thredded',
+                               async: !Rails.application.config.assets.debug,
+                               defer: true,
+                               'data-turbolinks-track': 'reload'%>
+    <%= csp_meta_tag if Thredded.rails_supports_csp_nonce? %>
+    <%== Gravatar.prefetch_dns %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js" integrity="sha256-iM4Yzi/zLj/IshPWMC1IluRxTtRjMqjPGd97TZ9yYpU=" crossorigin="anonymous"></script>
+
+
+    <link rel="canonical" href="https://drivers-united.org<%=request.path%>" />
+    <link rel="icon" href="https://s3.amazonaws.com/irdu/favicons/favicon.ico" type="image/x-icon">
+      
+
+ <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+ -->
+
+
+
+
+
+    <%= javascript_include_tag 'trumbowyg' %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.8.1/plugins/upload/trumbowyg.upload.min.js"></script>
+    <%= stylesheet_link_tag  'bootstrap-grid.css' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.8.1/ui/trumbowyg.min.css">
+    <style>
+    .news_font{font-family: 'News Cycle', 'Helvetica Neue', Helvetica, Arial, sans-serif;}
+    .thredded--navigation--search {position: relative; float: right;}
+    .dropdown_container{float: right; font-size: 17px; margin-top: 11px; margin-left: 15px;}
+    .clear{clear:both;}
+    #branding a{color: black; text-decoration: none;user-select: none;}
+    #branding img{margin-top: 6px;}
+    #branding span{margin-left: 10px; display: inline; bottom: 7px; position: relative; font-size: 20px;}
+    .thredded--user-navigation--item{display: inline-block; margin: 0 1rem;}
+    .thredded--user-navigation--item:last-child, .thredded--moderation-navigation--item:last-child{margin-right: 1rem;}
+    .caret{display: inline-block; width: 0; height: 0; margin-left: 2px; vertical-align: middle; border-top: 4px dashed; border-top: 4px solid \9; border-right: 4px solid transparent; border-left: 4px solid transparent;}
+    .signup_link{color: #4a90e2; float: right; margin-top: 11px; font-size: 15px; text-decoration: none; margin-left: 15px;}
+    @media screen and (max-width: 48rem){.thredded--messageboards-index .thredded--navigation--search-topics, .thredded--topics-index .thredded--navigation--search-topics, .thredded--topic-search-results .thredded--navigation--search-topics{display: none !important;}}
+
+
+
+    @media (max-width: 34rem){
+      .thredded--topics--follow-icon {
+        right: -1.6rem;
+      }
+    }
+    @media (max-width: 48rem){
+      .thredded--global-nav-icons-3 .thredded--navigation-breadcrumbs {
+          padding-left: 1rem;
+      }
+    }
+    .thredded--messageboards-group--title{
+      margin-top: 25px;
+    }
+
+    .thredded--main-navigation{
+      margin-bottom: 20px;
+    }
+
+    .main_navbar{
+      border-bottom: 1px solid lightgray;
+      margin-bottom: 5px;
+    }
+
+
+    </style>
+    
+      <script>
+        $(document).on("turbolinks:load", function(){
+
+        // var simplemde = new SimpleMDE({ element: document.getElementById("topic_content") });
+
+    
+        $('#topic_content, #post_content').trumbowyg({
+                    btnsDef: {
+                  // Create a new dropdown
+                  image: {
+                      dropdown: ['insertImage', 'upload'],
+                      ico: 'insertImage'
+                  }
+              },
+              btns: [
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['upload']
+                ['link'],
+                ['image'], // Our fresh created dropdown
+                ['justifyLeft', 'justifyCenter', 'justifyRight'],
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+              ],
+              plugins: {
+                  // Add imagur parameters to upload plugin for demo purposes
+                  upload: {
+                      serverPath: '/forum/upload/image',
+                      fileFieldName: 'image',
+                      urlPropertyName: 'link',
+                      data: [{name: 'authenticity_token', value: $('meta[name="csrf-token"]').attr('content') }],
+                      succcess: function (data, trumbowyg, $modal, values) {
+                        console.log("SUCCESS!")
+                      } ,
+                      error: function () {
+                        console.log("ERROR!")
+                      } 
+                  }
+              }
+
+          });
+               
+      });
+    </script>
+
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>

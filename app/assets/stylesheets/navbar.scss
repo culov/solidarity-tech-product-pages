@@ -1,0 +1,54 @@
+.navbar {
+  border-radius: 0px;
+  font-size: 1em;
+  margin-bottom: 4em;
+  .container-fluid {
+    padding: 5px 40px 5px 20px;
+  }
+}
+
+.navbar-brand {
+  color:white!important;
+}
+
+nav .nav-stacked .dashboard-btn {
+  border-bottom: 1px solid lightgray;
+  margin: 0px;
+  a {
+    border-radius: 0px!important;
+  }
+}
+
+.navbar-nav > li > a {
+  color: white!important;
+}
+
+.navbar-nav > li > a::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 10px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #5bc0de;
+  vertical-align: middle;
+}
+
+.navbar-nav > li > a:not(:last-child)::after {
+  display: none;
+}
+
+.navbar-nav > li > a:hover {
+  color: #5bc0de!important;
+}
+
+.caret {
+  color: #5bc0de;
+  border-top: 6px dashed;
+  border-top: 6px solid;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+}
+

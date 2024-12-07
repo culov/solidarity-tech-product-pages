@@ -1,0 +1,84 @@
+<%- content_for(:head) do -%>
+<title>Solidarity Tech Dashboard Login</title>
+<%- end -%>
+
+<div class="text-left">
+  
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">
+  <div class="row pb-30">
+    <h2 class="center mb-20">Dashboard Login</h2>
+  </div>
+
+
+
+
+  <form 
+
+      class="w-100" 
+      accept-charset="UTF-8" 
+      data-parsley-validate="true" 
+      data-controller="form"
+      action="/login" 
+      method="post"
+      data-action="turbo:submit-start->form#loading turbo:submit-end->form#enableButton"
+    >
+    <fieldset>
+  
+
+
+
+      <div class="form-group">
+        <label for="admin_email" class="readonly-label" >Email</label>
+        <div  class="w-100">
+            <input autocomplete="off" required class="form-control" type="email" name="admin[email]" id="admin_email" placeholder="Email" />
+        </div>
+        <div id="has-phone-select-error"></div>
+
+      </div>
+
+
+
+      <div class="form-group">
+        <label for="inputPassword" class="readonly-label">Password</label>
+        <div class="w-100">
+
+          <input type="password" class="form-control w-100" autocomplete="off" name="admin[password]" id="admin_password" placeholder="Password" minlength="8" required>
+
+        </div>
+      </div>
+
+
+<%#       <div class="form-group d-flex flex-direction-row align-items-center mb-20">
+        <div class="mr-15">
+          <input name="admin[remember_me]" type="hidden" value="0" /><input type="checkbox" value="1" checked="checked" name="admin[remember_me]" id="admin_remember_me" />
+        </div>
+
+        <label for="admin_remember_me" class="readonly-label mb-0">Remember me</label>
+        
+      </div> %>
+
+
+
+      <div class="form-group">
+        <div class="">
+
+          <button type="submit" class="btn btn-primary w-100" data-form-target="submitButton" >Login</button>
+          
+        </div>
+
+        
+
+        <span class="red error display_none mt-10"></span>
+
+      </div>
+      <div class='center mt-40'>
+        <a  href="/admins/password/new">Forgot Password</a>
+      </div>
+    </fieldset>
+    
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  </form>
+  
+  </div>
+</div>
+

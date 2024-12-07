@@ -1,0 +1,35 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Gain powerful insights with Solidarity Tech's reporting tools for nonprofits. Track metrics like donations, event turnout, SMS engagement & more in one integrated CRM.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::REPORTING[:hero][:title],
+  :description => Mock::REPORTING[:hero][:description],
+  :label => Mock::REPORTING[:hero][:label],
+  :image => Mock::REPORTING[:hero][:image],
+  :colors => Mock::REPORTING[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::REPORTING[:trigger_block_v_1][:title],
+  :extra_title => Mock::REPORTING[:trigger_block_v_1][:extra_title],
+  :image => Mock::REPORTING[:trigger_block_v_1][:image],
+  :colors => Mock::REPORTING[:trigger_block_v_1][:colors],
+  :triggers => Mock::REPORTING[:trigger_block_v_1][:triggers],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::REPORTING[:trigger_block_v_2][:title],
+  :extra_title => Mock::REPORTING[:trigger_block_v_2][:extra_title],
+  :image => Mock::REPORTING[:trigger_block_v_2][:image],
+  :colors => Mock::REPORTING[:trigger_block_v_2][:colors],
+  :triggers => Mock::REPORTING[:trigger_block_v_2][:triggers],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::REPORTING[:features][:start],
+  :items => Mock::REPORTING[:features][:items],
+} %>
+
+<%= render template: 'marketing/components/cta' %>

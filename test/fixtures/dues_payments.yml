@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  dues_details_id: 1
+  amount: MyString
+  paypal_payment_id: MyString
+
+two:
+  user_id: 1
+  dues_details_id: 1
+  amount: MyString
+  paypal_payment_id: MyString

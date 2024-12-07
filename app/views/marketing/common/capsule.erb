@@ -1,0 +1,15 @@
+<label class="input">
+    <% if defined?(labelText) %>
+      <span class="input__label input__label--light">
+        <%= labelText %>
+      </span>
+    <% end %>
+    <div class="input__field input__field--capsule">
+      <%= value %>
+    </div>
+        <% if defined?(comment) %>
+            <span class="input__comment">
+              <%= comment %>
+            </span>
+        <% end %>
+</label>

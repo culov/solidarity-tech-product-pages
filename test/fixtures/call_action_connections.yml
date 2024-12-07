@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  from: MyString
+  to: MyString
+  legislative_district_id: 1
+  user_id: 1
+  call_action_id: 1
+  zip_code: MyString
+
+two:
+  from: MyString
+  to: MyString
+  legislative_district_id: 1
+  user_id: 1
+  call_action_id: 1
+  zip_code: MyString

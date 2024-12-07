@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  city_name: MyString
+  uber_market_data_url: MyText
+  lyft_market_data_url: MyText
+  uber_pricing: 
+  lyft_pricing: 
+  country: MyString
+  lonlat: 
+  chapter_id: 1
+  state: MyString
+
+two:
+  city_name: MyString
+  uber_market_data_url: MyText
+  lyft_market_data_url: MyText
+  uber_pricing: 
+  lyft_pricing: 
+  country: MyString
+  lonlat: 
+  chapter_id: 1
+  state: MyString

@@ -1,0 +1,23 @@
+ur:
+      email: ای میل
+      full_name: پورا نام
+      name: نام
+      phone_number: فون نمبر
+      first_name: پہلا نام
+      last_name: آخری نام
+      password: پاس ورڈ
+      language: ترجیحی زبان
+      email_invalid: وہ ای میل پتہ غلط ہے۔
+      six_minimum: کم از کم 6 حروف
+      zip_code: ڈاک کامخصوص نمبر
+      zip_code_error: براہ کرم ایک درست پوسٹل کوڈ درج کریں۔
+      email_error: وہ ای میل پتہ غلط ہے۔
+      full_name_error: برائے مہربانی اپنا مکمل نام درج کریں
+      language_error: براہ کرم ایک پسندیدہ زبان منتخب کریں۔
+      email_placeholder: your.address@gmail.com
+      did_you_mean: کیا آپ کا مطلب تھا؟
+      petition:
+            signature_goal: "اب تک %{goal_start} نے دستخط کیے ہیں، %{goal_end} تک پہنچنے میں ہماری مدد کریں۔"
+      all:
+            signature: دستخط
+            clear: صاف کرنا

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hash_id: MyString
+  user_id: 1
+  action_page_id: 1
+  ab_test_name: MyString
+  clicks: 1
+
+two:
+  hash_id: MyString
+  user_id: 1
+  action_page_id: 1
+  ab_test_name: MyString
+  clicks: 1

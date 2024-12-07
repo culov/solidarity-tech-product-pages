@@ -1,0 +1,23 @@
+pt:
+      email: E-mail
+      full_name: Nome completo
+      name: Nome
+      phone_number: Número de telefone
+      first_name: Primeiro nome
+      last_name: Último nome
+      password: Senha
+      language: Língua preferida
+      email_invalid: Esse endereço de e-mail é inválido
+      six_minimum: Mínimo de 6 caracteres
+      zip_code: Código postal
+      zip_code_error: Insira um código postal válido de %{region}
+      email_error: Esse endereço de e-mail é inválido
+      full_name_error: Porfavor digite seu nome completo
+      language_error: Selecione um idioma preferido
+      email_placeholder: your.address@gmail.com
+      did_you_mean: Você quis dizer?
+      petition:
+            signature_goal: "<strong>%{goal_start} assinaram até agora</strong>, ajude-nos a chegar a %{goal_end}"
+      all:
+            signature: Assinatura
+            clear: Clarear

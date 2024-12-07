@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RDA</title>
+      <%= csrf_meta_tags %>
+      <link rel="manifest" href="/manifest.json">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="viewport" content="initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no, width=device-width">
+      <meta name="apple-mobile-web-app-title" content="Drivers United">
+
+    <link rel="href=//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+    body{padding-top:50px}body>.navbar{-webkit-transition:background-color .3s ease-in;transition:background-color .3s ease-in}@media (min-width:768px){body>.navbar-transparent{background-color:transparent}body>.navbar-transparent .navbar-nav>.open>a{background-color:transparent!important}}#home{padding-top:0}#home .navbar-brand{padding:13.5px 15px 12.5px}#home .navbar-brand>img{display:inline;margin:0 10px;height:100%}#banner{border-bottom:none}.table-of-contents{margin-top:1em}.page-header h1{font-size:4em}.bs-docs-section{margin-top:6em}.bs-docs-section h1{padding-top:100px}.bs-component{position:relative}.bs-component .modal{position:relative;top:auto;right:auto;left:auto;bottom:auto;z-index:1;display:block}.bs-component .modal-dialog{width:90%}.bs-component .popover{position:relative;display:inline-block;width:220px;margin:20px}#source-button{position:absolute;top:0;right:0;z-index:100;font-weight:700}.nav-tabs{margin-bottom:15px}.progress{margin-bottom:10px}footer{margin:5em 0}footer li{float:left;margin-right:1.5em;margin-bottom:1.5em}footer p{clear:left;margin-bottom:0}.splash{padding:9em 0 2em;background-color:#141d27;background-image:url(../img/bg.jpg);background-size:cover;background-attachment:fixed;color:#fff;text-align:center}.splash .logo{width:160px}.splash h1{font-size:3em}.splash #social{margin:2em 0}.splash .alert{margin:2em 0}.section-tout{padding:4em 0 3em;border-bottom:1px solid rgba(0,0,0,.05);background-color:#eaf1f1}.section-tout .fa{margin-right:.5em}.section-tout p{margin-bottom:3em}.section-preview{padding:4em 0 4em}.section-preview .preview{margin-bottom:4em;background-color:#eaf1f1}.section-preview .preview .image{position:relative}.section-preview .preview .image:before{box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);position:absolute;top:0;left:0;width:100%;height:100%;content:"";pointer-events:none}.section-preview .preview .options{padding:1em 2em 2em;border:1px solid rgba(0,0,0,.05);border-top:none;text-align:center}.section-preview .preview .options p{margin-bottom:2em}.section-preview .dropdown-menu{text-align:left}.section-preview .lead{margin-bottom:2em}@media (max-width:767px){.section-preview .image img{width:100%}}.sponsor #carbonads{max-width:240px;margin:0 auto}.sponsor .carbon-text{display:block;margin-top:1em;font-size:12px}.sponsor .carbon-poweredby{float:right;margin-top:1em;font-size:10px}@media (max-width:767px){.splash{padding-top:4em}.splash .logo{width:100px}.splash h1{font-size:2em}#banner{margin-bottom:2em;text-align:center}}
+      body, div, span, p, input, label, a{ font-family: "News Cycle", "Arial Narrow Bold", sans-serif; }
+      p{ font-family: "News Cycle", "Arial Narrow Bold", sans-serif !important; }
+      .navbar-brand span{
+        position: relative;
+
+        left: 5px;
+      }
+      .navbar-brand img{
+        position:relative;
+        bottom: 4px;
+
+      }
+
+    </style>
+    <%= stylesheet_link_tag   'journal' %>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"  crossorigin="anonymous"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+    var lastPush=null;
+    var opts = null
+    $(function(){
+      ahoy.trackAll();
+      var csrf_token = $('meta[name="csrf-token"]').attr('content');
+      $.ajaxPrefilter(function(options, originalOptions, jqXHR){
+
+          opts = options;
+          if (options.type.toLowerCase() === "post" && !options.url.includes("ahoy")) {
+            
+              // initialize `data` to empty string if it does not exist
+              options.data = options.data || "";
+
+              // add leading ampersand if `data` is non-empty
+              options.data += options.data?"&":"";
+
+              // add _token entry
+              options.data += "authenticity_token=" + encodeURIComponent(csrf_token);
+          }
+      });
+    });
+    </script>
+
+    <%= javascript_include_tag 'application' %>
+    <%= yield(:head) -%>
+
+
+     <!--    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+         -->
+  </head>
+
+  <body>
+
+
+
+
+
+ <div class="navbar navbar-default navbar-fixed-top">
+        <%= yield(:header) -%>
+</div>
+
+
+
+   
+
+
+
+    <div class="container">
+
+      <div class="page-header" id="banner">
+        <div class="row">
+          <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12 col-sm-offset-1 col-md-offset-2 col-lg-offset-2">
+
+
+            <% if notice %>
+              <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4>Warning!</h4>
+                <p><%= notice %></p>
+              </div>
+            <% end %>
+
+
+            <% if alert %>
+              <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4>Error!</h4>
+                <p><%= alert %></p>
+              </div>
+            <% end %>
+
+      </div>
+      </div>
+
+    </div>
+    
+  </div>
+<%= yield %>
+
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107493012-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-107493012-1');
+</script>
+
+
+  </body>
+</html>

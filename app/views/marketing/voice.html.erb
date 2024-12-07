@@ -1,0 +1,40 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Power your phone banking & outreach with Solidarity Tech's cloud-based calling platform for nonprofits. Integrated CRM syncs contacts for efficient campaigns.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::VOICE[:hero][:title],
+  :description => Mock::VOICE[:hero][:description],
+  :label => Mock::VOICE[:hero][:label],
+  :image => Mock::VOICE[:hero][:image],
+  :colors => Mock::VOICE[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::VOICE[:features_1][:start],
+  :items => Mock::VOICE[:features_1][:items],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::VOICE[:trigger_block_v][:title],
+  :extra_title => Mock::VOICE[:trigger_block_v][:extra_title],
+  :image => Mock::VOICE[:trigger_block_v][:image],
+  :colors => Mock::VOICE[:trigger_block_v][:colors],
+  :triggers => Mock::VOICE[:trigger_block_v][:triggers],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::VOICE[:features_2][:start],
+  :items => Mock::VOICE[:features_2][:items],
+} %>
+
+<%= render template: 'marketing/components/trigger_block', :locals => {
+  :title => Mock::VOICE[:trigger_block][:title],
+  :extra_title => Mock::VOICE[:trigger_block][:extra_title],
+  :images => Mock::VOICE[:trigger_block][:images],
+  :colors => Mock::VOICE[:trigger_block][:colors],
+  :triggers => Mock::VOICE[:trigger_block][:triggers],
+} %>
+
+<%= render template: 'marketing/components/cta' %>

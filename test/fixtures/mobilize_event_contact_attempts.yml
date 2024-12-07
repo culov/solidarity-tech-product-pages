@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  agent_user_id: 1
+  user_id: 1
+  mobilize_event_task_id: 1
+  moblize_event_id: 1
+  mobilize_event_invite_id: 1
+  mobilize_event_workflow_id: 1
+  attempted_id: 1
+  attempted_type: MyString
+  got_response: false
+
+two:
+  agent_user_id: 1
+  user_id: 1
+  mobilize_event_task_id: 1
+  moblize_event_id: 1
+  mobilize_event_invite_id: 1
+  mobilize_event_workflow_id: 1
+  attempted_id: 1
+  attempted_type: MyString
+  got_response: false

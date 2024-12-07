@@ -1,0 +1,9 @@
+<% element_type = (defined?(no_header_links) && no_header_links) ? "span" : "a"%>
+
+<<%=element_type%> class="logotype" href="/">
+    <%= render template: 'marketing/common/icon', :locals => {
+      :iconName => 'logo',
+      :iconClass => 'logotype__icon'
+    } %>
+    <span class="logotype__text">Solidarity Tech</span>
+</<%=element_type%>>

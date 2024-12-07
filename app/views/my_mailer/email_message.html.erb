@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <div>
+	    <%=@content.html_safe%>
+	</div>
+
+
+<!-- BODY -->
+<table class="body-wrap" bgcolor="">
+	<tr>
+		<td></td>
+		<td class="container" align="" bgcolor="#FFFFFF">
+			
+	
+			
+
+							<!-- social & contact -->
+							<table bgcolor="" class="social" width="100%">
+								<tr>
+									<td>
+										
+										<!--- column 1 -->
+										<div class="column">
+											<table bgcolor="" cellpadding="" align="left">
+										<tr>
+											<td>				
+												
+												<h5 class="">Connect with Us:</h5>
+												<p class=""><a href="https://www.facebook.com/RideshareDriversUnite/" class="soc-btn fb">Facebook</a> <a href="https://twitter.com/_drivers_united" class="soc-btn tw">Twitter</a> </p>
+						
+												
+											</td>
+										</tr>
+									</table><!-- /column 1 -->
+										</div>
+										
+									
+										<div class="clear"></div>
+	
+									</td>
+								</tr>
+							</table><!-- /social & contact -->
+				
+
+		</td>
+		<td></td>
+	</tr>
+</table><!-- /BODY -->
+
+<!-- FOOTER -->
+<table class="footer-wrap">
+	<tr>
+		<td></td>
+		<td class="container">
+			
+				<!-- content -->
+				<div class="content">
+					<table>
+						<tr>
+							<td align="center">
+								<p>
+									<!-- <a href="https://drivers-united.org/terms">Terms</a> |
+									<a href="https://drivers-united.org/privacy">Privacy</a> | -->
+									<% if @email_message_id %>
+										<%= link_to("Unsubscribe", mailkick_unsubscribe_url(email_message_id: @email_message_id)) if defined? mailkick_unsubscribe_url %>
+									<% else %>
+										<%= link_to("Unsubscribe", mailkick_unsubscribe_url) if defined? mailkick_unsubscribe_url %>
+									<% end %>
+								</p>
+							</td>
+						</tr>
+					</table>
+				</div><!-- /content -->
+				
+		</td>
+		<td></td>
+	</tr>
+</table><!-- /FOOTER -->
+
+
+
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<%- content_for(:head)  do -%>
+<meta name="description" content="Empower your field teams with Solidarity Tech's mobile phonebanking and p2p texting app. Capture data, log activities & sync in real-time back to your CRM.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::FIELD_APP[:hero][:title],
+  :description => Mock::FIELD_APP[:hero][:description],
+  :label => Mock::FIELD_APP[:hero][:label],
+  :image => Mock::FIELD_APP[:hero][:image],
+  :colors => Mock::FIELD_APP[:hero][:colors],
+  :extraClass => 'field_app_hero'
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::FIELD_APP[:trigger_block_v][:title],
+  :extra_title => Mock::FIELD_APP[:trigger_block_v][:extra_title],
+  :image => Mock::FIELD_APP[:trigger_block_v][:image],
+  :colors => Mock::FIELD_APP[:trigger_block_v][:colors],
+  :triggers => Mock::FIELD_APP[:trigger_block_v][:triggers],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :start => Mock::FIELD_APP[:features][:start],
+  :items => Mock::FIELD_APP[:features][:items],
+} %>
+
+<%= render template: 'marketing/components/cta' %>

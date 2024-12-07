@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hash_id: MyString
+  admin_name: MyString
+  target_parameters: 
+  content: MyText
+  chapter_id: 1
+  user_id: 1
+  sent_at: 2019-01-05 21:25:25
+
+two:
+  hash_id: MyString
+  admin_name: MyString
+  target_parameters: 
+  content: MyText
+  chapter_id: 1
+  user_id: 1
+  sent_at: 2019-01-05 21:25:25

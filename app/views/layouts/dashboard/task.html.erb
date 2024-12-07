@@ -1,0 +1,145 @@
+<% content_for :content do %>
+<div data-turbo="true" data-controller="tabs-hash-navigator">
+	<div class="row">
+		<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+			<div class="pull-left">
+				<a class="btn btn-breadcrumb" href="/<%=params[:task_type]%>">
+					<span class="chevron">
+						<i class="fa fa-chevron-left" aria-hidden="true"></i>
+					</span>
+					<span class="link_text">All <%=@task.phonebank_or_textbank.titlecase.pluralize%></span>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row mb-40 mt-10">
+		<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+		
+				<div class="title-and-button-container">
+					<div class="title-and-button-container d-flex direction-row flex-wrap gap-10">
+						<h2 class="event-name editable mb-5 d-ib" data-controller="editable" data-event-name="<%=@task.title%>" data-editable-url-value="<%=@task.admin_url%>" data-pk="1" data-name="event_name"><%=@task.title%></h2>
+						
+						<span><%= render partial: "dashboard/tasks/tasks/status_badge", locals: {task: @task }%></span>
+					
+					</div>
+					<div class="task--page-header-right" >
+
+					
+							<div>
+								<span><span class="readonly-label">Contact Strategy:</span> <%= @task.contact_strategy.titlecase %></span>
+							</div>
+							
+							<% if @task.mobilize_event.is_event? %>
+								<span><span class="readonly-label">Event:</span> <a href="<%=@task.mobilize_event.admin_url%>"><%=@task.mobilize_event.title%></a></span>
+							<% end %>
+								
+
+					</div>
+				</div>
+
+				<div>
+					<%= render partial: "dashboard/tasks/tasks/incomplete_items", locals: {task: @task }%>
+				</div>
+
+				
+		</div>
+		
+	</div>
+	<div class="row mb-10">
+		<div class="col-md-12 col-lg-12 col-sm-12">
+			<div class="">
+				<div class="tabbable-panel events-main-tab-panel">
+					
+					<div class="row" >
+						<div class="col-md-12 col-lg-12 col-sm-12">
+							<ul class="nav nav-pills" data-controller="autocollapse-tabs" data-action="resize@window->autocollapse-tabs#autocollapse" data-autocollapse-tabs-max-height-value="50" data-autocollapse-tabs-target="nav">
+								
+								<li class="<%= 'active' if request.path.ends_with?(@task.id.to_s)%>">
+									<a data-toggle="tab" href="#details">
+									Details </a>
+								</li>
+								<li class="<%= 'active' if request.path.ends_with?("/targeting")%>">
+									<a data-toggle="tab" href="#targeted" >
+									Targeting </a>
+								</li>
+								<li class="<%= 'active' if request.path.ends_with?("/team")%>">
+									<a data-toggle="tab" href="#team">
+									<%= @task.anyone? ? "Team" : "Team + Assignments" %> </a>
+								</li>
+								
+								<li class="<%= 'active' if request.path.ends_with?("/automations")%>">
+									<a data-toggle="tab" href="#automations" >
+									Automations </a>
+								</li>
+
+								<% if @task.predictive_dialer? %>
+								<li class="<%= 'active' if request.path.ends_with?("/dialer")%>">
+									<a data-toggle="tab" href="#dialer" >
+									Dialer Activity </a>
+								</li>
+								<% end %>
+								
+								<!-- <li class="<%= 'active' if request.path.ends_with?("/analytics")%>">
+										<a data-toggle="tab" href="#analytics" >
+										Analytics </a>
+								</li> -->
+								<li class="dropdown d-none" data-autocollapse-tabs-target="dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="DropdownMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-diplay="static">
+										<i class="fas fa-ellipsis-h"></i>
+									</a>
+									<ul class="dropdown-menu p-2 dropdown-menu-right" aria-labelledby="DropdownMenu">
+									</ul>
+								</li>
+							</ul>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 col-lg-12 col-sm-12">
+			<div class="white-box tab-content events-main-tab-content">
+				
+				<div class="tab-pane active" id="details">
+					<%= yield %>
+				</div>
+				<div class="tab-pane" id="targeted">
+					<turbo-frame id="tab_targeted_content" target="_top" src="<%=@task.admin_url%>/targeted">
+					<div class="rp_spinner"><div class="fa fa-circle-o-notch r fa-spin"></div></div>
+					</turbo-frame>
+				</div>
+				<div class="tab-pane" id="team">
+					<turbo-frame id="tab_team_content" target="_top" src="<%=@task.admin_url%>/team">
+					<div class="rp_spinner"><div class="fa fa-circle-o-notch r fa-spin"></div></div>
+					</turbo-frame>
+				</div>
+	
+				<div class="tab-pane" id="automations">
+					<turbo-frame id="tab_automations_content" target="_top" src="<%=@task.admin_url%>/automations">
+					<div class="rp_spinner"><div class="fa fa-circle-o-notch r fa-spin"></div></div>
+					</turbo-frame>
+				</div>
+
+				<% if @task.predictive_dialer? %>
+				<div class="tab-pane" id="dialer">
+					<turbo-frame id="tab_dialer_content" target="_top" src="<%=@task.admin_url%>/dialer">
+					<div class="rp_spinner"><div class="fa fa-circle-o-notch r fa-spin"></div></div>
+					</turbo-frame>
+				</div>
+				<% end %>
+
+				<!-- <div class="tab-pane" id="analytics">
+						<turbo-frame id="tab_analytics_content" target="_top" src="<%=@task.admin_url%>/analytics">
+							<div class="rp_spinner"><div class="fa fa-circle-o-notch r fa-spin"></div></div>
+						</turbo-frame>
+				</div> -->
+			</div>
+		</div>
+	</div>
+</div>
+<%= turbo_stream_from @task %>
+<% end %>
+<%= render template: "layouts/dashboard" %>

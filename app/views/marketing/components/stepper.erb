@@ -1,0 +1,39 @@
+<div class="stepper">
+  <div class="stepper__step stepper__step--active <%='stepper__step--next' if active_step > 1%>">
+
+    <% if active_step > 1 %>
+    <div class="stepper__point stepper__point--start"><%= render template: 'marketing/common/icon', :locals => {
+      iconName: 'ui_tick',
+      iconClass: 'stepper__point-icon',
+    } %></div>
+    <% else %>
+    <div class="stepper__point"></div>
+    <% end %>
+
+    <h3 class="stepper__step_name">About your org</h3>
+    <p class="stepper__step_description">Organization details</p>
+  </div>
+  <div class="stepper__step
+    <%= active_step >= 2 ? 'stepper__step--active' : '' %>
+    <%= active_step >= 3 ? 'stepper__step--next' : '' %>
+  ">
+    <% if active_step > 2 %>
+    <div class="stepper__point stepper__point--start"><%= render template: 'marketing/common/icon', :locals => {
+      iconName: 'ui_tick',
+      iconClass: 'stepper__point-icon',
+    } %></div>
+    <% else %>
+    <div class="stepper__point"></div>
+    <% end %>
+
+    <h3 class="stepper__step_name">Billing plan</h3>
+    <p class="stepper__step_description">Plans & payment</p>
+  </div>
+  <div class="stepper__step
+    <%= active_step == 3 ? 'stepper__step--active' : '' %>
+  ">
+    <div class="stepper__point"></div>
+    <h3 class="stepper__step_name">Configure organization</h3>
+    <p class="stepper__step_description">Final org details</p>
+  </div>
+</div>

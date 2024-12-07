@@ -1,0 +1,23 @@
+hi:
+      email: ईमेल
+      full_name: पूरा नाम
+      name: नाम
+      phone_number: फ़ोन नंबर
+      first_name: पहला नाम
+      last_name: उपनाम
+      password: पासवर्ड
+      language: पसंदीदा भाषा
+      email_invalid: वह ईमेल पता अमान्य है
+      six_minimum: कम से कम 6 वर्ण
+      zip_code: डाक कोड
+      zip_code_error: कृपया एक मान्य, %{region} पोस्टल कोड दर्ज करें
+      email_error: वह ईमेल पता अमान्य है
+      full_name_error: कृपया आपका पूरा नाम प्रविष्ट कीजिए
+      language_error: कृपया कोई पसंदीदा भाषा चुनें
+      email_placeholder: your.address@gmail.com
+      did_you_mean: क्या आपका मतलब यह था?
+      petition:
+            signature_goal: "<strong>%{goal_start} ने अब तक हस्ताक्षर किए हैं </strong>, %{goal_end} तक पहुंचने में हमारी सहायता करें"
+      all:
+            signature: हस्ताक्षर
+            clear: साफ़

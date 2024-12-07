@@ -1,0 +1,31 @@
+<section class="wrap features">
+    <% if defined?(title) %><h2 class="content features__title"><%= title %></h2><% end %>
+    <% if defined?(sub_title) %><h3 class="content features__sub-title"><%= sub_title %></h3><% end %>
+    <div class="content features__content features__content--<%= start %>">
+        <% items.each do |feature| %>
+            <div class="feature">
+                <div class="feature__content">
+                  <% if feature[:tag] %><span class="feature__tag"><%= feature[:tag] %></span><% end %>
+                    <h3 class="feature__title">
+                        <%= feature[:title] %>
+                        <% if feature[:extra_title] %>
+                            <span class="feature__extra-title"><%= feature[:extra_title] %></span>
+                        <% end %>
+                    </h3>
+                    <p class="feature__description"><%= feature[:description].html_safe %></p>
+                </div>
+                <div class="feature__image-wrap">
+                    <%= render template: 'marketing/common/image', :locals => {
+                      :image => feature[:image][:src],
+                      :className => 'feature__image',
+                    } %>
+                    <% if feature[:image][:shadow] %>
+                        <div class="feature__image-shadow" style="
+                            --c-bg: <%= feature[:image][:shadow] %>
+"                       ></div>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</section>

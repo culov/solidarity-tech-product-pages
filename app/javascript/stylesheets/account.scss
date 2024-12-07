@@ -1,0 +1,165 @@
+$body-bg: #fff;
+$body-color: #111;
+
+$theme-colors: (
+  "primary": #0074d9,
+  "danger": #ff4136
+);
+
+main[role="main"].container{
+	margin-top: 75px;
+}
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+@import "../../../node_modules/jquery-toast-plugin/src/jquery.toast";
+
+$hover-color: lighten($primary, 45%);
+
+main > div > div > aside > nav > div > ul{
+	@include media-breakpoint-down(sm) {
+		border-bottom: 1px solid $gray-300;
+	}
+	text-align: center;
+
+	> li.nav-item{
+		text-align: center;
+		margin-top: 10px;
+		a{
+			color: var(--gray-dark);
+			svg{
+				color: $gray-500;
+			}
+		}
+		&.active{
+			font-weight: 800;
+			a svg{
+				color: $primary;
+			}
+			@include media-breakpoint-down(sm) {
+				border-bottom: $primary 2px solid;
+			}
+			@include media-breakpoint-up(md) {
+				background: $hover-color;
+				border-radius: 4px;
+
+			}
+		}
+	}
+}
+
+main.main-container-container{
+	@include media-breakpoint-up(md) {
+		border-left: 1px solid $gray-300;
+	}
+}
+.jq-toast-loader.jq-toast-loaded{
+	background-color: $primary !important;
+}
+
+.update-contribution-amount-container{
+	margin: 0px;
+    padding: 0.75rem 0;
+    display: flex;
+    justify-content: space-between;
+    input{
+    	border-left: none;
+    	border-top-left-radius: 0;
+    	border-bottom-left-radius: 0;
+
+    }
+    .number-amount{
+    	min-width: 120px;
+    }
+}
+
+
+nav.secondary-nav{
+	border-bottom: 1px solid $gray-300;
+	margin-bottom: 1rem;
+	-webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    .recurring-contribution-title{
+    	text-align: center;
+	    display: flex;
+	    -webkit-box-pack: center;
+	    justify-content: center;
+	    -webkit-box-align: center;
+	    align-items: center;
+	    flex-direction: column;
+	    position: absolute;
+	    width: calc(100% - 12rem);
+	    left: 6rem;
+    }
+}
+.recurring-navbar h5{
+	padding: 0.5rem 1rem;
+}
+.recurring-donations{
+	margin: 0px;
+    padding: 0.75rem 0px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    border-bottom: 1px solid $gray-300;
+}
+.recurring-details, .recurring-manage{
+	padding: 0.5rem 1rem;
+	ul{
+		margin: 0px;
+    	list-style-type: none;
+    	padding-inline-start: 20px;
+    	@include media-breakpoint-down(sm) {
+    		padding-left: 0;
+    	}
+    	li{
+    		margin: 0px;
+		    padding: 0.75rem 20px;
+		    display: flex;
+		    -webkit-box-pack: justify;
+		    justify-content: space-between;
+		    border-bottom: 1px solid $gray-300;
+
+		    &[data-next-url]:hover{
+		    	background: $hover-color;
+		    	cursor: pointer;
+		    }
+    	}
+    }
+}
+
+.donation-card{
+	padding: 25px 10px;
+	border-bottom: 1px solid $gray-300;
+	display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    
+    @include media-breakpoint-up(md) {
+    	padding-left: 40px;
+    }
+    &.recurring:hover{
+    	cursor: pointer;
+    	background: $hover-color;
+    }
+    .subtitle{
+    	color: $gray-500;
+    }
+	.donation-charge-buttons{
+		-webkit-box-pack: end;
+    	justify-content: flex-end;
+    	display: flex;
+    	.donation-charge-button-container{
+    		justify-content: stretch;
+		    display: flex;
+		    &:first-child{
+		    	line-height: 36px;
+		    	margin-right: 1.5rem;
+		    }
+		    
+    	}
+	}
+}

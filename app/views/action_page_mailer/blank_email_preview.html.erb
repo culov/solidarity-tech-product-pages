@@ -1,0 +1,20 @@
+<base target="_blank">
+<% if local_assigns[:live_email]!=true %>
+<%= javascript_include_tag 'iframeResizer.contentWindow.min' %>
+<% end %>
+<%= content.html_safe %>
+
+<% if local_assigns[:live_email] != true && @resource && @resource.class.name=="EmailMessage" && !@resource.email_attachments.blank? && !@resource.sent_at.nil?
+	
+	@attachments = !@resource.email_attachments[current_admin.preferred_language].blank? ? @resource.email_attachments[current_admin.preferred_language] : []
+	if @attachments
+%>
+		<div>With Attachments:</div>
+		<div>
+			<% @attachments.each do |attachment| %>
+				<div><%= attachment.to_s %></div>
+			<% end %>
+		</div>
+
+	<% end %>
+<% end %>

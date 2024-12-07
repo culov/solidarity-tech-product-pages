@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_action_id: 1
+  moderator_id: 1
+  approved: false
+
+two:
+  user_action_id: 1
+  moderator_id: 1
+  approved: false

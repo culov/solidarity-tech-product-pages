@@ -1,0 +1,46 @@
+<section class="wrap landing-hero" style="
+  --c-background: <%= colors[:background] %>;
+  --c-shadow_left: <%= colors[:shadow_left] %>;
+  --c-shadow_right: <%= colors[:shadow_right] %>;
+  --from-left: <%= image[:fromLeft] %>;
+  --from-right: <%= image[:fromRight] %>;
+">
+  <div class="content landing-hero__content">
+    <div class="landing-hero__text-wrap">
+      <h1 class="landing-hero__title"><%= title %></h1>
+      <p class="landing-hero__description">
+        <%= description %>
+        <span class="text-transformer" data-controller="text-transform" data-texts="<%= description_text_transform %>"></span>
+      </p>
+      <div class="landing-hero__button-wrap">
+        <%= render template: 'marketing/common/button', :locals => primary_button %>
+        <a href="<%=secondary_button[:link]%>" class="button--secondary button" <% if defined?(id) %>id="<%=id%>"<%end%> >
+          <%= secondary_button[:text] %>
+        </a>
+      </div>
+    </div>
+    <div class="landing-hero__image-wrap">
+      <div class="landing-hero__play-container" data-action="click->modal#open">
+        <div class="landing-hero__play-subcontainer">
+          <svg class="landing-hero__play_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+            <path d="M361 215C375 224 384 240 384 256s-9 32-23 41L73 433c-15 9-34 9-49-1s-24-25-24-42V80c0-17 9-33 24-42s34-10 49 1l288 177z"/>
+          </svg>
+        </div>
+      </div>
+      <%= render template: 'marketing/common/image', locals: {
+          :image => image[:src],
+          :className => 'landing-hero__image',
+        } %>
+      <div class="landing-hero__shadow-left"></div>
+      <div class="landing-hero__shadow-right"></div>
+    </div>
+  </div>
+  <div class="wrap landing-hero__bg">
+    <div class="content">
+      <div class="landing-hero__shadows">
+        <div class="landing-hero__shadow-left"></div>
+        <div class="landing-hero__shadow-right"></div>
+      </div>
+    </div>
+  </div>
+</section>

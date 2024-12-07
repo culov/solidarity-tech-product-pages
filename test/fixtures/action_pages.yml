@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  url_slug: MyString
+  type: 
+  note: MyText
+  published: false
+  can_unpublish: false
+  form_id: 1
+  chapter_id: 1
+  image_url: MyText
+  sharing: 
+  translations: 
+  custom_page_values: 
+  confirmation_email: 
+
+two:
+  url_slug: MyString
+  type: 
+  note: MyText
+  published: false
+  can_unpublish: false
+  form_id: 1
+  chapter_id: 1
+  image_url: MyText
+  sharing: 
+  translations: 
+  custom_page_values: 
+  confirmation_email: 

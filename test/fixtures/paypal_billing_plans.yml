@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  billing_plan_id: MyString
+  environment: MyString
+  amount: MyString
+  currency: MyString
+  name: MyString
+
+two:
+  billing_plan_id: MyString
+  environment: MyString
+  amount: MyString
+  currency: MyString
+  name: MyString

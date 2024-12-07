@@ -1,0 +1,47 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_self
+ */
+
+@import 'fonts';
+@import 'root';
+@import 'layout';
+@import 'form_layout';
+
+/*===== Common =====*/
+
+@import 'common/button';
+@import 'common/menu';
+@import 'common/sub_menu';
+@import 'common/menu_button';
+@import 'common/header';
+@import 'common/form_footer';
+@import 'common/input';
+@import 'common/form';
+@import 'common/form_button';
+@import 'common/text_button';
+@import 'common/info_block';
+
+/*===== Components =====*/
+
+@import 'components/logotype';
+@import 'components/sub_menu_block';
+@import 'components/mail_icon';
+@import 'components/stepper';
+@import 'components/modal';
+@import 'components/number_list';
+
+/*===== Extra =====*/
+
+@import 'extra/onboarding';
+@import 'extra/mail_confirm';

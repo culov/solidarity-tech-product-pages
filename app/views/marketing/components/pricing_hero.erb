@@ -1,0 +1,86 @@
+<section class="wrap hero pricing-hero">
+
+  <div class="content hero__content">
+    <%= render template: 'marketing/common/label_icon', :locals => label %>
+    <h1 class="hero__title"><%= title %></h1>
+    <p class="hero__description"><%= description %></p>
+    <div class="pricing-hero__input">
+      <span class="pricing-hero__input-label"><%= input[:label] %></span>
+      <div class="pricing-hero__input-field">
+        <input type="text" size="5" tabindex="-1" readonly style="position:fixed;-webkit-appearance:none;box-shadow:none;border:none;background:none;cursor:default;height: 1px; width: 1px; outline: 0;" />
+        <% @contact_tiers = @billing_plan.contacts_pricing.keys.map(&:to_i) %>
+        <%= select(nil, "max_contacts", @contact_tiers.map {|p| [ "Up to #{number_with_delimiter p}", p ] }, {selected: @organization_plan.max_contacts, disabled: @contact_tiers.select{|ct| ct < @total_members_count } }, { class: "form-control", "data-pricing-target" => "select", "data-action" => "change->pricing#changeMaxContacts"}) %>
+      </div>
+    </div>
+
+
+
+    <div class="pricing-hero__cards">
+      <% cards.each do |card| %>
+        <div class="pricing-hero__card-container <%= 'pricing-hero__preferred-container' if card[:name] == "Professional" %>">
+
+          <% if card[:name] == "Professional"  %>
+            <div class="pricing-hero__recommended"><span>RECOMMENDED</span></div>
+          <% end %>
+          <div class="pricing-hero__card <%= 'pricing-hero__preferred' if card[:name] == "Professional" %>">
+            <div class="pricing-hero__card-icon-wrap"><%= render template: 'marketing/common/icon', :locals => {
+              iconName: card[:icon],
+              iconClass: 'pricing-hero__card-icon',
+            } %></div>
+            <h3 class="pricing-hero__card-name">
+              <%= card[:name] %>
+              <% if card[:isPopular] %>
+                <!--<span class="pricing-hero__card-label">Popular</span> -->
+              <% end %>
+            </h3>
+            <p class="pricing-hero__card-price">
+              <% if card[:name] != "Enterprise" %>
+                <span class="pricing-hero__card-price-symbol">$</span>
+                <span class="pricing-hero__card-price-amount <%= card[:name]%>-pricing"><%= card[:price] %></span>
+                <span class="pricing-hero__card-price-period">/mo</span>
+              <% else %>
+                <span class="pricing-hero__card-price-custom">Custom</span>
+              <% end %>
+            </p>
+            <p class="pricing-hero__card-description"><%= card[:description] %></p>
+            <a class="pricing-hero__card-button" data-pricing-target="link" href="<%=card[:link]%>"><%= card[:buttonText] %></a>
+            <% if defined?(card[:featureTitle]) %>
+              <p class="pricing-hero__card-feature-title">
+                <%= card[:featureTitle] %>
+              </p>
+            <% end %>
+            <% if defined?(card[:features]) %>
+              <div class="pricing-hero__card-features">
+                <% card[:features].each do |feature| %>
+                  <div class="pricing-hero__card-feature">
+                    <div class="pricing-hero__card-feature-icon-wrap">
+                      <%= render template: 'marketing/common/icon', :locals => {
+                        iconName: 'ui_tick',
+                        iconClass: 'pricing-hero__card-feature-icon',
+                      } %>
+                    </div>
+                    <div class="pricing-hero__card-feature-text">
+                      <%= feature %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="wrap hero-bg" style="
+  --c-background: <%= colors[:background] %>;
+    --c-shadow_left: <%= colors[:shadow_left] %>;
+    --c-shadow_right: <%= colors[:shadow_right] %>;
+  ">
+    <div class="content hero-bg__shadows">
+      <div class="hero-bg__shadow-left"></div>
+      <div class="hero-bg__shadow-right"></div>
+    </div>
+  </div>
+
+</section>

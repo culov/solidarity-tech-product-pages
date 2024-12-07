@@ -1,0 +1,27 @@
+.text-button {
+  font-family: var(--ff-secondary);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--c-grey-600);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+}
+
+.text-button--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.text-button__icon {
+  width: 20px;
+  height: 20px;
+}

@@ -1,0 +1,29 @@
+<div class="wrap faq">
+  <div class="content faq__content">
+    <div class="faq__header">
+      <h4 class="faq__subtitle"><%= faq[:subtitle] %></h4>
+      <h2 class="faq__title"><%= faq[:title] %></h2>
+      <p class="faq__description"><%= faq[:description].html_safe %></p>
+    </div>
+    <div class="faq__questions">
+      <% faq[:questions].each do |question| %>
+      <div class="faq__question">
+        <div class="faq__question-header">
+          <h3 class="faq__question-title"><%= question[:question] %></h3>
+          <%= render template: 'marketing/common/icon', :locals => {
+            iconName: 'ui_plus_circle',
+            iconClass: 'faq__question-icon faq__question-icon--plus'
+          } %>
+          <%= render template: 'marketing/common/icon', :locals => {
+            iconName: 'ui_minus_circle',
+            iconClass: 'faq__question-icon faq__question-icon--minus'
+          } %>
+        </div>
+        <div class="faq__question-content">
+          <p class="faq__question-answer"><%= question[:answer].html_safe %></p>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

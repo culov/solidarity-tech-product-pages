@@ -1,0 +1,522 @@
+class MemberLookup {
+	constructor() {
+		this.scope = $('*[data-st-controller="' + this.constructor.name + '"]');
+		this.addEventListeners();
+	}
+	initActivity(){
+		 // $('li.activity .card-content .read-note').readmore({ speed: 75, collapsedHeight: 100 });
+		 // $('[data-toggle="tooltip"]').tooltip();
+	}
+	updateActivityContents(){
+		var selectors=[]
+		var checked = $(".activity-type-dropdown-menu input:checked");
+		$.each(checked, function(i,elm){
+			var t = $(elm).closest("li").attr("data-type");
+			selectors.push("[data-activity-type='" + t + "']")
+		});
+		$("li.activity").removeClass("hidden");
+		if(checked.length > 0){
+			var toHide = $("li.activity");
+			toHide.not(selectors.join(", ")).addClass("hidden");
+		}
+
+		var buttonIcon = $(".activities-container .btn.btn-outline.dropdown-toggle .button-icon");
+		var buttonText = $(".activities-container .btn.btn-outline.dropdown-toggle .button-text");
+		if(checked.length == 0){
+			//all activities w/ fitler icon
+			buttonIcon.html('<i class="far fa-filter"></i>');
+			buttonText.html("All Activities");
+		}
+		else if(checked.length == 1){
+			// name and icon change to activity
+			buttonIcon.html(checked.parents("label").find(".small-circle").prop('outerHTML'));
+			buttonText.html(checked.parents("label").find(".activity-label").html());
+		}
+		else{
+			// X activities w/ filter icon
+			buttonIcon.html('<i class="fa fa-filter"></i>');
+			buttonText.html(checked.length + " Activities");
+		}
+
+	}
+	addEventListeners() {
+		// add document event listeners
+		var that = this;
+
+
+		$(document).on('keyup', '*[data-st-controller="MemberLookup"] .intel-phone', function(e) {
+			var countryCode = "US";
+			// var selectedCountryCode = $(".selected-flag .iti-flag").attr("class").replace('iti-flag ', '');
+			// if (selectedCountryCode.length > 0) {
+			// 	countryCode = selectedCountryCode.toUpperCase();
+			// }
+			$(this).val(new libphonenumber.asYouType(countryCode).input($(this).val()))
+		});
+
+		// $(document).on('change', '*[data-st-controller="MemberLookup"] .select2-single.assessment', function(e) {
+
+	    //     $.post($("*[data-st-controller='MemberLookup'] #details").attr("data-url"), 
+	    //     	{value:$(this).val(), name: "assessment" }, 
+	    //     	function(resp){
+	    //     	}
+	    //     );
+
+	    // });
+
+		$(document).on("change", ".activities-container .checkbox-menu input[type='checkbox']", function() {
+		   $(this).closest("li").toggleClass("active", this.checked);
+		   that.updateActivityContents();
+		});
+		$(document).on('click', '*[data-st-controller="MemberLookup"] .allow-focus', function (e) {
+		  e.stopPropagation();
+		});
+
+		$(document).on("click", '*[data-st-controller="MemberLookup"] a.edit-notes-button', function(e){
+			e.preventDefault();
+			$(this).closest("li.activity .activity-note").addClass("editing");
+		});
+		$(document).on("click", '*[data-st-controller="MemberLookup"] .delete-note-button', function(e){
+			e.preventDefault();
+			var that = this;
+			var row = $(this).closest("li.activity");
+			var activityNote = $(this).closest(".activity-note");
+
+			if(confirm("Are you sure you want to delete this note?")){
+				var content = row.find(".card-content .edit-note textarea").val();
+				var noteType = activityNote.data("note-type");
+				var noteId = activityNote.data("note-id");
+
+				$.post($("*[data-st-controller='MemberLookup'] #details").attr("data-url"), {name: "delete_note", note_type:noteType,note_id:noteId},function(resp){
+					row.fadeOut();
+				});
+			}
+		});
+
+
+		$(document).on("click", '*[data-st-controller="MemberLookup"] a.cancel-notes-editing', function(e){
+			e.preventDefault();
+			$(this).closest("li.activity .activity-note").removeClass("editing");
+		});
+
+		$(document).on("click", '*[data-st-controller="MemberLookup"] button.save-notes', function(e){
+			var that = this;
+			var row = $(this).closest("li.activity");
+			var activityNote = $(this).closest(".activity-note");
+			$(this).button("loading");
+			var content = row.find(".card-content .edit-note textarea").val();
+			var noteType = activityNote.data("note-type");
+			var noteId = activityNote.data("note-id");
+
+			$.post($("*[data-st-controller='MemberLookup'] #details").attr("data-url"), {name: "note", content: content, note_type:noteType,note_id:noteId},function(resp){
+				activityNote.find(".card-content .read-note").html(content.replace(/\r?\n/g, '<br />'))
+				activityNote.removeClass("editing");
+				 $('*[data-st-controller="MemberLookup"] .activity-content .read-note').readmore({ speed: 75, collapsedHeight: 100 });
+				$(that).button("reset");
+			});
+		});
+
+		
+
+		$(document).on("click", "*[data-st-controller='MemberLookup'] #add-note-modal", function(e){
+			$("#add_note_overlay").modal("show");
+		});
+
+		$(document).on("click", "*[data-st-controller='MemberLookup'] #submit-new-note", function(e){
+			var that = this;
+			var newNoteContent = $("*[data-st-controller='MemberLookup'] #new-note-content").val();
+			var parentContainer = $(this).closest('*[data-st-controller="MemberLookup"]');
+			var hashId = parentContainer.attr("data-id");
+			$(this).button("loading");
+			$.post("/people/notes/add",{content: newNoteContent, hash_id: hashId}, function(resp){
+				$('a[href="#activity"]').click();
+				//render activity card and append to top of list
+				parentContainer.find("ul#member---activities-list").prepend(resp);
+				$(that).button("reset");
+				 $("*[data-st-controller='MemberLookup'] #new-note-content").val("")
+				$("#add_note_overlay").modal("hide");
+
+			});
+		});
+
+
+
+
+
+
+
+		$(document).on('*[data-st-controller="MemberLookup"] #merge_dupes_modal.hidden.bs.modal', function () {
+		  $(this).find(".dupes_table tbody").html("");
+		});
+
+		$(document).on("click", "*[data-st-controller='MemberLookup'] .merge_into_dupe_show_modal",  function(event){
+		    event.preventDefault();
+		    var dupes = $(this).data("potential-dupes");
+		    var toClone = $($("#dupe_account_row_template").html());
+		    $("#merge_dupes_modal .dupes_table tbody").html("")
+
+		    $.each(dupes, function(index, elm){
+		      var myClone = toClone.clone();
+		      myClone.find(".full_name").html(elm["full_name"]).attr("href", "/people/"+elm["id"]);
+		      myClone.find(".phone_type").html(elm["phone_type"] +  " - sp: " + elm["sp"] + ", cp: " + elm["cp"] + ", ep: " + elm["ep"] );
+		      myClone.find(".created_at").html(elm["created_at"]);
+		      myClone.find(".created_at").html(elm["created_at"]);
+		      myClone.find(".choose_this_dupe").data("id", elm["id"]);
+		      myClone.removeClass("dupe_account_row");
+		      $("#merge_dupes_modal .dupes_table tbody").append(myClone);
+		    });
+
+		    
+		    $("#number_of_dupes_found").html(dupes.length)
+		    $("#dupes_email").html(dupes[0]["phone_type"])
+
+
+		    $("#merge_dupes_modal").modal("show");
+
+		});
+
+
+		$(document).on("click", "#merge_dupes_modal .choose_this_dupe",  function(event){
+		  var mergeIntoId = $(this).data("id");
+		  $(this).button("loading");
+		  var that = this;
+		  $.post("/users/from-dupes/merge",{user_id: mergeIntoId}, function(resp){
+		    $(that).button("reset");
+		     $("#merge_dupes_modal").modal("hide");
+		  });
+
+		});
+
+
+		$(document).on("change", "#permissions .ios-checkbox input", function(event){
+			var nextValue = $(this).prop("checked");
+			if($(this).closest("label.disabled-toggle").length > 0){
+				var that = this;
+				setTimeout(function(){$(that).prop("checked", !nextValue)}, 20);
+				return false
+			}
+			
+			var enableOrDisable = nextValue ? "enable" : "disable";
+			if(confirm("Are you sure you want to "+enableOrDisable+" permissions for this?")){
+				//post name, nextValue
+				var parentContainer = $(this).closest('*[data-st-controller="MemberLookup"]');
+				var hashId = parentContainer.attr("data-id");
+				var valName = $(this).attr("data-name");
+				var params = {name: valName, hash_id: hashId, value: nextValue};
+				$.post($("*[data-st-controller='MemberLookup'] #details").attr("data-url"), params, function(resp){
+
+				});
+			}
+			else{
+				var that = this;
+				setTimeout(function(){$(that).prop("checked", !nextValue)}, 20);
+				return false;
+			}
+		});
+
+
+	 
+
+	}
+	constructPage() {
+		this.scope = $('*[data-st-controller="' + this.constructor.name + '"]');
+		var that = this;
+
+		if($(".member--asessment-container .select2-container").length == 0){
+			$('*[data-st-controller="MemberLookup"] .select2-single.assessment').select2({
+				theme: "bootstrap",
+				containerCssClass: ':all:',
+				width: "100%",
+				templateResult: App.utils.formatUserAssessmentResult,
+				templateSelection: App.utils.formatUserAssessmentSelection,
+				placeholder: 'Select assessment',
+			});
+		}
+
+
+
+		var languages = [];
+		$.each(
+			<%=ALL_LANGUAGES.to_json.html_safe%>,
+			function(k, v) {
+				languages.push({
+					id: k,
+					text: v
+				});
+		});
+
+
+
+
+		var editable = this.scope.find('#details .editable .user-tags');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			select2: {
+				width: 300,
+				placeholder: 'Select Tags',
+				tags: true,
+				dropdownParent: '.popover',
+				multiple: true,
+				data: editable.data("my-source"),
+				allowClear: false,
+			}
+		});
+
+
+		var editable = this.scope.find('#details .editable .chapter');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			source: editable.data("my-source"),
+			select2: {
+				width: 200,
+				placeholder: 'Select Chapter',
+				allowClear: false
+			}
+		});
+
+
+		var editable = this.scope.find('#details .editable .preferred-language');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			source: languages,
+			select2: {
+				width: 200,
+				placeholder: 'Select Language',
+				allowClear: false
+			}
+		});
+
+		var editable = this.scope.find('#details .editable .secondary-language');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			source: languages,
+			select2: {
+				width: 200,
+				placeholder: 'Select Language',
+				allowClear: true
+			}
+		});
+
+
+		var editable = this.scope.find('#edit-agent.editable .agent');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			source: editable.data("agents"),
+			select2: {
+				width: 200,
+				placeholder: 'Select Agent',
+				allowClear: true
+			}
+		});
+
+		var editable = this.scope.find('#details .editable .account-type');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: "account_type",
+			source: editable.data("account-types"),
+			select2: {
+				width: 200,
+				placeholder: 'Select Account Type',
+				allowClear: false
+			}
+		});
+
+
+		var editable = this.scope.find('.section-header.full-name span');
+
+		editable.editable({
+	        url: $("#details").attr("data-url"),
+	        title: 'Enter full name',
+	        mode: "inline",
+	        value: {
+	            first_name: editable.data("first-name"), 
+	            last_name: editable.data("last-name"), 
+	        }
+	    });
+
+
+
+
+		var editable = this.scope.find('#details .editable .email');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			placeholder: "Email",
+			allowClear: true,
+			validate: function(value) {
+				if (value!="" && !App.utils.validateEmail(value)) return 'Please enter a valid email';
+			}
+
+		});
+
+
+
+		var editable = this.scope.find('#details .editable .zip-code');
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			validate: function(value) {
+				if (value.length != 5) return 'Please enter a valid zip code';
+			},
+			success: function (response) {
+		        if(response.success == false) {
+		            console.log('remote error from success');
+		            if(response.message != undefined){
+		            	return response.message;
+		            }
+		            else{
+		            	return 'Please enter a valid zip code';
+		            }
+		        }
+		    },
+		    error: function (response) {
+		        console.log('remote error from fail');
+		        return 'Please enter a valid zip code';
+		    }
+
+		});
+
+		var editable = this.scope.find('#details .editable .phone-number');
+		var initialCountry = editable.data("initial-country");
+
+
+		editable.editable({
+			url: $("#details").attr("data-url"),
+			name: editable.attr("data-name"),
+			tpl: `<input data-controller="phone-number" data-phone-number-only-countries-value=\'[]\' data-phone-number-initial-country-value="${initialCountry}" type="tel" data-phone-number-target="input" autocomplete="off" class="form-control" />`,
+		    params: function(params) {
+		        // Extract the value from params, assuming 'value' holds the number
+		        var value = params.value;
+
+		        // Remove non-digit characters for clean processing
+		        var cleanedValue = value.replace(/\D/g, '');
+
+		        // Ensure only the last 11 digits are kept if the number starts with '11' and is longer than 11 digits
+		        if (cleanedValue.startsWith('11') && cleanedValue.length > 11) {
+		            cleanedValue = cleanedValue.slice(-11); // Slice the string to keep only the last 11 digits
+		        }
+
+		        // Update the value in params before sending
+		        params.value = cleanedValue;
+
+		        return params;
+		    },
+			validate: function(value) {
+				var localNum = value.replace(/\D/g,'');
+				var intelPhone = $(this).closest("div.editable").find("input");
+				var countryData = intelPhone.intlTelInput("getSelectedCountryData");
+				var countryDialCode = countryData.dialCode;
+				var countryIso = countryData.iso2.toUpperCase();
+        		var phoneNumber=countryDialCode+localNum;
+
+        		var validNumber = libphonenumber.isValidNumber(localNum,countryIso);
+
+        		if(countryIso=="US"){
+					validNumber = (libphonenumber.isValidNumber(localNum,countryIso)) || libphonenumber.isValidNumber(localNum,"CA")
+				}
+				if (!validNumber){
+					return `Please enter a valid ${countryIso} phone number`;
+				}
+				return {newValue: phoneNumber}
+			}
+		});
+
+		// 1-time shown event directly on element.
+		editable.on('shown', function(e, editable) {
+			editable.container.$form.closest(".popover-content").css({"overflow": "visible"})
+        });  
+
+
+
+
+
+		// #details .editable .custom-property.dropdown, #details .editable .custom-property.radio_buttons,
+		var checkboxesProperties = this.scope.find('#details .editable .custom-property.checkboxes');
+		$.each(checkboxesProperties, function(i, elm){
+			$(elm).editable({
+				url: $("#details").attr("data-url"),
+				source: $(elm).data("my-source"),
+				name: $(elm).attr("data-name"),
+				select2: {
+					width: 200,
+					multiple: true,
+					allowClear: false,
+					placeholder: "Select " + $(elm).attr("data-name"),
+	        	}
+			});
+		});
+
+		var checkboxProperties = this.scope.find('#details .editable .custom-property.checkbox');
+		$.each(checkboxProperties, function(i, elm){
+			$(elm).editable({
+				url: $("#details").attr("data-url"),
+				source: $(elm).data("my-source"),
+				name: $(elm).attr("data-name"),
+				select2: {
+					width: 200,
+					multiple: false,
+					allowClear: true,
+					placeholder: "Select " + $(elm).attr("data-name"),
+	        	}
+			});
+		});
+
+		var radioButtonProperties = this.scope.find('#details .editable .custom-property.radios');
+		$.each(radioButtonProperties, function(i, elm){
+
+			var source = $(elm).data("my-source");
+			$(elm).editable({
+				url: $("#details").attr("data-url"),
+				source: source,
+				name: $(elm).attr("data-name"),
+				select2: {
+					width: 200,
+					placeholder: "Select " + $(elm).attr("data-name"),
+					allowClear: false
+				}
+
+			});
+		});
+
+		var selectProperties = this.scope.find('#details .editable .custom-property.select');
+		$.each(selectProperties, function(i, elm){
+
+			var source = $(elm).data("my-source");
+			$(elm).editable({
+				url: $("#details").attr("data-url"),
+				source: source,
+				name: $(elm).attr("data-name"),
+				select2: {
+					width: 200,
+					placeholder: "Select " + $(elm).attr("data-name"),
+					allowClear: false
+				}
+
+			});
+		});
+
+
+
+		var inputProperties = this.scope.find('#details .editable .custom-property.input, #details .editable .custom-property.number');
+		$.each(inputProperties, function(i, elm){
+
+			var source = $(elm).data("my-source");
+			$(elm).editable({
+				url: $("#details").attr("data-url"),
+				name: $(elm).attr("data-name"),
+
+			});
+
+		});
+
+
+
+
+	}
+
+};
+

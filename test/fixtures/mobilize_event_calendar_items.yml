@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mobilize_event_id: 1
+  start_time: 2019-03-15 00:25:20
+  end_time: 2019-03-15 00:25:20
+  title: MyString
+
+two:
+  mobilize_event_id: 1
+  start_time: 2019-03-15 00:25:20
+  end_time: 2019-03-15 00:25:20
+  title: MyString
