@@ -62,17 +62,7 @@ export default class extends Controller {
           style: style
         });
 
-        // const appearance = { /* appearance */ };
-        // const options = {   mode: 'billing',
-        //                     autocomplete: {
-        //                         mode: "google_maps_api",
-        //                         apiKey: "AIzaSyBRFVqPN3i2772iHgrUzuz7E2QydqVy9ko",
-        //                     },
 
-        //                  };
-        // const elements = stripe.elements({ clientSecret, appearance });
-        // const addressElement = elements.create('address', options);
-        // addressElement.mount(this.addressElementTarget);
 
         var self = this;
         // Create an instance of the card Element.
