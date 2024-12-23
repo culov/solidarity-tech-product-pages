@@ -2,35 +2,35 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 20px;
-  gap: 10px;
+  padding: 5px 11px;
+  gap: 8px;
   width: min-content;
 
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--c-black);
   font-family: var(--ff-primary);
   text-decoration: none;
   white-space: nowrap;
   line-height: 1.2666;
 
-  border: none;
-  border-radius: 22px;
+  border: null;
+  border-radius: 100px;
   background-color: var(--c-white);
   outline: none;
   user-select: none;
 }
 
-.label-icon__icon {
-  width: 32px;
-  height: 32px;
-
-  fill: var(--c-violet);
+.label-icon__border {
+  background: linear-gradient(to right, var(--c-violet), #E6A6FF);
+  padding: 1px;
+  border-radius: 100px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-@media screen and (min-width: 768px) {
-  .label-icon {
-    padding: 8px 20px;
-    border-radius: 40px;
-  }
+.label-icon__icon {
+  width: 24px;
+  height: 24px;
+
+  fill: var(--c-violet);
 }

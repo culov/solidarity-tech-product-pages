@@ -1,0 +1,17 @@
+<div class="wrap tools">
+  <div class="content">
+    <div class="tools__header">
+      <h1 class="tools__title"><%= title %></h1>
+      <p class="tools__subtitle"><%= subtitle %></p>
+    </div>
+    <div class="tools__grid">
+      <% items.each do |item| %>
+        <div class="tools__item">
+          <h2 class="tools__item-title"><%= item[:title] %></h2>
+          <p class="tools__item-description"><%= item[:description] %></p>
+        </div>
+      <% end %>
+    </div>
+    <div class="tools__underline"></div>
+  </div>
+</div>

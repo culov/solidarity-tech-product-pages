@@ -1,0 +1,17 @@
+<div class="cta-block wrap">
+    <div class="content cta-block__content">
+        <div class="cta-block__header">
+            <h2 class="cta-block__title"><%= Mock::CTA_BLOCK[:title] %></h2>
+            <p class="cta-block__subtitle"><%= Mock::CTA_BLOCK[:subtitle] %></p>
+        </div>
+    
+        <div class="cta-block__actions">
+            <%= render template: 'marketing/common/button-violet', :locals => { :text => Mock::CTA_BLOCK[:button][:text], :link => Mock::CTA_BLOCK[:button][:url] } %>
+            
+            <div class="cta-block__support">
+                <span class="cta-block__support-text"><%= Mock::CTA_BLOCK[:support][:text] %></span>
+                <%= link_to Mock::CTA_BLOCK[:support][:link][:text], Mock::CTA_BLOCK[:support][:link][:url], class: "cta-block__support-link" %>
+            </div>
+        </div>
+    </div>
+</div>

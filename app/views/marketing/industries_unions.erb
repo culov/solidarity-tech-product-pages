@@ -1,0 +1,65 @@
+<%- content_for(:head) do -%>
+<meta name="description" content="Promote rallies, meetings & grassroots events using Solidarity Tech's all-in-one event management for nonprofits. Streamline registrations, reminders & check-ins.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::INDUSTRIES_UNIONS[:hero][:title],
+  :description => Mock::INDUSTRIES_UNIONS[:hero][:description],
+  :label => Mock::INDUSTRIES_UNIONS[:hero][:label],
+  :image => Mock::INDUSTRIES_UNIONS[:hero][:image],
+  :bg_image => Mock::INDUSTRIES_UNIONS[:hero][:bg_image],
+  :overlay_image => Mock::INDUSTRIES_UNIONS[:hero][:overlay_image],
+  :colors => Mock::INDUSTRIES_UNIONS[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/tech_stack', :locals => {
+  :title => Mock::INDUSTRIES_UNIONS[:tech_stack][:title],
+  :cards => Mock::INDUSTRIES_UNIONS[:tech_stack][:cards],
+} %>
+
+<%= render template: 'marketing/components/logos_block', :locals => {
+  :title => Mock::INDUSTRIES_UNIONS[:logos_block][:title],
+  :logos => Mock::INDUSTRIES_UNIONS[:logos_block][:logos],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::INDUSTRIES_UNIONS[:trigger_block_v_1][:title],
+  :extra_title => Mock::INDUSTRIES_UNIONS[:trigger_block_v_1][:extra_title],
+  :text => Mock::INDUSTRIES_UNIONS[:trigger_block_v_1][:text],
+  :image => Mock::INDUSTRIES_UNIONS[:trigger_block_v_1][:image],
+  :colors => Mock::INDUSTRIES_UNIONS[:trigger_block_v_1][:colors],
+  :triggers => Mock::INDUSTRIES_UNIONS[:trigger_block_v_1][:triggers],
+} %>
+
+<%= render template: 'marketing/components/trigger_block_v', :locals => {
+  :title => Mock::INDUSTRIES_UNIONS[:trigger_block_v_2][:title],
+  :extra_title => Mock::INDUSTRIES_UNIONS[:trigger_block_v_2][:extra_title],
+  :text => Mock::INDUSTRIES_UNIONS[:trigger_block_v_2][:text],
+  :image => Mock::INDUSTRIES_UNIONS[:trigger_block_v_2][:image],
+  :colors => Mock::INDUSTRIES_UNIONS[:trigger_block_v_2][:colors],
+  :triggers => Mock::INDUSTRIES_UNIONS[:trigger_block_v_2][:triggers],
+} %>
+
+<%= render template: 'marketing/components/industries_features', :locals => {
+  :image => Mock::INDUSTRIES_UNIONS[:industries_features][:image],
+  :features => Mock::INDUSTRIES_UNIONS[:industries_features][:features],
+} %>
+
+<%= render template: 'marketing/components/sub_menu_block', :locals => {
+  :title => Mock::INDUSTRIES_UNIONS[:sub_menu_block][:title],
+} %>
+
+<%= render template: 'marketing/components/cta' %>
+
+<%= render template: 'marketing/components/tools_block', :locals => {
+  :title => Mock::INDUSTRIES_UNIONS[:tools_block][:title],
+  :subtitle => Mock::INDUSTRIES_UNIONS[:tools_block][:subtitle],
+  :items => Mock::INDUSTRIES_UNIONS[:tools_block][:items],
+} %>
+
+<%= render template: 'marketing/components/faq', :locals => {
+  :faq => Mock::INDUSTRIES_UNIONS[:faq],
+} %>
+
+<%= render template: 'marketing/components/cta_block' %>

@@ -50,6 +50,19 @@
   transform-origin: center center;
 }
 
+.button--violet {
+  background-color: var(--c-violet);
+  transition: transform 0.2s ease-in-out;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button--violet:hover {
+  background-color: var(--c-violet);
+  transform: scale(1.1);
+  transform-origin: center center;
+}
+
 .button__icon {
   width: 32px;
   height: 32px;
@@ -61,12 +74,12 @@
   fill: var(--c-violet-dark);
 }
 
-
 @media screen and (min-width: 600px) {
   .button {
-    padding: 12.5px 35px;
-    border-radius: 40px;
+    padding: 12.5px 32px;
+    border-radius: 45px;
   }
+
   .button--icon {
     padding: 8px 20px;
   }

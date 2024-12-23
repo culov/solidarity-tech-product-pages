@@ -1,7 +1,9 @@
 :root {
   --c-trigger-block-v-bg: var(--c-white);
   --c-trigger-block-v-shadow: var(--c-white);
-  --c-text: var(--c-black)
+  --c-text: var(--c-black);
+  --c-text-secondary: var(--c-black);
+  --f-direction: "row";
 }
 
 .trigger-block-v {
@@ -10,15 +12,32 @@
 
 /*===== Title =====*/
 
+.trigger-block-v__title-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
 .trigger-block-v__title {
-  margin: 35px 10px 45px;
+  max-width: 720px;
+  margin-bottom: 20px;
 
   font-family: var(--ff-primary);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 2rem;
   line-height: 1.16;
   color: var(--c-text);
   text-align: center;
+}
+
+.trigger-block-v__text {
+  max-width: 640px;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--c-text-secondary);
 }
 
 .trigger-block-v__extra-title {
@@ -63,26 +82,21 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 40px;
+  gap: 24px;
   width: 100%;
-  margin: 35px 10px 90px;
 }
 
 @media screen and (min-width: 768px) {
   .trigger-block-v__title {
-    max-width: 900px;
-    margin: 55px auto 50px 0;
-
-    font-size: 3.125rem;
-    text-align: left;
+    font-size: 3rem;
   }
 
   .trigger-block-v__sides {
     display: flex;
-    flex-direction: row;
+    flex-direction: var(--f-direction);
     justify-content: space-between;
     align-items: center;
-    gap: 50px;
+    gap: 100px;
   }
 
   .trigger-block-v__image-wrap {
@@ -95,10 +109,8 @@
   }
 
   .trigger-block-v__triggers {
-    width: 40%;
+    width: 45%;
     display: flex;
-    flex-direction: column;
-    gap: 36px;
     flex-shrink: 0;
   }
 }
