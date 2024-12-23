@@ -1,7 +1,9 @@
 <div class="trigger">
-    <div class="trigger__icon-wrap">
-        <%= render template: 'marketing/common/icon', :locals => { :iconName => icon, :iconClass => 'trigger__icon' } %>
+    <div class="trigger__title-wrap">
+        <div class="trigger__icon-wrap">
+            <%= render template: 'marketing/common/icon', :locals => { :iconName => icon, :iconClass => 'trigger__icon' } %>
+        </div>
+        <h3 class="trigger__title"><%= title.html_safe %></h3>
     </div>
-    <h3 class="trigger__title"><%= title.html_safe %></h3>
     <p class="trigger__text"><%= text.html_safe %></p>
 </div>

@@ -1,0 +1,20 @@
+<section class="wrap tech-stack">
+  <div class="content tech-stack__content">
+    <h2 class="tech-stack__title">
+      <%= title.html_safe %>
+    </h2>
+    <div class="tech-stack__grid">
+      <% cards.each do |card| %>
+        <div class="tech-stack__card">
+          <div class="tech-stack__card-icon">
+            <%= render template: 'marketing/common/icon', :locals => { :iconName => card[:icon], :iconClass => 'tech-stack__card-icon__icon' } %>
+          </div>
+          <div class="tech-stack__card-text">
+            <h3 class="tech-stack__card-title"><%= card[:title] %></h3>
+            <p class="tech-stack__card-description"><%= card[:description] %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
