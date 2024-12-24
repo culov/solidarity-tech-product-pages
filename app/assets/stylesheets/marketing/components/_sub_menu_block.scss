@@ -89,6 +89,10 @@
 }
 
 @media screen and (min-width: 992px) {
+  .submenu-block__title {
+    font-size: 3rem;
+  }
+
   .submenu-block__link {
     font-size: 1.5rem;
   }

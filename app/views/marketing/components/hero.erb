@@ -1,9 +1,10 @@
-<section class="wrap hero <%= defined?(extraClass) ? extraClass : '' %>">
+<section class="wrap hero <%= defined?(extraClass) ? extraClass : '' %>" style="
+  --from-left: <%= image[:fromLeft] %>;
+  --from-right: <%= image[:fromRight] %>;
+  --c-background: <%= colors[:background] %>;
+">
   <div class="wrap hero__wrap">
-    <div class="content hero__content" style="
-            --from-left: <%= image[:fromLeft] %>;
-            --from-right: <%= image[:fromRight] %>;
-            ">
+    <div class="content hero__content">
         <%= render template: 'marketing/common/label_icon', :locals => label %>
         <h1 class="hero__title"><%= title %></h1>
         <p class="hero__description"><%= description %></p>
@@ -14,7 +15,7 @@
           } %>
         </div>
     </div>
-    <% if defined?(bg_image) and bg_image[:src] %>
+    <% if defined?(bg_image[:src]) %>
       <div class="hero-bg">
         <%= render template: 'marketing/common/image', locals: {
           :image => bg_image[:src],
@@ -23,7 +24,7 @@
       </div>
     <% end %>
   </div>
-  <% if defined?(overlay_image) and overlay_image[:src] %>
+  <% if defined?(overlay_image[:src]) %>
     <div class="hero-overlay">
       <%= render template: 'marketing/common/image', locals: {
         :image => overlay_image[:src],

@@ -52,13 +52,6 @@
   color: var(--c-text-grey-dark);
 }
 
-.tools__underline {
-  width: 100%;
-  height: 0.5px;
-  background-color: #00000033;
-  margin-top: 30px;
-}
-
 @media (min-width: 768px) {
   .tools__header {
     margin-bottom: 50px;
@@ -84,10 +77,6 @@
   .tools__item {
     grid-column-start: span 2;
   }
-
-  .tools__underline {
-    margin-top: 50px;
-  }
 }
 
 @media (min-width: 992px) {
@@ -101,16 +90,5 @@
 
   .tools__grid {
     gap: 80px;
-  }
-
-  .tools__underline {
-    margin-top: 80px;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .tools__underline {
-    width: 110%;
-    margin: 80px 5% 80px -5%;
   }
 }

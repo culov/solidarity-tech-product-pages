@@ -58,6 +58,11 @@
   :items => Mock::INDUSTRIES_UNIONS[:tools_block][:items],
 } %>
 
+<%= render template: 'marketing/common/line', :locals => {
+  :margin_top => '80px',
+  :margin_bottom => '20px',
+} %>
+
 <%= render template: 'marketing/components/faq', :locals => {
   :faq => Mock::INDUSTRIES_UNIONS[:faq],
 } %>

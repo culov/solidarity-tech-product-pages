@@ -1923,4 +1923,73 @@ module Mock
     },
   }.freeze
 
+  FUNDRAISING = {
+    hero: {
+      label: {
+        text: 'Fundraising',
+        icon: 'icon_fundraising',
+      },
+      title: 'Build deep supporter relationships & raise more funds',
+      description:
+        'Some description goes here. Lorem ipsum dolor sit amet diceam est un parturient nascetu massa penatibus commodo massa diceam dolor est un adipiscing elitum ligula est aenean parturient.',
+      image: {
+        fromLeft: '0.001%',
+        fromRight: '-8%',
+        src: 'fundraising_hero',
+      },
+      bg_image: {
+        src: 'hero_blur_bg',
+      },
+      colors: {
+        background: '#F5F6FB',
+        shadow_left: 'rgba(180,218,232,0.5)',
+        shadow_right: 'rgba(108,229,255,0.35)',
+      },
+    },
+    features: {
+      title: '',
+      start: 'left',
+      items: [
+        {
+          title: 'Accept recurring or one-time donations, and manage a dues system.',
+          extra_title: '',
+          description: 'Whether you\'re running a membership dues program, collecting one-time donations, or gathering recurring sustainer donations, we\'ve got the donation pages and tracking tools to get you the best results.',
+          image: { src: 'fundraising_feature' },
+        },
+      ],
+    },
+    accordion: {
+      colors: {
+        background: '#FFFFFF',
+        text: '#000000',
+        text_secondary: '#575757',
+      },
+      image: {
+        src: 'fundraising_accordion'
+      },
+      items: [
+        {
+          title: 'Unlimited mobile optimized, branded donation forms.',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_form'
+        },
+        {
+          title: 'One-time or recurring',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_repeat'
+        },
+        {
+          title: 'Standard donations or membership dues',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_donations'
+        },
+        {
+          title: 'Automated reminders',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_bell_ringing'
+        },
+      ],
+    },
+  }.freeze
+
 end
