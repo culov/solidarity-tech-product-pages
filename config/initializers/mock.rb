@@ -8,7 +8,7 @@ module Mock
 
   CTA = {
     left: {
-      icon: 'icon_fingerprint',
+      icon: 'icon_rocket',
       title: 'Get started now',
       description:
         'Sign up to begin using the all-in-one organizer toolkit',
@@ -22,7 +22,7 @@ module Mock
       title: 'Talk to a real human',
       description: 'Get the gist of Solidarity Tech with a guided demo',
       button: {
-        text: 'Schedule Demo',
+        text: 'Schedule Call',
         link: '/schedule-a-demo',
       },
     },
@@ -48,6 +48,8 @@ module Mock
       {icon: 'icon_flag_banner', name: 'Events', path: '/events'},
       {icon: 'icon_device_mobile', name: 'Field App', path: '/field-app'},
       {icon: 'icon_chart_pie', name: 'Reporting', path: '/reporting'},
+      {icon: 'icon_automations', name: 'Automations', path: '/automations'},
+      {icon: 'icon_donations', name: 'Donations', path: '/donations'},
     ],
     button: {
       text: 'Get started',
@@ -548,6 +550,7 @@ module Mock
         background: '#151226',
         shadow: 'rgba(108,229,255,0.3)',
         text: '#FFFFFF',
+        text_secondary: '#FFFFFF',
       },
       triggers: [
         {
@@ -624,6 +627,7 @@ module Mock
         background: '#151226',
         shadow: 'rgba(108,229,255,0.3)',
         text: '#FFFFFF',
+        text_secondary: '#FFFFFF',
       },
       triggers: [
         {
@@ -685,6 +689,7 @@ module Mock
         background: '#151226',
         shadow: 'rgba(0,0,0,0)',
         text: '#ffffff',
+        text_secondary: '#FFFFFF',
       },
       triggers: [
         {
@@ -1524,6 +1529,467 @@ module Mock
     button: {
       text: 'Continue',
     }
+  }.freeze
+
+  INDUSTRIES_NON_PROFITS = {
+    hero: {
+      label: {
+        text: 'Nonprofits',
+        icon: 'icon_industries',
+      },
+      title: 'Every cause needs a voice. Amplify yours with Solidarity Tech',
+      description:
+        'Solidarity Tech offers a comprehensive platform for fundraising, volunteer management, and community engagement. Drive action with powerful calling, texting, and email features, all seamlessly integrated to support your mission.',
+      image: {
+        fromLeft: '0.001%',
+        fromRight: '0.001%',
+        src: 'industries_non_profits_hero',
+      },
+      bg_image: {
+        src: 'hero_blur_bg',
+      },
+      overlay_image: {
+        src: 'industries_non_profits_hero_overlay',
+      },
+      colors: {
+        background: '#F5F6FB',
+        shadow_left: 'rgba(180,218,232,0.5)',
+        shadow_right: 'rgba(108,229,255,0.35)',
+      },
+    },
+    tech_stack: {
+      title: 'Complete, Modern Union <br> Organizing Tech Stack',
+      cards: [
+        {
+          title: 'Build Deep Volunteer Relationships',
+          description: 'Turn one-time volunteers into leaders through scheduled 1:1 calls, personalized text/phone outreach, and automated follow-up workflows that maintain meaningful connections.',
+          icon: 'icon_handshake'
+        },
+        {
+          title: 'Powerful Outreach Tools',
+          description: 'Scale your impact with integrated phone banking, text banking, and predictive dialing. Run efficient donor outreach campaigns and boost event turnout while keeping your team focused on what matters.',
+          icon: 'icon_statistic_board'
+        },
+        {
+          title: 'Seamless Donor Management',
+          description: 'Drive recurring donations and grow supporter participation with powerful donation pages, customizable forms, and integrated communications.',
+          icon: 'icon_heart_hand'
+        },
+        {
+          title: 'Data-Driven Impact',
+          description: 'Track supporter engagement, measure campaign success, and generate custom reports that demonstrate your organization\'s impact to stakeholders and funders.',
+          icon: 'icon_chart_pie_space'
+        },
+      ],
+    },
+    logos_block: {
+      title: 'Trusted by leading labor & progressive organizations.',
+      logos: ['logo_dc', 'logo_hcc', 'logo_dsa', 'logo_pwc', 'logo_sgv']
+    },
+    trigger_block_v_1: {
+      title: 'The complete toolkit for building worker power',
+      text: 'Gather more leads, convert them into members, and build solidarity within your existing base. Perfect for both growing your union and deepening member engagement.',
+      image: { src: 'industries_non_profits_trigger_block_v_1', position: 'left' },
+      colors: {
+        background: '#FFFFFF',
+        shadow: '#FFFFFF',
+        text: '#000000',
+        text_secondary: '#575757',
+      },
+      triggers: [
+        {
+          icon: 'icon_headphones',
+          title: 'More conversations, less effort',
+          text: 'Launch phonebanks and textbanks instantly, including with our high-performance predictive dialer. Connect organizers directly to answered calls, eliminating manual dialing and voicemails.',
+        },
+        {
+          icon: 'icon_form',
+          title: 'Powerful action forms',
+          text: 'Create websites and customizable forms that serve any need - process donations securely, mobilize supporters for advocacy, and help donors connect with your team for deeper engagement.',
+        },
+        {
+          icon: 'icon_calendar',
+          title: 'Automate event turnout',
+          text: 'Send automated event reminders via text, email, and calls. Track RSVPs and attendance while our system handles confirmation emails and calendar invites.',
+        },
+      ],
+    },
+    trigger_block_v_2: {
+      image: { src: 'industries_non_profits_trigger_block_v_2', position: 'right' },
+      colors: {
+        background: '#FFFFFF',
+        shadow: '#FFFFFF',
+        text: '#000000',
+        text_secondary: '#575757',
+      },
+      triggers: [
+        {
+          icon: 'icon_arrow_growth',
+          title: 'Drive fundraising success',
+          text: 'Monitor donation campaigns and measure supporter engagement to ensure you\'re meeting your goals. Build strong donor relationships that sustain your mission long-term.',
+        },
+        {
+          icon: 'icon_workflow',
+          title: 'Track member development',
+          text: 'Measure every member\'s journey with custom assessment levels. Automatically create follow-up tasks and track leadership development progress in real-time.',
+        },
+        {
+          icon: 'icon_translation',
+          title: 'Multilingual outreach tools',
+          text: 'Break language barriers in your organizing drives with support for 92 languages. Route bilingual organizers to workers who share their language preferences.',
+        },
+      ],
+    },
+    industries_features: {
+      image: { src: 'industries_features_hero' },
+      features: [
+        {
+          title: 'Easily onboard and manage volunteers and staff',
+          description: 'Add organizers quickly through the dashboard or self-registration. No seat-based pricing means you can build teams of any size.'
+        },
+        {
+          title: 'Mobile app lets your team campaign from anywhere',
+          description: 'Your team can run campaigns anywhere using Solidarity Tech\'s mobile app on their own phones, so no extra device costs. Download, log in, and start making calls.'
+        },
+        {
+          title: 'Set up distinct union chapters and user roles',
+          description: 'Create chapters based on geography, employers, or campaigns. Set granular permissions to manage staff and volunteer access levels.'
+        },
+        {
+          title: 'Boost Answer Rates with Local Numbers',
+          description: 'Make it easier for members to recognize and answer calls by reaching them with familiar, local numbers.'
+        },
+        {
+          title: 'Automatically Track All Member Interactions',
+          description: 'Capture every call, text, email, RSVP, website visit, and form submission in one place—no manual updates needed.'
+        },
+        {
+          title: 'See Who Clicks Your Links in Emails & Texts',
+          description: 'Track link clicks in texts and emails to understand member interest and follow up with the right people.'
+        },
+      ],
+    },
+    sub_menu_block: {
+      title: 'Everything you need to win campaigns',
+    },
+    tools_block: {
+      title: 'Essential Tools for Growing Union Strength',
+      subtitle: 'From organizing drives to ongoing engagement, Solidarity Tech equips unions with everything they need to organize, mobilize, and help workers win.',
+      items: [
+        { title: 'Built for Union Growth, Not Investor Metrics', description: 'Designed specifically to strengthen union power. Solidarity Tech focuses on real organizing goals rather than corporate metrics, offering tools that build connections and foster long-term union growth.' },
+        { title: 'Activate Members with Flexible Automations', description: 'Engage members with timely, personalized interactions. Use powerful automations to send welcome sequences, event reminders, surveys, and more—keeping members involved and informed at every stage.' },
+        { title: 'Insights Without a Data Analyst', description: 'Access clear, actionable insights instantly. With simplified analytics, you can interpret engagement data and make strategic decisions without the need for complex data analysis.' },
+        { title: 'Map Member Connections & Influence', description: 'Identify leaders and visualize member connections. Map relationships between members and organizers, building a network that strengthens union cohesion and influence.' },
+        { title: 'Scale Outreach During High-Stakes Moments', description: 'Rapidly increase outreach when it matters most. Whether organizing a strike or driving turnout for key actions, Solidarity Tech lets you mobilize supporters on a large scale quickly.' },
+        { title: 'Build Union Recognition with Branded Tools', description: 'Reinforce your identity across interactions. Use contact cards, branded calls, emails, and a custom website to make your union’s presence memorable.' },
+        { title: 'Full Control of Member Data and Privacy', description: 'Union data stays secure and accessible only to you. With strong privacy protections, Solidarity Tech ensures you retain ownership and control of your members\' data, aligning with union values.' },
+        { title: 'Dedicated Support for Organizers', description: 'Access support from people who understand unions. Get help when you need it from a team experienced in union organizing, ready to help you use Solidarity Tech to its fullest.' },
+      ],
+    },
+    faq: {
+      title: 'Frequently Asked Questions',
+      subtitle: 'SUPPORT',
+      description: 'Everything you need to know about the product and billing. Can\'t find the answer you\'re looking for? Please <a href="/schedule-a-demo">chat to our friendly team</a>.',
+      questions: [
+        {
+          question: 'What is union software?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'What counts as a contact?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'Is Solidarity Tech multilingual?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'How quickly can I start using my account?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'Does Solidarity Tech own the data I put into the system?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'What makes Solidarity Tech different from basic CRM tools?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+      ],
+    },
+  }.freeze
+
+  INDUSTRIES_UNIONS = {
+    hero: {
+      label: {
+        text: 'Nonprofits',
+        icon: 'icon_industries',
+      },
+      title: 'Organize Smarter, Build Stronger Unions',
+      description:
+        'Solidarity Tech is the all-in-one digital platform that transforms how unions connect, engage, and mobilize their members to win',
+      image: {
+        fromLeft: '0.001%',
+        fromRight: '0.001%',
+        src: 'industries_non_profits_hero',
+      },
+      bg_image: {
+        src: 'hero_blur_bg',
+      },
+      overlay_image: {
+        src: 'industries_non_profits_hero_overlay',
+      },
+      colors: {
+        background: '#F5F6FB',
+        shadow_left: 'rgba(180,218,232,0.5)',
+        shadow_right: 'rgba(108,229,255,0.35)',
+      },
+    },
+    tech_stack: {
+      title: 'Complete, Modern Union <br> Organizing Tech Stack',
+      cards: [
+        {
+          title: 'Build Solidarity & Leadership',
+          description: 'Transform your contact list into an organized base through systematic relationship building. Schedule 1:1 calls, track member development, and grow your core membership with tools designed for deep organizing.',
+          icon: 'icon_fire'
+        },
+        {
+          title: 'Drive Action',
+          description: 'Mobilize members instantly through integrated phonebanks, textbanks, and email/text blasts. Move supporters up the ladder of engagement with personalized outreach and automated follow-ups that maximize turnout.',
+          icon: 'icon_structure'
+        },
+        {
+          title: 'Win Campaigns',
+          description: 'Run coordinated campaigns that leverage every organizing tool seamlessly. From member signup to direct actions, merge offline organizing with digital tools that demonstrate your union\'s power."',
+          icon: 'icon_leaderboard'
+        },
+        {
+          title: 'Grow Membership',
+          description: 'Turn website visitors and campaign supporters into union members through a proven digital organizing pipeline. Reach workers in multiple languages, capture new signups automatically, and convert interest into active membership.',
+          icon: 'icon_chart_pie_no_segment'
+        },
+      ],
+    },
+    logos_block: {
+      title: 'Trusted by leading labor & progressive organizations.',
+      logos: ['logo_cwa', 'logo_dc', 'logo_pwc', 'logo_rdu', 'logo_uaw', 'logo_ufcw']
+    },
+    trigger_block_v_1: {
+      title: 'The complete toolkit for building worker power',
+      text: 'Gather more leads, convert them into members, and build solidarity within your existing base. Perfect for both growing your union and deepening member engagement.',
+      image: { src: 'industries_non_profits_trigger_block_v_1', position: 'left' },
+      colors: {
+        background: '#FFFFFF',
+        shadow: '#FFFFFF',
+        text: '#000000',
+        text_secondary: '#575757',
+      },
+      triggers: [
+        {
+          icon: 'icon_headphones',
+          title: 'More conversations, less effort',
+          text: 'Launch phonebanks and textbanks instantly, including with our high-performance predictive dialer. Connect organizers directly to answered calls, eliminating manual dialing and voicemails.',
+        },
+        {
+          icon: 'icon_form',
+          title: 'Powerful action forms',
+          text: 'Create websites and customizable forms that serve any need - process donations securely, mobilize supporters for advocacy, and help donors connect with your team for deeper engagement.',
+        },
+        {
+          icon: 'icon_calendar',
+          title: 'Automate event turnout',
+          text: 'Send automated event reminders via text, email, and calls. Track RSVPs and attendance while our system handles confirmation emails and calendar invites.',
+        },
+      ],
+    },
+    trigger_block_v_2: {
+      image: { src: 'industries_non_profits_trigger_block_v_2', position: 'right' },
+      colors: {
+        background: '#FFFFFF',
+        shadow: '#FFFFFF',
+        text: '#000000',
+        text_secondary: '#575757',
+      },
+      triggers: [
+        {
+          icon: 'icon_arrow_growth',
+          title: 'Drive fundraising success',
+          text: 'Monitor donation campaigns and measure supporter engagement to ensure you\'re meeting your goals. Build strong donor relationships that sustain your mission long-term.',
+        },
+        {
+          icon: 'icon_workflow',
+          title: 'Track member development',
+          text: 'Measure every member\'s journey with custom assessment levels. Automatically create follow-up tasks and track leadership development progress in real-time.',
+        },
+        {
+          icon: 'icon_translation',
+          title: 'Multilingual outreach tools',
+          text: 'Break language barriers in your organizing drives with support for 92 languages. Route bilingual organizers to workers who share their language preferences.',
+        },
+      ],
+    },
+    industries_features: {
+      image: { src: 'industries_features_hero' },
+      features: [
+        {
+          title: 'Easily onboard and manage volunteers and staff',
+          description: 'Add organizers quickly through the dashboard or self-registration. No seat-based pricing means you can build teams of any size.'
+        },
+        {
+          title: 'Mobile app lets your team campaign from anywhere',
+          description: 'Your team can run campaigns anywhere using Solidarity Tech\'s mobile app on their own phones, so no extra device costs. Download, log in, and start making calls.'
+        },
+        {
+          title: 'Set up distinct union chapters and user roles',
+          description: 'Create chapters based on geography, employers, or campaigns. Set granular permissions to manage staff and volunteer access levels.'
+        },
+        {
+          title: 'Boost Answer Rates with Local Numbers',
+          description: 'Make it easier for members to recognize and answer calls by reaching them with familiar, local numbers.'
+        },
+        {
+          title: 'Automatically Track All Member Interactions',
+          description: 'Capture every call, text, email, RSVP, website visit, and form submission in one place—no manual updates needed.'
+        },
+        {
+          title: 'See Who Clicks Your Links in Emails & Texts',
+          description: 'Track link clicks in texts and emails to understand member interest and follow up with the right people.'
+        },
+      ],
+    },
+    sub_menu_block: {
+      title: 'Everything you need to win campaigns',
+    },
+    tools_block: {
+      title: 'Essential Tools for Growing Union Strength',
+      subtitle: 'From organizing drives to ongoing engagement, Solidarity Tech equips unions with everything they need to organize, mobilize, and help workers win.',
+      items: [
+        { title: 'Built for Union Growth, Not Investor Metrics', description: 'Designed specifically to strengthen union power. Solidarity Tech focuses on real organizing goals rather than corporate metrics, offering tools that build connections and foster long-term union growth.' },
+        { title: 'Activate Members with Flexible Automations', description: 'Engage members with timely, personalized interactions. Use powerful automations to send welcome sequences, event reminders, surveys, and more—keeping members involved and informed at every stage.' },
+        { title: 'Insights Without a Data Analyst', description: 'Access clear, actionable insights instantly. With simplified analytics, you can interpret engagement data and make strategic decisions without the need for complex data analysis.' },
+        { title: 'Map Member Connections & Influence', description: 'Identify leaders and visualize member connections. Map relationships between members and organizers, building a network that strengthens union cohesion and influence.' },
+        { title: 'Scale Outreach During High-Stakes Moments', description: 'Rapidly increase outreach when it matters most. Whether organizing a strike or driving turnout for key actions, Solidarity Tech lets you mobilize supporters on a large scale quickly.' },
+        { title: 'Build Union Recognition with Branded Tools', description: 'Reinforce your identity across interactions. Use contact cards, branded calls, emails, and a custom website to make your union’s presence memorable.' },
+        { title: 'Full Control of Member Data and Privacy', description: 'Union data stays secure and accessible only to you. With strong privacy protections, Solidarity Tech ensures you retain ownership and control of your members\' data, aligning with union values.' },
+        { title: 'Dedicated Support for Organizers', description: 'Access support from people who understand unions. Get help when you need it from a team experienced in union organizing, ready to help you use Solidarity Tech to its fullest.' },
+      ],
+    },
+    faq: {
+      title: 'Frequently Asked Questions',
+      subtitle: 'SUPPORT',
+      description: 'Everything you need to know about the product and billing. Can\'t find the answer you\'re looking for? Please <a href="/schedule-a-demo">chat to our friendly team</a>.',
+      questions: [
+        {
+          question: 'What is union software?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'What counts as a contact?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'Is Solidarity Tech multilingual?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'How quickly can I start using my account?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'Does Solidarity Tech own the data I put into the system?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+        {
+          question: 'What makes Solidarity Tech different from basic CRM tools?',
+          answer: 'Union software helps labor unions, tenant unions, and debtor unions organize their members and run campaigns. Modern union software combines member management, communication tools, and organizing features in one platform to help unions grow membership, mobilize supporters, and win campaigns.'
+        },
+      ],
+    },
+  }.freeze
+
+  CTA_BLOCK = {
+    title: 'Ready to win?',
+    subtitle: 'Sign up now and start organizing in minutes.',
+    button: {
+      text: 'Get Started Now',
+      url: '/pricing',
+    },
+    support: {
+      text: 'Have questions?',
+      link: {
+        text: 'Talk to sales.',
+        url: '/schedule-a-demo',
+      },
+    },
+  }.freeze
+
+  FUNDRAISING = {
+    hero: {
+      label: {
+        text: 'Fundraising',
+        icon: 'icon_fundraising',
+      },
+      title: 'Build deep supporter relationships & raise more funds',
+      description:
+        'Some description goes here. Lorem ipsum dolor sit amet diceam est un parturient nascetu massa penatibus commodo massa diceam dolor est un adipiscing elitum ligula est aenean parturient.',
+      image: {
+        fromLeft: '0.001%',
+        fromRight: '-8%',
+        src: 'fundraising_hero',
+      },
+      bg_image: {
+        src: 'hero_blur_bg',
+      },
+      colors: {
+        background: '#F5F6FB',
+        shadow_left: 'rgba(180,218,232,0.5)',
+        shadow_right: 'rgba(108,229,255,0.35)',
+      },
+    },
+    features: {
+      title: '',
+      start: 'left',
+      items: [
+        {
+          title: 'Accept recurring or one-time donations, and manage a dues system.',
+          extra_title: '',
+          description: 'Whether you\'re running a membership dues program, collecting one-time donations, or gathering recurring sustainer donations, we\'ve got the donation pages and tracking tools to get you the best results.',
+          image: { src: 'fundraising_feature' },
+        },
+      ],
+    },
+    accordion: {
+      colors: {
+        background: '#FFFFFF',
+        text: '#000000',
+        text_secondary: '#575757',
+      },
+      image: {
+        src: 'fundraising_accordion'
+      },
+      items: [
+        {
+          title: 'Unlimited mobile optimized, branded donation forms.',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_form'
+        },
+        {
+          title: 'One-time or recurring',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_repeat'
+        },
+        {
+          title: 'Standard donations or membership dues',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_donations'
+        },
+        {
+          title: 'Automated reminders',
+          text: 'Lorem ipsum dolor sit amet diceam est un adipiscing est dolor massa aenean diceam est un parturient nascetur massa diceam commodo.',
+          icon: 'icon_bell_ringing'
+        },
+      ],
+    },
   }.freeze
 
 end

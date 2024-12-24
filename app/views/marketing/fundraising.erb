@@ -1,0 +1,38 @@
+<%- content_for(:head) do -%>
+<meta name="description" content="Promote rallies, meetings & grassroots events using Solidarity Tech's all-in-one event management for nonprofits. Streamline registrations, reminders & check-ins.">
+<%- end -%>
+<%= render template: 'marketing/common/header' %>
+
+<%= render template: 'marketing/components/hero', :locals => {
+  :title => Mock::FUNDRAISING[:hero][:title],
+  :description => Mock::FUNDRAISING[:hero][:description],
+  :label => Mock::FUNDRAISING[:hero][:label],
+  :image => Mock::FUNDRAISING[:hero][:image],
+  :bg_image => Mock::FUNDRAISING[:hero][:bg_image],
+  :overlay_image => Mock::FUNDRAISING[:hero][:overlay_image],
+  :colors => Mock::FUNDRAISING[:hero][:colors],
+} %>
+
+<%= render template: 'marketing/components/features', :locals => {
+  :title => Mock::FUNDRAISING[:features][:title],
+  :start => Mock::FUNDRAISING[:features][:start],
+  :items => Mock::FUNDRAISING[:features][:items],
+} %>
+
+<%= render template: 'marketing/common/line', :locals => {
+  :margin_top => '60px',
+  :margin_bottom => '0px',
+} %>
+
+<%= render template: 'marketing/components/accordion', :locals => {
+  :title => Mock::FUNDRAISING[:accordion][:title],
+  :image => Mock::FUNDRAISING[:accordion][:image],
+  :colors => Mock::FUNDRAISING[:accordion][:colors],
+  :items => Mock::FUNDRAISING[:accordion][:items],
+} %>
+
+<%= render template: 'marketing/components/sub_menu_block', :locals => {
+  :title => Mock::INDUSTRIES_NON_PROFITS[:sub_menu_block][:title],
+} %>
+
+<%= render template: 'marketing/components/cta' %>

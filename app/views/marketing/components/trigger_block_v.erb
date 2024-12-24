@@ -2,15 +2,31 @@
   --c-trigger-block-v-bg: <%= colors[:background] %>;
   --c-trigger-block-v-shadow: <%= colors[:shadow] %>;
   --c-text: <%= colors[:text] %>;
-  --c-trigger-text: <%= colors[:text] %>;
+  --c-text-secondary: <%= colors[:text_secondary] %>;
+  --c-trigger-icon-wrap: <%= colors[:c_trigger_icon_wrap] %>;
+  --f-direction: <%
+    if !image[:position] or image[:position] == 'left' %>
+        <%= 'row' %>
+    <% else %>
+        <%= 'row-reverse' %>
+    <% end %>;
 ">
     <div class="content trigger-block-v__content">
-        <h2 class="trigger-block-v__title">
-            <%= title %>
-            <% if extra_title %>
-                <span class="trigger-block-v__extra-title"> <%= extra_title %></span>
+        <% if title %>
+            <div class="trigger-block-v__title-wrap">
+                <h2 class="trigger-block-v__title">
+                    <%= title %>
+                    <% if extra_title %>
+                        <span class="trigger-block-v__extra-title"> <%= extra_title %></span>
+                    <% end %>
+                </h2>
+            <% if text %>
+                <div class="trigger-block-v__text">
+                    <%= text %>
+                </div>
             <% end %>
-        </h2>
+            </div>
+        <% end %>
         <div class="trigger-block-v__sides">
             <div class="trigger-block-v__image-wrap">
                 <%= render template: 'marketing/common/image', :locals => {

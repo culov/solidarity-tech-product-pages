@@ -145,6 +145,9 @@ Rails.application.routes.draw do
     get 'privacy', to: 'marketing#privacy'
     get 'terms', to: 'marketing#terms'
     get 'cookies', to: 'marketing#cookies'
+    get 'industries/non-profits', to: 'marketing#industries_non_profits'
+    get 'industries/unions', to: 'marketing#industries_unions'
+    get 'fundraising', to: 'marketing#fundraising'
     get 'admins/two_factor_authentication',  to: redirect(subdomain: "dashboard")
     match 'schedule-a-call', to: 'onboarding#intake', via: [:get, :post]
     match 'find-a-time' => "actions#action_by_url", via: [:get, :post], action_url: "find-a-time"

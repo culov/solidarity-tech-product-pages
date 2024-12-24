@@ -1,0 +1,19 @@
+<section class="wrap industries_features">
+  <div class="content">
+    <div class="industries_features__hero">
+      <%= render template: 'marketing/common/image', locals: {
+        :image => image[:src],
+        :className => 'industries_features__hero-image',
+      } %>
+    </div>
+    
+    <div class="industries_features__grid">
+      <% features.each do |feature| %>
+        <div class="industries_features__item">
+          <h2 class="industries_features__title"><%= feature[:title] %></h2>
+          <p class="industries_features__description"><%= feature[:description] %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

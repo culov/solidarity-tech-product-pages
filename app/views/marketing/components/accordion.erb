@@ -1,0 +1,35 @@
+<section class="wrap beveled accordion" style="
+  --c-accordion-bg: <%= colors[:background] %>;
+  --c-text: <%= colors[:text] %>;
+  --c-text-secondary: <%= colors[:text_secondary] %>;
+">
+    <div class="content accordion__content">
+        <% if defined?(title.length) %>
+            <div class="accordion__title-wrap">
+                <h2 class="accordion__title"><%= title %></h2>
+            </div>
+        <% end %>
+        <div class="accordion__sides">
+            <div class="accordion__image-wrap">
+                <%= render template: 'marketing/common/image', :locals => {
+                  :image => image[:src],
+                  :className => 'accordion__image',
+                } %>
+            </div>
+
+            <div class="accordion__items">
+                <% items.each do |item| %>
+                    <div class="accordion-item">
+                        <div class="accordion-item__title-wrap">
+                            <div class="accordion-item__icon-wrap">
+                                <%= render template: 'marketing/common/icon', :locals => { :iconName => item[:icon], :iconClass => 'accordion-item__icon' } %>
+                            </div>
+                            <h3 class="accordion-item__title"><%= item[:title].html_safe %></h3>
+                        </div>
+                        <p class="accordion-item__text"><%= item[:text].html_safe %></p>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</section>
